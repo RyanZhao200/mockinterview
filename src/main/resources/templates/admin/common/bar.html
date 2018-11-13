@@ -19,7 +19,7 @@
 <!--左侧公共部分-->
 <nav class="col-md-2 d-none d-md-block bg-light sidebar" th:fragment="leftbar">
 
-    <div align="center">
+    <div >
         <div id="accordion">
             <div class="card">
                 <div class="card-header">
@@ -34,30 +34,43 @@
                     <a class="card-link" data-toggle="collapse" href="#collapseTwo"> <i class="fa fa-home"></i>主页 </a>
                 </div>
                 <div id="collapseTwo" class="collapse" data-parent="#accordion">
-                    <ul style="list-style:none">
-                        <li class="card-header">
-                            <a class="card-link"  href="#"> 首页 </a>
-                        </li>
-                        <li class="card-header">
-                            <a class="card-link"  href="#">修改资料</a>
-                        </li>
-                        <li class="card-header">
-                            <a class="card-link" href="#">修改密码</a>
-                        </li>
-                        <li class="card-header">
-                            <a class="card-link" data-toggle="collapse" href="#">退出</a>
-                        </li>
-                    </ul>
+                    <nav class="navbar bg-light">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">首页</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">修改资料</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">修改密码</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">退出</a>
+                            </li>
+                        </ul>
+                    </nav>
+
                 </div>
             </div>
             <div class="card">
                 <div class="card-header">
-                    <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree"> 选项三 </a>
+                    <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree"> 面试官管理 </a>
                 </div>
                 <div id="collapseThree" class="collapse" data-parent="#accordion">
-                    <div class="card-body">
-                        #3 内容：菜鸟教程 -- 学的不仅是技术，更是梦想！！！
-                    </div>
+                    <nav class="navbar bg-light">
+                        <ul class="navbar-nav">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Link 1</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Link 2</a>
+                            </li>
+                            <li class="nav-item">
+                                <a class="nav-link" href="#">Link 3</a>
+                            </li>
+                        </ul>
+                    </nav>
                 </div>
             </div>
         </div>
