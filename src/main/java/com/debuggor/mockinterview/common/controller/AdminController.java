@@ -19,19 +19,24 @@ public class AdminController {
     @Autowired
     private AdminService adminService;
 
-    @RequestMapping("/system/admin/profile")
-    public String adminInfo(Model model, HttpSession session) {
+    @RequestMapping("/system/admin/toUpdate")
+    public String toAdminInfo(Model model, HttpSession session) {
         String username = (String) session.getAttribute("admin");
         Admin admin = adminService.getAdminByUserName(username);
         model.addAttribute("user", admin);
-        return "admin/system/admin/profile";
+        return "admin/system/updateAdmin";
+    }
+
+    @RequestMapping("/system/admin/updateAdmin")
+    public String updateAdmin(Admin admin, HttpSession session) {
+        String username = (String) session.getAttribute("username");
+        admin.setUsername(username);
+        adminService.updateAdmin(admin);
+        return "admin/main";
     }
 
     @RequestMapping("system/admin/resetPwd")
-    public String resetPwd(Model model, HttpSession session) {
-        String username = (String) session.getAttribute("admin");
-        Admin admin = adminService.getAdminByUserName(username);
-        model.addAttribute("admin", admin.getUsername());
+    public String resetPwd() {
         return "admin/system/resetPwd";
     }
 

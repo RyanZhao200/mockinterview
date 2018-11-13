@@ -18,28 +18,27 @@
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
 
             <div class="">
-                <h2>修改密码</h2>
+                <h2>修改资料</h2>
                 <h4 style="color: red" th:text="${info}==''?'':${info}"></h4>
-                <form th:action="@{/admin/system/admin/updatePwd}" class="form-horizontal" role="form">
+                <form th:action="@{/admin/system/admin/updateAdmin}" class="form-horizontal" role="form">
                     <div class="form-group">
-                        <label for="oldPassword" class="col-sm-2 control-label">原密码:</label>
+                        <label for="username" class="col-sm-2 control-label">用户名：</label>
                         <div class="col-sm-3">
-                            <input type="password" class="form-control" id="oldPassword" name="oldPassword"
-                                   placeholder="原密码" required>
+                            <input type="text" class="form-control" id="username" name="username" disabled>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="password" class="col-sm-2 control-label">新密码:</label>
+                        <label for="email" class="col-sm-2 control-label">新邮箱:</label>
                         <div class="col-sm-3">
-                            <input type="password" class="form-control" id="password" name="password"
-                                   placeholder="新密码" required>
+                            <input type="email" class="form-control" id="email" name="email"
+                                   th:placeholder="邮箱">
                         </div>
                     </div>
                     <div class="form-group">
-                        <label for="confirm" class="col-sm-2 control-label">再次确认:</label>
+                        <label for="headUrl" class="col-sm-2 control-label">头像:</label>
                         <div class="col-sm-3">
-                            <input type="password" class="form-control" id="confirm" name="confirm"
-                                   placeholder="再次确认" required>
+                            <input type="password" class="form-control" id="headUrl" name="headUrl"
+                                   placeholder="头像" disabled>
                         </div>
                     </div>
                     <div class="form-group">

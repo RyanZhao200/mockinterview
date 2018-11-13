@@ -10,7 +10,7 @@ import javax.servlet.http.HttpServletResponse;
 public class LoginHandlerInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
-        Object admin = request.getSession().getAttribute("admin");
+        Object admin = request.getSession().getAttribute("username");
         if (admin == null) {
             request.setAttribute("msg", MockConstant.LOGIN_NO_AUTHORITY);
             request.getRequestDispatcher("/admin/login").forward(request, response);

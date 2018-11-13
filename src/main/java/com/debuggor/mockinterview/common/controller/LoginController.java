@@ -42,15 +42,12 @@ public class LoginController {
             model.addAttribute("msg", result);
             return "admin/login";
         }
-        session.setAttribute("admin", username);
-        model.addAttribute("admin", username);
+        session.setAttribute("username", username);
         return "admin/main";
     }
 
     @GetMapping("/index")
-    public String index(Model model, HttpSession session) {
-        Object username = session.getAttribute("admin");
-        model.addAttribute("admin", username);
+    public String index() {
         return "admin/main";
     }
 
@@ -62,10 +59,7 @@ public class LoginController {
     }
 
     @RequestMapping("/main")
-    public String main(HttpSession session, Model model) {
-        String username = (String) session.getAttribute("admin");
-        Admin admin = adminService.getAdminByUserName(username);
-        model.addAttribute("admin", admin.getUsername());
+    public String main() {
         return "admin/main";
     }
 
