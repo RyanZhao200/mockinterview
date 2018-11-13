@@ -44,14 +44,14 @@ public class LoginController {
         }
         session.setAttribute("admin", username);
         model.addAttribute("admin", username);
-        return "admin/index";
+        return "admin/main";
     }
 
     @GetMapping("/index")
     public String index(Model model, HttpSession session) {
         Object username = session.getAttribute("admin");
         model.addAttribute("admin", username);
-        return "admin/index";
+        return "admin/main";
     }
 
     @RequestMapping("/logout")
