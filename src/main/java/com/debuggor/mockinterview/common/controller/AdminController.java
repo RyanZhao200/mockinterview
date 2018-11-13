@@ -24,12 +24,12 @@ public class AdminController {
         return "admin/system/admin/profile";
     }
 
-    @RequestMapping("system/admin/resetPwd/")
+    @RequestMapping("system/admin/resetPwd")
     public String resetPwd(Model model, HttpSession session) {
         String username = (String) session.getAttribute("admin");
         Admin admin = adminService.getAdminByUserName(username);
         model.addAttribute("user", admin);
-        return "admin/system/admin/resetPwd";
+        return "admin/system/resetPwd";
     }
 
 }
