@@ -19,18 +19,19 @@
 
             <div class="container">
                 <h2>修改密码</h2>
-                <form>
+                <h4 style="color: red" th:text="${info}==''?'':${info}"></h4>
+                <form th:action="@{/admin/system/admin/updatePwd}">
                     <div class="form-group">
                         <label for="oldPassword">原密码:</label>
-                        <input type="password" class="form-control" id="oldPassword" placeholder="Enter email">
+                        <input name="oldPassword" type="password" class="form-control" id="oldPassword" placeholder="原密码" required>
                     </div>
                     <div class="form-group">
                         <label for="password">新密码:</label>
-                        <input type="password" class="form-control" id="password" placeholder="Enter password">
+                        <input name="password" type="password" class="form-control" id="password" placeholder="新密码" required>
                     </div>
                     <div class="form-group">
                         <label for="confirm">再次确认:</label>
-                        <input type="password" class="form-control" id="confirm" placeholder="Enter password">
+                        <input name="confirm" type="password" class="form-control" id="confirm" placeholder="再次确认" required>
                     </div>
                     <button type="submit" class="btn btn-primary">确认修改</button>
                 </form>

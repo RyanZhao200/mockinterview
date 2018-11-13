@@ -22,8 +22,9 @@ public class AdminService {
         }
     }
 
-    public String updateAdmin(Admin admin) {
-        return "";
+
+    public void updateAdmin(Admin admin) {
+        adminDao.updateAdminByUserName(admin);
     }
 
     public Admin getAdminByUserName(String username) {

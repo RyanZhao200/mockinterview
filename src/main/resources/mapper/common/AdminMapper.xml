@@ -7,5 +7,18 @@
     <select id="getAdminByUserName" resultType="com.debuggor.mockinterview.common.bean.Admin">
         SELECT * FROM c_admin WHERE username=#{username}
     </select>
-
+    <!--
+    UPDATE Websites
+    SET alexa='5000', country='USA'
+    WHERE name='菜鸟教程';
+    -->
+    <update id="updateAdminByUserName" parameterType="com.debuggor.mockinterview.common.bean.Admin">
+        UPDATE c_admin
+        <set>
+            <if test="password != null">password=#{password},</if>
+            <if test="email != null">email=#{email},</if>
+            <if test="headUrl != null">head_url=#{headUrl}</if>
+        </set>
+        WHERE username=#{username}
+    </update>
 </mapper>

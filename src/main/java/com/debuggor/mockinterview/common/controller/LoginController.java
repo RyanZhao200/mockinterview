@@ -62,7 +62,10 @@ public class LoginController {
     }
 
     @RequestMapping("/main")
-    public String main() {
+    public String main(HttpSession session, Model model) {
+        String username = (String) session.getAttribute("admin");
+        Admin admin = adminService.getAdminByUserName(username);
+        model.addAttribute("admin", admin.getUsername());
         return "admin/main";
     }
 
