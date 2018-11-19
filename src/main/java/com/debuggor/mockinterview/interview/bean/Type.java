@@ -10,6 +10,16 @@ public class Type {
     private Integer orderNo;
     // 父栏目ID
     private Integer parentId;
+    // 父栏目名称
+    private String parentName;
+
+    public String getParentName() {
+        return parentName;
+    }
+
+    public void setParentName(String parentName) {
+        this.parentName = parentName;
+    }
 
     public Integer getTid() {
         return tid;
