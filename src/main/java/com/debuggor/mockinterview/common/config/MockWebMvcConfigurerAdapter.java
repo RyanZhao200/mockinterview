@@ -10,13 +10,13 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 public class MockWebMvcConfigurerAdapter extends WebMvcConfigurerAdapter {
     @Override
     public void addViewControllers(ViewControllerRegistry registry) {
-        registry.addViewController("/admin").setViewName("admin/login");
+        registry.addViewController("/admin").setViewName("admin/main");
     }
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(new LoginHandlerInterceptor())
                 .addPathPatterns("/admin/**")
-                .excludePathPatterns("/admin/login", "/admin/index", "/admin");
+                .excludePathPatterns("/admin/login", "/admin/main", "/admin");
     }
 }

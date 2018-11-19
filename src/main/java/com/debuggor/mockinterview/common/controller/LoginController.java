@@ -29,8 +29,8 @@ public class LoginController {
         return "admin/login";
     }
 
-    @PostMapping("/index")
-    public String index(@RequestParam("username") String username,
+    @PostMapping("/main")
+    public String login(@RequestParam("username") String username,
                         @RequestParam("password") String password,
                         Model model, HttpSession session) {
         logger.info(username + "....." + password + ".......");
@@ -46,9 +46,9 @@ public class LoginController {
         return "admin/main";
     }
 
-    @GetMapping("/index")
+    @RequestMapping("/index")
     public String index() {
-        return "admin/main";
+        return "admin/index";
     }
 
     @RequestMapping("/logout")
@@ -58,10 +58,9 @@ public class LoginController {
         return "admin/login";
     }
 
-    @RequestMapping("/main")
+    @GetMapping("/main")
     public String main() {
         return "admin/main";
     }
-
 
 }
