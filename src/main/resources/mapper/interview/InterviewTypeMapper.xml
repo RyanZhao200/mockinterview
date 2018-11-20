@@ -23,7 +23,13 @@
     UPDATE Websites SET alexa='5000', country='USA' WHERE name='菜鸟教程';
     -->
     <update id="updateType">
-
+        UPDATE j_type
+        <set>
+            <if test="typeName != null">type_name=#{typeName},</if>
+            <if test="orderNo != null">order_no=#{orderNo},</if>
+            <if test="parentId != null">parent_id=#{parentId}</if>
+        </set>
+        WHERE tid=#{tid}
     </update>
 
     <delete id="delete">

@@ -31,7 +31,7 @@
                         <td th:text="${type.orderNo}"></td>
                         <td th:text="${type.parentId}"></td>
                         <td>
-                            <a class="btn btn-primary" href="javascript:void(0);" onclick="">编辑</a>
+                            <a class="btn btn-primary" th:onclick="'javascript:edit('+${type.tid}+');'">编辑</a>
                             <button class="btn btn-danger deleteBtn"
                                     th:attr="del_url=@{/admin/interview/delete/}+${type.tid}">删除
                             </button>
@@ -98,11 +98,16 @@
 
     $(".deleteBtn").click(function () {
         //删除当前员工的
-        if (confirm("确定要删除当前栏目吗？")){
+        if (confirm("确定要删除当前栏目吗？")) {
             $("#deleteTypeForm").attr("action", $(this).attr("del_url")).submit();
         }
         return false;
     });
+
+    function edit(tid) {
+        var url = "/admin/interview/toEdit/" + tid;
+        window.open(url, "修改栏目", "height=400, width=600, top=200, left=300, toolbar=no, menubar=no, scrollbars=no, resizable=yes,location=no, status=no");
+    }
 
 </script>
 

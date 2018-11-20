@@ -18,7 +18,18 @@ public class InterviewTypeService {
     }
 
     public List<Type> getTypeByParentId(Integer parentId) {
-        return interviewTypeDao.getTypeByParentId(parentId);
+        List<Type> parentType = interviewTypeDao.getTypeByParentId(parentId);
+        Type type = new Type();
+        type.setTid(0);
+        type.setTypeName("无父栏目");
+        parentType.add(type);
+        return parentType;
+    }
+
+    public void updateType(Type type) {
+        if (type.getTid() != null) {
+            interviewTypeDao.updateType(type);
+        }
     }
 
     public void delete(Integer tid) {
@@ -37,6 +48,8 @@ public class InterviewTypeService {
         if (type.getParentId() != 0 && type.getParentId() != null) {
             Type parent = interviewTypeDao.getTypeById(type.getParentId());
             type.setParentName(parent.getTypeName());
+        } else {
+            type.setParentName("无父栏目");
         }
         return type;
     }

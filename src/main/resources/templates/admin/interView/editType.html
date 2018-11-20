@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>修改栏目</title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+<body style="background-color: white;">
+<div class="container">
+    <div class="row">
+        <h2>修改栏目</h2>
+        <form id="formId" class="form-horizontal" role="form" th:object="${type}"
+              th:action="@{/admin/interview/editType}">
+            <input name="tid" type="hidden" th:field="*{tid}"/>
+            <div class="form-group">
+                <label class="col-sm-3 control-label ">栏目名称：</label>
+                <div class="col-sm-6">
+                    <input class="form-control" type="text" name="typeName" th:field="*{typeName}"/>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">父栏目：</label>
+                <div class="col-sm-6">
+                    <select class="form-control" id="parentType" name="parentId">
+                        <option th:each="type1:${parentType}" th:value="${type1.tid}"
+                                th:selected="${type1.tid}==*{parentId}" th:text="${type1.typeName}"></option>
+                    </select>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3 control-label">优先级：</label>
+                <div class="col-sm-6">
+                    <input class="form-control" type="text" name="orderNo" id="orderNo" th:field="*{orderNo}">
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-sm-3"></label>
+                <div class="col-sm-6">
+                    <input type="submit" class="btn btn-success" onclick="formSubmit()" value="修改">
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+<script language=javascript>
+    function formSubmit() {
+        document.getElementById("formId").submit();
+        alert("跟新成功！");
+    }
+</script>
+</body>
+</html>
