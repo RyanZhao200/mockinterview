@@ -12,8 +12,12 @@
         SELECT * FROM j_type WHERE tid = #{tid};
     </select>
 
+    <select id="getTypeByParentId" resultType="com.debuggor.mockinterview.interview.bean.Type">
+        SELECT * FROM j_type WHERE parent_id = #{parentId};
+    </select>
+
     <insert id="insert" parameterType="com.debuggor.mockinterview.interview.bean.Type">
-        INSERT INTO j_type(type_name,order_no,parent_id) VALUES (#{type_name},#{order_no},#{parent_id});
+        INSERT INTO j_type(type_name,order_no,parent_id) VALUES (#{typeName},#{orderNo},#{parentId});
     </insert>
     <!--
     UPDATE Websites

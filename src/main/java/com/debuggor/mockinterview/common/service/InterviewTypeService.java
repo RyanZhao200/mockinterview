@@ -17,6 +17,14 @@ public class InterviewTypeService {
         return interviewTypeDao.getTypeList();
     }
 
+    public List<Type> getTypeByParentId(Integer parentId){
+       return interviewTypeDao.getTypeByParentId(parentId);
+    }
+
+    public void insert(Type type){
+        interviewTypeDao.insert(type);
+    }
+
     public Type getTypeById(Integer tid) {
         Type type = interviewTypeDao.getTypeById(tid);
         // 非父栏目，则得到其父栏目

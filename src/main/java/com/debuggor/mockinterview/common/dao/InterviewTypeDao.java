@@ -15,4 +15,6 @@ public interface InterviewTypeDao {
     void insert(Type type);
 
     void updateType(Type type);
+
+    List<Type> getTypeByParentId(Integer parentId);
 }

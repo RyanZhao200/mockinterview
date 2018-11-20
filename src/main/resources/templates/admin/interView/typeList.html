@@ -42,26 +42,27 @@
 
         <div class="col-sm-6">
             <h2>添加类别</h2>
-            <form class="form-horizontal" role="form">
+            <form name="formType" class="form-horizontal" role="form" th:action="@{/admin/interview/addType}"
+                  onsubmit="return validateForm();">
                 <div class="form-group">
                     <label for="parentType" class="col-sm-2 control-label">父栏目</label>
                     <div class="col-sm-6">
-                        <select class="form-control" id="parentType">
-                            <option>1</option>
+                        <select class="form-control" id="parentType" name="parentId">
+                            <option th:each="type:${types}" th:value="${type.tid}" th:text="${type.typeName}"></option>
                         </select>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="typeName" class="col-sm-2 control-label">名称</label>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" id="typeName"
-                               placeholder="请输入名称">
+                        <input type="text" class="form-control" id="typeName" name="typeName"
+                               placeholder="请输入名称" required>
                     </div>
                 </div>
                 <div class="form-group">
                     <label for="orderNo" class="col-sm-2 control-label">顺序</label>
                     <div class="col-sm-6">
-                        <input type="text" class="form-control" id="orderNo">
+                        <input type="text" class="form-control" id="orderNo" name="orderNo" required>
                     </div>
                 </div>
                 <div class="form-group">
@@ -74,6 +75,22 @@
         </div>
     </div>
 </div>
+
+<script>
+    function validateForm() {
+        var name = $.trim(document.forms["formType"]["typeName"].value);
+        var orderNo = $.trim(document.forms["formType"]["orderNo"].value);
+        console.info(name+" "+ orderNo);
+        if (name == null || name == "") {
+            alert("请填写栏目名称！");
+            return false;
+        }
+        if (orderNo == "" || isNaN(orderNo)) {
+            alert("请填写栏目顺序！")
+            return false;
+        }
+    }
+</script>
 
 </body>
 </html>
