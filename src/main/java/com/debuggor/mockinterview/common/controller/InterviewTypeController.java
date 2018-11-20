@@ -7,6 +7,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import java.util.ArrayList;
@@ -41,6 +42,15 @@ public class InterviewTypeController {
         logger.info(type.getTypeName()+" "+type.getParentId()+" "+type.getOrderNo());
         interviewTypeService.insert(type);
         logger.info("添加栏目成功！");
+        return "redirect:/admin/interview/typeList";
+    }
+
+    @RequestMapping("/delete/{tid}")
+    public String delete(@PathVariable("tid") Integer tid){
+        if (tid != null){
+            interviewTypeService.delete(tid);
+        }
+        logger.info("删除栏目成功！");
         return "redirect:/admin/interview/typeList";
     }
 }

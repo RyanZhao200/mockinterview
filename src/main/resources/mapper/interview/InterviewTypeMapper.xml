@@ -20,11 +20,13 @@
         INSERT INTO j_type(type_name,order_no,parent_id) VALUES (#{typeName},#{orderNo},#{parentId});
     </insert>
     <!--
-    UPDATE Websites
-    SET alexa='5000', country='USA'
-    WHERE name='菜鸟教程';
+    UPDATE Websites SET alexa='5000', country='USA' WHERE name='菜鸟教程';
     -->
     <update id="updateType">
 
     </update>
+
+    <delete id="delete">
+        DELETE FROM j_type WHERE tid = #{tid};
+    </delete>
 </mapper>

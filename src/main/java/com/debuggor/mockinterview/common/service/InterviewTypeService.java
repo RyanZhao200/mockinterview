@@ -17,11 +17,17 @@ public class InterviewTypeService {
         return interviewTypeDao.getTypeList();
     }
 
-    public List<Type> getTypeByParentId(Integer parentId){
-       return interviewTypeDao.getTypeByParentId(parentId);
+    public List<Type> getTypeByParentId(Integer parentId) {
+        return interviewTypeDao.getTypeByParentId(parentId);
     }
 
-    public void insert(Type type){
+    public void delete(Integer tid) {
+        if (tid != null) {
+            interviewTypeDao.delete(tid);
+        }
+    }
+
+    public void insert(Type type) {
         interviewTypeDao.insert(type);
     }
 

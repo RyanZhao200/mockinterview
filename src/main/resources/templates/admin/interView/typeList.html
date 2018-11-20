@@ -31,14 +31,19 @@
                         <td th:text="${type.orderNo}"></td>
                         <td th:text="${type.parentId}"></td>
                         <td>
-                            <button>编辑</button>
-                            <button>删除</button>
+                            <a class="btn btn-primary" href="javascript:void(0);" onclick="">编辑</a>
+                            <button class="btn btn-danger deleteBtn"
+                                    th:attr="del_url=@{/admin/interview/delete/}+${type.tid}">删除
+                            </button>
                         </td>
                     </tr>
                     </tbody>
                 </table>
             </div>
         </main>
+        <form id="deleteTypeForm" method="post">
+            <input type="hidden" name="_method" value="delete"/>
+        </form>
 
         <div class="col-sm-6">
             <h2>添加类别</h2>
@@ -80,7 +85,7 @@
     function validateForm() {
         var name = $.trim(document.forms["formType"]["typeName"].value);
         var orderNo = $.trim(document.forms["formType"]["orderNo"].value);
-        console.info(name+" "+ orderNo);
+        console.info(name + " " + orderNo);
         if (name == null || name == "") {
             alert("请填写栏目名称！");
             return false;
@@ -90,6 +95,15 @@
             return false;
         }
     }
+
+    $(".deleteBtn").click(function () {
+        //删除当前员工的
+        if (confirm("确定要删除当前栏目吗？")){
+            $("#deleteTypeForm").attr("action", $(this).attr("del_url")).submit();
+        }
+        return false;
+    });
+
 </script>
 
 </body>

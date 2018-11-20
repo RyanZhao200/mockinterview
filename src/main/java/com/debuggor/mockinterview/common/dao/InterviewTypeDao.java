@@ -17,4 +17,6 @@ public interface InterviewTypeDao {
     void updateType(Type type);
 
     List<Type> getTypeByParentId(Integer parentId);
+
+    void delete(Integer tid);
 }
