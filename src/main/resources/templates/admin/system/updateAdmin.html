@@ -20,25 +20,25 @@
             <div class="">
                 <h2>修改资料</h2>
                 <h4 style="color: red" th:text="${info}==''?'':${info}"></h4>
-                <form th:action="@{/admin/system/admin/updateAdmin}" class="form-horizontal" role="form">
+                <form th:action="@{/admin/system/admin/updateAdmin}" class="form-horizontal" role="form" method="POST"
+                      enctype="multipart/form-data" th:object="${admin}">
+                    <input name="aid" type="hidden" th:field="*{aid}"/>
                     <div class="form-group">
                         <label for="username" class="col-sm-2 control-label">用户名：</label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" id="username" name="username" disabled>
+                            <input type="text" class="form-control" id="username" name="username"  th:field="*{username}" disabled>
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="email" class="col-sm-2 control-label">新邮箱:</label>
                         <div class="col-sm-3">
-                            <input type="email" class="form-control" id="email" name="email"
-                                   th:placeholder="邮箱">
+                            <input type="email" class="form-control" id="email" name="email" th:field="*{email}">
                         </div>
                     </div>
                     <div class="form-group">
                         <label for="headUrl" class="col-sm-2 control-label">头像:</label>
                         <div class="col-sm-3">
-                            <input type="password" class="form-control" id="headUrl" name="headUrl"
-                                   placeholder="头像" disabled>
+                            <input type="file" class="form-control" id="headUrl" name="headFile">
                         </div>
                     </div>
                     <div class="form-group">
