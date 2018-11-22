@@ -8,5 +8,5 @@ import java.util.List;
 @Repository
 public interface InterviewerDao {
 
-    List<Interviewer> getInterviewerList();
+    List<Interviewer> getInterviewerList(Interviewer interviewer);
 }

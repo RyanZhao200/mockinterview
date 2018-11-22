@@ -14,7 +14,7 @@ public class InterviewerService {
     private InterviewerDao interviewerDao;
 
     public List<Interviewer> getInterviewerList(Interviewer interviewer) {
-        List<Interviewer> interviewerList = interviewerDao.getInterviewerList();
+        List<Interviewer> interviewerList = interviewerDao.getInterviewerList(interviewer);
         return interviewerList;
     }
 }
