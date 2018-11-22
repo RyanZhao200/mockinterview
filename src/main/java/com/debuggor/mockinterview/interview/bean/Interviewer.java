@@ -21,6 +21,10 @@ public class Interviewer {
     private String description;
     // 创建时间
     private Date createTime;
+    // 查询开始时间
+    private String startTime;
+    // 查询结束时间
+    private String endTime;
     // 工作年限
     private Integer workYear;
     // 是否激活（1：激活，0：未激活）
@@ -41,6 +45,22 @@ public class Interviewer {
     private String phone;
     // 博客地址
     private String blogUrl;
+
+    public String getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
+    }
+
+    public String getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
 
     public Integer getIid() {
         return iid;
