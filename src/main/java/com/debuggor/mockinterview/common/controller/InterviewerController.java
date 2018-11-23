@@ -26,11 +26,9 @@ public class InterviewerController {
     @RequestMapping("/interviewList")
     public String toInterviewerList(@RequestParam(required = false, defaultValue = "1", value = "pn") Integer pn,
                                     Interviewer interviewer, Model model) {
-        PageHelper.startPage(pn, 10);
-        List<Interviewer> interviewers = interviewerService.getInterviewerList(interviewer);
-        PageInfo pageInfo = new PageInfo<>(interviewers, 5);
+        PageInfo pageInfo = interviewerService.getInterviewerList(interviewer, pn);
         model.addAttribute("pageInfo", pageInfo);
-        logger.info(pageInfo.toString());
+        logger.info(String.valueOf(pageInfo.getTotal()));
         return "admin/interView/interviewList";
     }
 
