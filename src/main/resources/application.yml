@@ -26,8 +26,7 @@ spring:
 
 mybatis:
   mapper-locations: classpath:mapper/**/*.xml
-
-#   config-location: classpath:mybatis/mybatis-config.xml
+  config-location: classpath:mybatis-config.xml
 
 #mybatis:
 #  # 指定全局配置文件位置

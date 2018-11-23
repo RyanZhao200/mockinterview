@@ -17,7 +17,7 @@
                 <ul style="list-style-type:none">
                     <li>
                         <div class="col-sm-3">
-                            用户名称：<input name="username" >
+                            用户名称：<input name="username">
                         </div>
                         <div class="col-sm-3">
                             工作年限：<input name="workYear">
@@ -66,7 +66,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="view:${interviews}">
+                <tr th:each="view:${pageInfo.list}">
                     <td th:text="${view.username}"></td>
                     <td th:text="${view.sex}==1?'女':'男'"></td>
                     <td th:text="${view.email}"></td>
@@ -79,6 +79,39 @@
                 </tr>
                 </tbody>
             </table>
+
+        </div>
+        <!--文字信息-->
+        <div class="col-sm-4">
+            当前第 [[${pageInfo.pageNum}]] 页.总共 [[${pageInfo.pages}]] 页.一共 [[${pageInfo.total}]] 条记录
+        </div>
+        <!--点击分页-->
+        <div class="col-sm-6">
+            <nav aria-label="Page navigation">
+                <ul class="pagination  pagination-lg" style="display:inline-block;list-style:none;">
+                    <li><a th:href="@{/admin/interview/interviewList(pn=1)}">首页</a></li>
+                    <!--上一页-->
+                    <li th:if="${pageInfo.hasPreviousPage}">
+                        <a th:href="@{/admin/interview/interviewList(pn=${pageInfo.pageNum-1})}"
+                           aria-label="Previous">
+                            <span aria-hidden="true">«</span>
+                        </a>
+                    </li>
+                    <!--循环遍历连续显示的页面，若是当前页就高亮显示，并且没有链接-->
+                    <li th:each="page_num:${pageInfo.navigatepageNums}">
+                        <span class="active" th:if="${page_num == pageInfo.pageNum}"><a href="#">[[${page_num}]]</a></span>
+                        <span th:if="${page_num != pageInfo.pageNum}"><a
+                                th:href="@{/admin/interview/interviewList(pn=${page_num})}">[[${page_num}]]</a></span>
+                    </li>
+                    <!--下一页-->
+                    <li th:if="${pageInfo.hasNextPage}">
+                        <a th:href="@{/admin/interview/interviewList(pn=${pageInfo.pageNum+1})}" aria-label="Next">
+                            <span aria-hidden="true">»</span>
+                        </a>
+                    </li>
+                    <li><a th:href="@{/admin/interview/interviewList(pn=${pageInfo.pages})}">尾页</a></li>
+                </ul>
+            </nav>
         </div>
     </div>
 </div>

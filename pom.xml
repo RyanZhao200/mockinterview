@@ -64,6 +64,12 @@
             <scope>test</scope>
         </dependency>
 
+        <!--分页插件-->
+        <dependency>
+            <groupId>com.github.pagehelper</groupId>
+            <artifactId>pagehelper</artifactId>
+            <version>5.0.4</version>
+        </dependency>
     </dependencies>
 
     <build>
