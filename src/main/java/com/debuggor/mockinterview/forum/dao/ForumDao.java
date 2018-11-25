@@ -1,12 +1,12 @@
 package com.debuggor.mockinterview.forum.dao;
 
-import com.debuggor.mockinterview.forum.bean.Post;
+import com.debuggor.mockinterview.forum.bean.Forum;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
 @Repository
-public interface PostDao {
+public interface ForumDao {
 
     /**
      * 帖子列表
@@ -14,5 +14,5 @@ public interface PostDao {
      * @param post
      * @return
      */
-    List<Post> getPostList(Post post);
+    List<Forum> getPostList(Forum post);
 }

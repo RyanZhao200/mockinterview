@@ -13,29 +13,19 @@
     <div class="row">
         <div class="col-sm-12 search-collapse" style="background-color: #ffffff;border-radius:15px;">
             <div>&nbsp;</div>
-            <form class="form-horizontal" role="form" th:action="@{/admin/forum/postList}">
+            <form class="form-horizontal" role="form" th:action="@{/admin/forum/postList}" method="post">
                 <ul style="list-style-type:none">
                     <li>
                         <div class="col-sm-3">
-                            用户名称：<input name="username">
+                            帖子类别：
+                            <select name="tid" style="width:200px;height: 30px;">
+                                <option value="0">所有</option>
+                                <option th:each="type:${types}" th:value="${type.tid}"
+                                        th:text="${type.typeName}"></option>
+                            </select>
                         </div>
                         <div class="col-sm-3">
-                            工作年限：<input name="workYear">
-                        </div>
-                        <div class="col-sm-3">
-                            是否认证：<input name="isCertification">
-                        </div>
-                        <div class="col-sm-3">
-                            是否激活：<input name="isActivate">
-                        </div>
-                    </li>
-                    <div>&nbsp;</div>
-                    <li>
-                        <div class="col-sm-3">
-                            评分等级：<input name="grade">
-                        </div>
-                        <div class="col-sm-3">
-                            电话号码：<input name="phone">
+                            创建人：<input name="nickname">
                         </div>
                         <div class="col-sm-6">
                             创建时间：<input name="startTime">-<input name="endTime">

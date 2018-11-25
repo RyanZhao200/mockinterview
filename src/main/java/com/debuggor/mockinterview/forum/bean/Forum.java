@@ -2,7 +2,7 @@ package com.debuggor.mockinterview.forum.bean;
 
 import java.util.Date;
 
-public class Post {
+public class Forum {
 
     // 帖子ID
     private Integer pid;
@@ -28,6 +28,26 @@ public class Post {
     private Date updateTime;
     // 最近回复时间
     private Date replyTime;
+    // 查询 开始时间
+    private Date startTime;
+    // 查询 结束时间
+    private Date endTime;
+
+    public Date getStartTime() {
+        return startTime;
+    }
+
+    public void setStartTime(Date startTime) {
+        this.startTime = startTime;
+    }
+
+    public Date getEndTime() {
+        return endTime;
+    }
+
+    public void setEndTime(Date endTime) {
+        this.endTime = endTime;
+    }
 
     public String getTypeName() {
         return typeName;

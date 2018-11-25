@@ -9,4 +9,6 @@ import java.util.List;
 public interface FinderDao {
 
     List<Finder> getFinderList(Finder finder);
+
+    Finder getFinderByNickName(String nickName);
 }

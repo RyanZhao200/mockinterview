@@ -20,7 +20,11 @@
         SELECT * from j_finder
     </select>
 
-<!--    <where>
-        <include refid="query_finder_where"></include>
-    </where>-->
+    <select id="getFinderByNickName" resultType="com.debuggor.mockinterview.interview.bean.Finder"
+            parameterType="java.lang.String">
+        SELECT * from j_finder WHERE nickname = #{nickName}
+    </select>
+    <!--    <where>
+            <include refid="query_finder_where"></include>
+        </where>-->
 </mapper>

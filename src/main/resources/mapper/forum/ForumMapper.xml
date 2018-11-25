@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.debuggor.mockinterview.forum.dao.ForumDao">
+
+    <sql id="query_post_where">
+        <if test="uid != null and uid !='' ">and f.uid=#{uid}</if>
+        <if test="tid != null and tid !='' ">and f.tid=#{tid}</if>
+        <if test="startTime != null and startTime !='' ">and f.create_time <![CDATA[ >= ]]> #{startTime}</if>
+        <if test="endTime != null and endTime !='' ">and f.create_time <![CDATA[ <= ]]> #{endTime}</if>
+    </sql>
+
+    <select id="getPostList" resultType="com.debuggor.mockinterview.forum.bean.Forum"
+            parameterType="com.debuggor.mockinterview.forum.bean.Forum">
+        SELECT f.title,f.content,
+        t.tid,t.type_name,j.fid,j.username,j.nickname,
+        f.scan_count,f.comment_count,f.create_time,f.update_time,f.reply_time
+        from f_forum f
+        LEFT JOIN j_finder j ON f.uid=j.fid
+        LEFT JOIN f_type t on f.tid=t.tid
+        <where>
+            <include refid="query_post_where"></include>
+        </where>
+    </select>
+</mapper>
