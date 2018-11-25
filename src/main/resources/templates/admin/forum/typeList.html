@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title></title>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
+</head>
+<body>
+<div class="container-fluid">
+    <div class="row">
+        <main role="main" class="col-sm-6 px-4">
+            <h2>帖子分类</h2>
+            <div class="table-responsive">
+                <table class="table table-striped table-sm">
+                    <thead>
+                    <tr>
+                        <th>名称</th>
+                        <th>顺序</th>
+                        <th>操作</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr th:each="type:${list}">
+                        <td th:text="${type.typeName}"></td>
+                        <td th:text="${type.orderNo}"></td>
+                        <td>
+                            <a class="btn btn-primary" th:onclick="'javascript:edit('+${type.tid}+');'">编辑</a>
+                            <button class="btn btn-danger deleteBtn"
+                                    th:attr="del_url=@{/admin/forum/delete/}+${type.tid}">删除
+                            </button>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+        <form id="deleteTypeForm" method="post">
+            <input type="hidden" name="_method" value="delete"/>
+        </form>
+
+        <div class="col-sm-6">
+            <h2>添加类别</h2>
+            <form name="formType" class="form-horizontal" role="form" th:action="@{/admin/forum/addType}"
+                  onsubmit="return validateForm();">
+                <div class="form-group">
+                    <label for="typeName" class="col-sm-2 control-label">名称</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" id="typeName" name="typeName"
+                               placeholder="请输入名称" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="orderNo" class="col-sm-2 control-label">顺序</label>
+                    <div class="col-sm-6">
+                        <input type="text" class="form-control" id="orderNo" name="orderNo" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="submit" class="col-sm-2 control-label"></label>
+                    <div class="col-sm-6">
+                        <button type="submit" class="btn btn-success" id="submit">提交</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+    function validateForm() {
+        var name = $.trim(document.forms["formType"]["typeName"].value);
+        var orderNo = $.trim(document.forms["formType"]["orderNo"].value);
+        console.info(name + " " + orderNo);
+        if (name == null || name == "") {
+            alert("请填写栏目名称！");
+            return false;
+        }
+        if (orderNo == "" || isNaN(orderNo)) {
+            alert("栏目顺序请填写整数！");
+            return false;
+        }
+    }
+
+    $(".deleteBtn").click(function () {
+        //删除当前员工的
+        if (confirm("确定要删除当前栏目吗？")) {
+            $("#deleteTypeForm").attr("action", $(this).attr("del_url")).submit();
+        }
+        return false;
+    });
+
+    function edit(tid) {
+        var url = "/admin/forum/toEdit/" + tid;
+        window.open(url, "修改栏目", "height=400, width=600, top=200, left=300, toolbar=no, menubar=no, scrollbars=no, resizable=yes,location=no, status=no");
+    }
+
+</script>
+
+</body>
+</html>
