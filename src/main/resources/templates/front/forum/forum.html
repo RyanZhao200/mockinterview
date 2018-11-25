@@ -41,67 +41,64 @@
         <div class="col-md-9 column">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    <div>
-                        <a>全部</a>&nbsp;&nbsp;
-                        <a>站内公告</a>&nbsp;&nbsp;
-                        <a>笔经面经</a>&nbsp;&nbsp;
-                        <a href="#">我要提问</a>&nbsp;&nbsp;
-                        <a href="#">技术交流</a>&nbsp;&nbsp;
-                        <a href="#">产品运营</a>&nbsp;&nbsp;
-                        <a href="#">留学生</a>&nbsp;&nbsp;
-                        <a href="#">职业发展</a>&nbsp;&nbsp;
-                        <a href="#">招聘信息</a>&nbsp;&nbsp;
-                        <a href="#">资源分享</a>&nbsp;&nbsp;
-                        <a href="#">猿生活</a>&nbsp;&nbsp;
+                    <div style="height: 50px;">
+                        <ul class="list-unstyled list-inline" style="position: absolute;top: 25px;">
+                            <li th:each="type:${types}" th:value="${type.tid}">[[${type.typeName}]]</li>
+                        </ul>
                     </div>
                 </div>
                 <div class="panel-body">
+                    <span>最新回复  | 最新发表  | 最热</span>
                     <ul class="nav nav-list" style="list-style-type: none;">
-                        <li style="height: 100px;background-color: #f8f8f8">
+                        <li th:each="forum:${pageInfo.list}" style="height: 100px;background-color: #ffffff">
 							<span style="position: absolute;left: 15px;top: 10px;">
 								<img src="https://i8.mifile.cn/b2c-mimall-media/41f858550f42eb1770b97faf219ae215.png"
                                      width="70" height="70" class="img-circle">
 							</span>
-                            <span style="position: absolute; left: 10%;width: 100%;top:10px;line-height: 40px;">
-                                <span style="font-size: 22px;">备战春招 |十年算法刷题大牛亲传校招通关秘籍，限时早鸟报名中限时早鸟报名</span>
+                            <span style="position: absolute; left: 10%;width: 100%;top:20px;line-height: 40px;">
+                                <span style="font-size: 22px;" th:text="${forum.title}"></span>
 								<div style="font-size: 14px;">
-									<span style="color: red;">debuggor</span>
-									<span style="position:absolute ;left: 15%; ">发表时间：2018-11-12 &nbsp; 最后回复：2018-11-12 12:12:12</span>
-									<span style="position:absolute ;left: 70%; ">回复26 | 浏览 2345</span>
+									<span style="color: red;" th:text="${forum.nickname}"></span>
+									<span style="position:absolute ;left: 15%; ">发表时间：[[${#dates.format(forum.createTime, 'yyyy-MM-dd')}]] &nbsp; 最后回复：[[${#dates.format(forum.replyTime, 'yyyy-MM-dd HH:mm')}]]</span>
+									<span style="position:absolute ;left: 70%; ">回复[[${forum.commentCount}]] | 浏览 [[${forum.scanCount}]]</span>
 								</div>
 							</span>
+                            <span>
+                                <div style="width: 100%;height: 2px;background-color: #e7e7e7"></div>
+                            </span>
                         </li>
-                        <div><br></div>
-                        <li style="height: 100px;background-color: #f8f8f8">
-							<span style="position: absolute;left: 15px;top: 10px;">
-								<img src="https://i8.mifile.cn/b2c-mimall-media/41f858550f42eb1770b97faf219ae215.png"
-                                     width="70" height="70" class="img-circle">
-							</span>
-                            <span style="position: absolute; left: 10%;width: 100%;top:10px;line-height: 40px;">
-                                <span style="font-size: 22px;">备战春招 |十年算法刷题大牛亲传校招通关秘籍，限时早鸟报名中限时早鸟报名</span>
-								<div style="font-size: 14px;">
-									<span style="color: red;">debuggor</span>
-									<span style="position:absolute ;left: 15%; ">发表时间：2018-11-12 &nbsp; 最后回复：2018-11-12 12:12:12</span>
-									<span style="position:absolute ;left: 70%; ">回复26 | 浏览 2345</span>
-								</div>
-							</span>
-                        </li>
-                        <div><br></div>
-
-
                     </ul>
+                    <!--点击分页-->
+                    <div class="col-md-3"></div>
+                    <div class="col-md-9">
+                        <nav aria-label="Page navigation">
+                            <ul class="pagination  pagination-lg" style="display:inline-block;list-style:none;">
+                                <li><a th:href="@{/forum(pn=1)}">首页</a></li>
+                                <!--上一页-->
+                                <li th:if="${pageInfo.hasPreviousPage}">
+                                    <a th:href="@{/forum(pn=${pageInfo.pageNum-1})}"
+                                       aria-label="Previous">
+                                        <span aria-hidden="true">«</span>
+                                    </a>
+                                </li>
+                                <!--循环遍历连续显示的页面，若是当前页就高亮显示，并且没有链接-->
+                                <li th:each="page_num:${pageInfo.navigatepageNums}">
+                        <span class="active" th:if="${page_num == pageInfo.pageNum}"><a
+                                href="#">[[${page_num}]]</a></span>
+                                    <span th:if="${page_num != pageInfo.pageNum}"><a
+                                            th:href="@{/forum(pn=${page_num})}">[[${page_num}]]</a></span>
+                                </li>
+                                <!--下一页-->
+                                <li th:if="${pageInfo.hasNextPage}">
+                                    <a th:href="@{/forum(pn=${pageInfo.pageNum+1})}" aria-label="Next">
+                                        <span aria-hidden="true">»</span>
+                                    </a>
+                                </li>
+                                <li><a th:href="@{/forum(pn=${pageInfo.pages})}">尾页</a></li>
+                            </ul>
+                        </nav>
+                    </div>
                 </div>
-            </div>
-            <div>
-                <ul class="pagination">
-                    <li><a href="#">&laquo;</a></li>
-                    <li><a href="#">1</a></li>
-                    <li><a href="#">2</a></li>
-                    <li><a href="#">3</a></li>
-                    <li><a href="#">4</a></li>
-                    <li><a href="#">5</a></li>
-                    <li><a href="#">&raquo;</a></li>
-                </ul>
             </div>
         </div>
 
