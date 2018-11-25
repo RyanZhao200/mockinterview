@@ -10,8 +10,14 @@ public class Post {
     private String title;
     // 内容
     private String content;
+    //帖子类别ID
+    private Integer tid;
+    // 类别名称
+    private String typeName;
     // 创建人ID
     private Integer uid;
+    // 创建人昵称
+    private String nickname;
     // 浏览量
     private Integer scanCount;
     // 评论数量
@@ -22,6 +28,30 @@ public class Post {
     private Date updateTime;
     // 最近回复时间
     private Date replyTime;
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public Integer getTid() {
+        return tid;
+    }
+
+    public void setTid(Integer tid) {
+        this.tid = tid;
+    }
 
     public Integer getPid() {
         return pid;
