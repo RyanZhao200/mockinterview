@@ -56,10 +56,10 @@
                                      width="70" height="70" class="img-circle">
 							</span>
                             <span style="position: absolute; left: 10%;width: 100%;top:20px;line-height: 40px;">
-                                <span style="font-size: 22px;" th:text="${forum.title}"></span>
+                                <a th:href="@{/forum/}+${forum.pid}"><span style="font-size: 22px;" th:text="${forum.title}"></span></a>
 								<div style="font-size: 14px;">
 									<span style="color: red;" th:text="${forum.nickname}"></span>
-									<span style="position:absolute ;left: 15%; ">发表时间：[[${#dates.format(forum.createTime, 'yyyy-MM-dd')}]] &nbsp; 最后回复：[[${#dates.format(forum.replyTime, 'yyyy-MM-dd HH:mm')}]]</span>
+									<span style="position:absolute ;left: 12%; ">[[${#dates.format(forum.createTime, 'yyyy-MM-dd')}]] &nbsp;发表在<b>[[${forum.typeName}]]</b> 最后回复：[[${#dates.format(forum.replyTime, 'yyyy-MM-dd HH:mm')}]]</span>
 									<span style="position:absolute ;left: 70%; ">回复[[${forum.commentCount}]] | 浏览 [[${forum.scanCount}]]</span>
 								</div>
 							</span>

@@ -15,7 +15,7 @@ import java.util.List;
 @Service
 public class ForumService {
     @Autowired
-    private ForumDao postDao;
+    private ForumDao forumDao;
     @Autowired
     private FinderDao finderDao;
 
@@ -29,8 +29,22 @@ public class ForumService {
             }
         }
         PageHelper.startPage(pn, PageConstant.Page_Sizes);
-        List<Forum> posts = postDao.getPostList(forum);
+        List<Forum> posts = forumDao.getPostList(forum);
         PageInfo pageInfo = new PageInfo<>(posts, PageConstant.Navigate_Pages);
         return pageInfo;
+    }
+
+    /**
+     * 根据ID，获得帖子的详情
+     *
+     * @param pid
+     * @return
+     */
+    public Forum getForumById(Integer pid) {
+        Forum forum = null;
+        if (pid != null) {
+            forum = forumDao.getForumById(pid);
+        }
+        return forum;
     }
 }

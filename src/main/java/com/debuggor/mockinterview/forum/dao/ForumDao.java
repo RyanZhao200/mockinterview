@@ -15,4 +15,12 @@ public interface ForumDao {
      * @return
      */
     List<Forum> getPostList(Forum post);
+
+    /**
+     * 根据ID获得帖子详情
+     *
+     * @param pid
+     * @return
+     */
+    Forum getForumById(Integer pid);
 }

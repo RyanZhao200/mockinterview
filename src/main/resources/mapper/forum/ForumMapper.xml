@@ -13,7 +13,7 @@
 
     <select id="getPostList" resultType="com.debuggor.mockinterview.forum.bean.Forum"
             parameterType="com.debuggor.mockinterview.forum.bean.Forum">
-        SELECT f.title,f.content,
+        SELECT f.pid,f.title,f.content,
         t.tid,t.type_name,j.fid,j.username,j.nickname,
         f.scan_count,f.comment_count,f.create_time,f.update_time,f.reply_time
         from f_forum f
@@ -22,5 +22,16 @@
         <where>
             <include refid="query_post_where"></include>
         </where>
+    </select>
+
+    <select id="getForumById" resultType="com.debuggor.mockinterview.forum.bean.Forum"
+            parameterType="java.lang.Integer">
+        SELECT f.pid,f.title,f.content,
+        t.tid,t.type_name,j.fid,j.username,j.nickname,
+        f.scan_count,f.comment_count,f.create_time,f.update_time,f.reply_time
+        from f_forum f
+        LEFT JOIN j_finder j ON f.uid=j.fid
+        LEFT JOIN f_type t on f.tid=t.tid
+        WHERE f.pid=#{pid}
     </select>
 </mapper>

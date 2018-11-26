@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -25,6 +26,14 @@ public class ForumController {
     @Autowired
     private ForumTypeService forumTypeService;
 
+    /**
+     * 帖子首页
+     *
+     * @param pn    第几页
+     * @param tid   类别ID
+     * @param model
+     * @return
+     */
     @RequestMapping("")
     public String forumList(@RequestParam(required = false, defaultValue = "1", value = "pn") Integer pn,
                             @RequestParam(required = false, value = "tid") Integer tid, Model model) {
@@ -37,5 +46,19 @@ public class ForumController {
         model.addAttribute("pageInfo", pageInfo);
         model.addAttribute("types", types);
         return "front/forum/forum";
+    }
+
+    /**
+     * 帖子详细页面
+     *
+     * @param pid
+     * @param model
+     * @return
+     */
+    @RequestMapping("/{pid}")
+    public String detailPost(@PathVariable("pid") Integer pid, Model model) {
+        Forum forum = forumService.getForumById(pid);
+        model.addAttribute("forum", forum);
+        return "front/forum/detail";
     }
 }
