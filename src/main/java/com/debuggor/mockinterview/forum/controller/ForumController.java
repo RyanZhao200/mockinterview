@@ -45,6 +45,8 @@ public class ForumController {
         List<Type> types = forumTypeService.getForumTypeList();
         model.addAttribute("pageInfo", pageInfo);
         model.addAttribute("types", types);
+        // 为前台选中标签起辅助作用
+        model.addAttribute("tid", tid);
         return "front/forum/forum";
     }
 

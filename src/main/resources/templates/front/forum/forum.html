@@ -43,7 +43,10 @@
                 <div class="panel-heading">
                     <div style="height: 50px;">
                         <ul class="list-unstyled list-inline" style="position: absolute;top: 25px;">
-                            <li th:each="type:${types}" th:value="${type.tid}">[[${type.typeName}]]</li>
+                            <li><a th:href="@{/forum}" th:selected="${tid}==null" id="all"  style="background-color:#f5f5f5">全部</a></li>
+                            <li th:each="type:${types}" th:value="${type.tid}">
+                                <a th:selected="${tid}==${type.tid}" th:href="@{/forum(tid=${type.tid})}" style="background-color:#f5f5f5">[[${type.typeName}]]</a>
+                            </li>
                         </ul>
                     </div>
                 </div>
@@ -56,7 +59,8 @@
                                      width="70" height="70" class="img-circle">
 							</span>
                             <span style="position: absolute; left: 10%;width: 100%;top:20px;line-height: 40px;">
-                                <a th:href="@{/forum/}+${forum.pid}"><span style="font-size: 22px;" th:text="${forum.title}"></span></a>
+                                <a th:href="@{/forum/}+${forum.pid}"><span style="font-size: 22px;"
+                                                                           th:text="${forum.title}"></span></a>
 								<div style="font-size: 14px;">
 									<span style="color: red;" th:text="${forum.nickname}"></span>
 									<span style="position:absolute ;left: 12%; ">[[${#dates.format(forum.createTime, 'yyyy-MM-dd')}]] &nbsp;发表在<b>[[${forum.typeName}]]</b> 最后回复：[[${#dates.format(forum.replyTime, 'yyyy-MM-dd HH:mm')}]]</span>
@@ -108,5 +112,10 @@
     </div>
 </div>
 
+<script>
+    $(function () {
+        $("a[selected='selected']").css("background-color","#00bc9b");
+    });
+</script>
 </body>
 </html>
