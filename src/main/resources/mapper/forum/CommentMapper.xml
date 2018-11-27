@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.debuggor.mockinterview.forum.dao.CommentDao">
+
+    <sql id="query_comment_where">
+        <if test="uid != null and uid !='' ">and f.uid=#{uid}</if>
+        <if test="tid != null and tid !='' ">and f.tid=#{tid}</if>
+        <if test="startTime != null and startTime !='' ">and f.create_time <![CDATA[ >= ]]> #{startTime}</if>
+        <if test="endTime != null and endTime !='' ">and f.create_time <![CDATA[ <= ]]> #{endTime}</if>
+    </sql>
+
+
+    <select id="getCommentListByPid" resultType="com.debuggor.mockinterview.forum.bean.Comment"
+            parameterType="java.lang.Integer">
+        SELECT c.cid,c.comment,c.uid,f.nickname,c.pid,c.comment_time,c.parent_id
+        from f_comment c
+        LEFT JOIN j_finder f ON f.fid=c.uid
+        WHERE c.pid = #{pid}
+    </select>
+</mapper>

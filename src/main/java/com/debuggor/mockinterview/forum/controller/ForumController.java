@@ -2,6 +2,7 @@ package com.debuggor.mockinterview.forum.controller;
 
 import com.debuggor.mockinterview.forum.bean.Forum;
 import com.debuggor.mockinterview.forum.bean.Type;
+import com.debuggor.mockinterview.forum.service.CommentService;
 import com.debuggor.mockinterview.forum.service.ForumService;
 import com.debuggor.mockinterview.forum.service.ForumTypeService;
 import com.github.pagehelper.PageInfo;
@@ -25,6 +26,8 @@ public class ForumController {
     private ForumService forumService;
     @Autowired
     private ForumTypeService forumTypeService;
+    @Autowired
+    private CommentService commentService;
 
     /**
      * 帖子首页
@@ -58,9 +61,12 @@ public class ForumController {
      * @return
      */
     @RequestMapping("/{pid}")
-    public String detailPost(@PathVariable("pid") Integer pid, Model model) {
+    public String detailPost(@RequestParam(required = false, defaultValue = "1", value = "pn") Integer pn,
+                             @PathVariable("pid") Integer pid, Model model) {
         Forum forum = forumService.getForumById(pid);
+        PageInfo pageInfo = commentService.getCommentListByPid(pid, pn);
         model.addAttribute("forum", forum);
+        model.addAttribute("pageInfo", pageInfo);
         return "front/forum/detail";
     }
 }

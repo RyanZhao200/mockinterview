@@ -12,10 +12,20 @@ public class Comment {
     private Integer pid;
     // 用户ID
     private Integer uid;
+    // 评论人姓名
+    private String nickname;
     // 评论时间
     private Date commentTime;
     // 父ID
     private Integer parentId;
+
+    public String getNickname() {
+        return nickname;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
 
     public Integer getCid() {
         return cid;
