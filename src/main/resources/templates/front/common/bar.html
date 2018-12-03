@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<!--头部公共部分-->
+<div class="fly-header layui-bg-black" th:fragment="topbar">
+    <div class="layui-container">
+        <a class="fly-logo" href="/">
+            <img th:src="@{/front/images/logo.png}" alt="layui">
+        </a>
+        <ul class="layui-nav fly-nav layui-hide-xs">
+            <li class="layui-nav-item">
+                <a href="#"><i class="iconfont icon-iconmingxinganli"></i>案例</a>
+            </li>
+            <li class="layui-nav-item layui-this">
+                <a href="/" th:href="@{/forum}"><i class="iconfont icon-jiaoliu"></i>讨论区</a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="#" target="_blank"><i class="iconfont icon-ui"></i>框架</a>
+            </li>
+        </ul>
+
+        <ul class="layui-nav fly-nav-user">
+
+            <!-- 未登入的状态 -->
+            <li class="layui-nav-item">
+                <a class="iconfont icon-touxiang layui-hide-xs" href="#"></a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="#">登入</a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="#">注册</a>
+            </li>
+
+            <!-- 登入后的状态 -->
+            <!--
+            <li class="layui-nav-item">
+              <a class="fly-nav-avatar" href="javascript:;">
+                <cite class="layui-hide-xs">贤心</cite>
+                <i class="iconfont icon-renzheng layui-hide-xs" title="认证信息：layui 作者"></i>
+                <i class="layui-badge fly-badge-vip layui-hide-xs">VIP3</i>
+                <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg">
+              </a>
+              <dl class="layui-nav-child">
+                <dd><a href="../user/set.html"><i class="layui-icon">&#xe620;</i>基本设置</a></dd>
+                <dd><a href="../user/message.html"><i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息</a></dd>
+                <dd><a href="../user/home.html"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a></dd>
+                <hr style="margin: 5px 0;">
+                <dd><a href="" style="text-align: center;">退出</a></dd>
+              </dl>
+            </li>
+            -->
+        </ul>
+    </div>
+</div>
+
+<!--论坛头部-->
+<div class="fly-panel fly-column" th:fragment="forumtopbar">
+    <div class="layui-container">
+        <ul class="layui-clear">
+            <li><a th:href="@{/forum}" th:selected="${tid}==null" id="all" style="color:#000000">全部</a></li>
+            <li th:each="type:${types}" th:value="${type.tid}">
+                <a th:selected="${tid}==${type.tid}" th:href="@{/forum(tid=${type.tid})}"
+                   style="color: #000000;">[[${type.typeName}]]</a>
+            </li>
+        </ul>
+        <div class="fly-column-right layui-hide-xs">
+            <a href="#" th:href="@{/forum/add}" class="layui-btn">发表新帖</a>
+        </div>
+    </div>
+</div>
+
+<!--公共底部-->
+<div class="fly-footer" th:fragment="footerbar">
+    <p><a href="#" target="_blank">Fly社区</a> 2017 &copy; <a href="#" target="_blank">layui.com 出品</a></p>
+    <p>
+        <a href="#" target="_blank">付费计划</a>
+        <a href="#" target="_blank">获取Fly社区模版</a>
+        <a href="#" target="_blank">微信公众号</a>
+    </p>
+</div>
+
+</body>
+</html>

@@ -23,4 +23,12 @@ public interface ForumDao {
      * @return
      */
     Forum getForumById(Integer pid);
+
+    /**
+     * 添加帖子，返回帖子ID
+     *
+     * @param forum
+     * @return
+     */
+    Integer insertForum(Forum forum);
 }

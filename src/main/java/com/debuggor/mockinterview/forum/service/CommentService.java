@@ -17,7 +17,7 @@ public class CommentService {
     private CommentDao commentDao;
 
     /**
-     * 获取帖子的评论
+     * 获取帖子的评论 有分页功能
      *
      * @param pid 帖子ID
      * @param pn  页数
@@ -31,5 +31,19 @@ public class CommentService {
         List<Comment> comments = commentDao.getCommentListByPid(pid);
         PageInfo pageInfo = new PageInfo<>(comments, PageConstant.Navigate_Pages);
         return pageInfo;
+    }
+
+    /**
+     * 获取帖子的评论 不分页
+     *
+     * @param pid
+     * @return
+     */
+    public List<Comment> getCommentListByPid(Integer pid) {
+        if (pid == null) {
+            return null;
+        }
+        List<Comment> comments = commentDao.getCommentListByPid(pid);
+        return comments;
     }
 }
