@@ -14,7 +14,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -62,11 +64,25 @@ public class ForumController {
      */
     @RequestMapping("/{pid}")
     public String detailPost(@RequestParam(required = false, defaultValue = "1", value = "pn") Integer pn,
-                             @PathVariable("pid") Integer pid, Model model) {
+                             @PathVariable("pid") Integer pid, Model model, HttpSession session) {
         Forum forum = forumService.getForumById(pid);
         PageInfo pageInfo = commentService.getCommentListByPid(pid, pn);
+        List<Type> types = forumTypeService.getForumTypeList();
+        model.addAttribute("types", types);
         model.addAttribute("forum", forum);
         model.addAttribute("pageInfo", pageInfo);
+        session.setAttribute("pid", pid);
         return "front/forum/detail";
+    }
+
+    @RequestMapping("/ajaxComment")
+    public @ResponseBody
+    String ajaxChangeCommentPage(@RequestParam(required = false, defaultValue = "1", value = "pn") Integer pn,
+                                   HttpSession session,Model model) {
+        Integer pid = (Integer) session.getAttribute("pid");
+        PageInfo pageInfo = commentService.getCommentListByPid(pid, pn);
+        logger.info(pid+"的评论数量："+String.valueOf(pageInfo.getTotal()));
+        model.addAttribute("pageInfo",pageInfo);
+        return "success";
     }
 }

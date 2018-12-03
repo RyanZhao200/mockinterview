@@ -2,196 +2,208 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <title>论坛</title>
-    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <title>极简社区页面模版</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="fly,layui,前端社区">
+    <meta name="description" content="Fly社区是模块化前端UI框架Layui的官网社区，致力于为web开发提供强劲动力">
+    <link rel="stylesheet" href="..static/front/layui/css/layui.css" th:href="@{/front/layui/css/layui.css}">
+    <link rel="stylesheet" href="..static/front/css/global.css" th:href="@{/front/css/global.css}">
 
-    <style>
-        .container-fluid {
-            padding-right: 15px;
-            padding-left: 15px;
-            margin-right: 15%;
-            margin-left: 15%;
-        }
-    </style>
+
 </head>
 <body>
 
-<!-- 头部 -->
-<nav class="navbar navbar-default navbar-fixed-top" role="navigation">
-    <div class="container-fluid">
-        <div class="navbar-header">
-            <a class="navbar-brand" href="#">IT模拟面试平台</a>
-        </div>
-        <div>
-            <ul class="nav navbar-nav">
-                <li class="active"><a href="index.html">首页</a></li>
-                <li><a href="forum.html">讨论区</a></li>
-                <li class=""><a href="#">关于我们</a></li>
-            </ul>
-        </div>
+<div class="fly-header layui-bg-black">
+    <div class="layui-container">
+        <a class="fly-logo" href="/">
+            <img th:src="@{/front/images/logo.png}" alt="layui">
+        </a>
+        <ul class="layui-nav fly-nav layui-hide-xs">
+            <li class="layui-nav-item">
+                <a href="#"><i class="iconfont icon-iconmingxinganli"></i>案例</a>
+            </li>
+            <li class="layui-nav-item layui-this">
+                <a href="/"><i class="iconfont icon-jiaoliu"></i>讨论区</a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="#" target="_blank"><i class="iconfont icon-ui"></i>框架</a>
+            </li>
+        </ul>
+
+        <ul class="layui-nav fly-nav-user">
+
+            <!-- 未登入的状态 -->
+            <li class="layui-nav-item">
+                <a class="iconfont icon-touxiang layui-hide-xs" href="#"></a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="#">登入</a>
+            </li>
+            <li class="layui-nav-item">
+                <a href="#">注册</a>
+            </li>
+
+            <!-- 登入后的状态 -->
+            <!--
+            <li class="layui-nav-item">
+              <a class="fly-nav-avatar" href="javascript:;">
+                <cite class="layui-hide-xs">贤心</cite>
+                <i class="iconfont icon-renzheng layui-hide-xs" title="认证信息：layui 作者"></i>
+                <i class="layui-badge fly-badge-vip layui-hide-xs">VIP3</i>
+                <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg">
+              </a>
+              <dl class="layui-nav-child">
+                <dd><a href="../user/set.html"><i class="layui-icon">&#xe620;</i>基本设置</a></dd>
+                <dd><a href="../user/message.html"><i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息</a></dd>
+                <dd><a href="../user/home.html"><i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页</a></dd>
+                <hr style="margin: 5px 0;">
+                <dd><a href="" style="text-align: center;">退出</a></dd>
+              </dl>
+            </li>
+            -->
+        </ul>
     </div>
-</nav>
-<div>
-    <br><br><br>
 </div>
-<div class="container-fluid">
-    <div class="row clearfix">
-        <div class="col-md-9 column">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <div style="height: 50px;">
-                        <ul class="list-unstyled list-inline" style="position: absolute;top: 25px;">
-                            <li><a th:href="@{/forum}" th:selected="${tid}==null" id="all"
-                                   style="background-color:#f5f5f5">全部</a></li>
-                            <li th:each="type:${types}" th:value="${type.tid}">
-                                <a th:selected="${tid}==${type.tid}" th:href="@{/forum(tid=${type.tid})}"
-                                   style="background-color:#f5f5f5">[[${type.typeName}]]</a>
-                            </li>
-                        </ul>
-                    </div>
+
+<div class="fly-panel fly-column">
+    <div class="layui-container">
+        <ul class="layui-clear">
+            <li><a th:href="@{/forum}" th:selected="${tid}==null" id="all" style="background-color:#ffffff">全部</a></li>
+            <li th:each="type:${types}" th:value="${type.tid}">
+                <a th:selected="${tid}==${type.tid}" th:href="@{/forum(tid=${type.tid})}"
+                   style="background-color:#ffffff">[[${type.typeName}]]</a>
+            </li>
+        </ul>
+        <div class="fly-column-right layui-hide-xs">
+            <a href="#" class="layui-btn">发表新帖</a>
+        </div>
+
+    </div>
+</div>
+
+<div class="layui-container">
+    <div class="layui-row layui-col-space20">
+        <div class="layui-col-md8">
+            <div class="fly-panel" style="margin-bottom: 0;">
+
+                <div class="fly-panel-title fly-filter">
+                    <a href="" class="layui-this">综合</a>
+                    <span class="fly-mid"></span>
+                    <a href="">未结</a>
+                    <span class="fly-mid"></span>
+                    <a href="">已结</a>
+                    <span class="fly-mid"></span>
+                    <a href="">精华</a>
+                    <span class="fly-filter-right layui-hide-xs">
+            <a href="" class="layui-this">按最新</a>
+            <span class="fly-mid"></span>
+            <a href="">按热议</a>
+          </span>
                 </div>
-                <div class="panel-body">
-                    <span>最新回复  | 最新发表  | 最热</span>
-                    <ul class="nav nav-list" style="list-style-type: none;">
-                        <li th:each="forum:${pageInfo.list}" style="height: 100px;background-color: #ffffff">
-							<span style="position: absolute;left: 15px;top: 10px;">
-								<img src="https://i8.mifile.cn/b2c-mimall-media/41f858550f42eb1770b97faf219ae215.png"
-                                     width="70" height="70" class="img-circle">
-							</span>
-                            <span style="position: absolute; left: 10%;width: 100%;top:20px;line-height: 40px;">
-                                <a th:href="@{/forum/}+${forum.pid}"><span style="font-size: 22px;"
-                                                                           th:text="${forum.title}"></span></a>
-								<div style="font-size: 14px;">
-									<span style="color: red;" th:text="${forum.nickname}"></span>
-									<span style="position:absolute ;left: 12%; ">[[${#dates.format(forum.createTime, 'yyyy-MM-dd')}]] &nbsp;发表在<b>[[${forum.typeName}]]</b> 最后回复：[[${#dates.format(forum.replyTime, 'yyyy-MM-dd HH:mm')}]]</span>
-									<span style="position:absolute ;left: 70%; ">回复[[${forum.commentCount}]] | 浏览 [[${forum.scanCount}]]</span>
-								</div>
-							</span>
-                            <span>
-                                <div style="width: 100%;height: 2px;background-color: #e7e7e7"></div>
+                <ul class="fly-list">
+                    <li th:each="forum:${pageInfo.list}">
+                        <a href="#" class="fly-avatar">
+                            <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"
+                                 alt="贤心">
+                        </a>
+                        <h2>
+                            <a th:href="@{/forum/}+${forum.pid}"><span th:text="${forum.title}"></span></a>
+                        </h2>
+                        <div class="fly-list-info">
+                            <a href="user/home.html" link>
+                                <cite>[[${forum.nickname}]]</cite>
+                            </a>
+                            <span>[[${#dates.format(forum.createTime, 'yyyy-MM-dd')}]] &nbsp;<b>[[${forum.typeName}]]</b> 最后回复：[[${#dates.format(forum.replyTime, 'yyyy-MM-dd HH:mm')}]]</span>
+                            <span class="fly-list-nums">
+                                <i class="iconfont " title="浏览">&#xe60b;</i> [[${forum.scanCount}]]
+                                <i class="iconfont icon-pinglun1" title="评论"></i> [[${forum.commentCount}]]
                             </span>
-                        </li>
-                    </ul>
-                    <!--点击分页-->
-                    <div class="col-md-3"></div>
-                    <div class="col-md-9">
-                        <nav aria-label="Page navigation">
-                            <ul class="pagination  pagination-lg" style="display:inline-block;list-style:none;">
-                                <li><a th:href="@{/forum(pn=1,tid=${tid})}">首页</a></li>
-                                <!--上一页-->
-                                <li th:if="${pageInfo.hasPreviousPage}">
-                                    <a th:href="@{/forum(pn=${pageInfo.pageNum-1},tid=${tid})}"
-                                       aria-label="Previous">
-                                        <span aria-hidden="true">«</span>
-                                    </a>
-                                </li>
-                                <!--循环遍历连续显示的页面，若是当前页就高亮显示，并且没有链接-->
-                                <li th:each="page_num:${pageInfo.navigatepageNums}">
+                        </div>
+                        <div class="fly-list-badge">
+                        </div>
+                    </li>
+                </ul>
+
+
+                <div style="text-align: center">
+                    <nav>
+                        <ul  class="pagination">
+                            <li><a th:href="@{/forum(pn=1,tid=${tid})}">首页</a></li>
+                            <!--上一页-->
+                            <li th:if="${pageInfo.hasPreviousPage}">
+                                <a th:href="@{/forum(pn=${pageInfo.pageNum-1},tid=${tid})}"
+                                   aria-label="Previous">
+                                    <span aria-hidden="true">«</span>
+                                </a>
+                            </li>
+                            <!--循环遍历连续显示的页面，若是当前页就高亮显示，并且没有链接-->
+                            <li th:each="page_num:${pageInfo.navigatepageNums}">
                         <span class="active" th:if="${page_num == pageInfo.pageNum}"><a
                                 href="#">[[${page_num}]]</a></span>
-                                    <span th:if="${page_num != pageInfo.pageNum}"><a
-                                            th:href="@{/forum(pn=${page_num},tid=${tid})}">[[${page_num}]]</a></span>
-                                </li>
-                                <!--下一页-->
-                                <li th:if="${pageInfo.hasNextPage}">
-                                    <a th:href="@{/forum(pn=${pageInfo.pageNum+1},tid=${tid})}" aria-label="Next">
-                                        <span aria-hidden="true">»</span>
-                                    </a>
-                                </li>
-                                <li><a th:href="@{/forum(pn=${pageInfo.pages},tid=${tid})}">尾页</a></li>
-                            </ul>
-                        </nav>
-                    </div>
+                                <span th:if="${page_num != pageInfo.pageNum}"><a
+                                        th:href="@{/forum(pn=${page_num},tid=${tid})}">[[${page_num}]]</a></span>
+                            </li>
+                            <!--下一页-->
+                            <li th:if="${pageInfo.hasNextPage}">
+                                <a th:href="@{/forum(pn=${pageInfo.pageNum+1},tid=${tid})}" aria-label="Next">
+                                    <span aria-hidden="true">»</span>
+                                </a>
+                            </li>
+                            <li><a th:href="@{/forum(pn=${pageInfo.pages},tid=${tid})}">尾页</a></li>
+                        </ul>
+                    </nav>
                 </div>
+
             </div>
         </div>
+        <div class="layui-col-md4">
+            <dl class="fly-panel fly-list-one">
+                <dt class="fly-panel-title">本周热议</dt>
+                <dd>
+                    <a href="">基于 layui 的极简社区页面模版</a>
+                    <span><i class="iconfont icon-pinglun1"></i> 16</span>
+                </dd>
+            </dl>
 
-        <div class="col-md-3 column">
-            <div>
-                <h3>活跃用户</h3>
-                <ul class="list-unstyled list-inline">
-                    <li>
-                        <div>
-                            <img src="https://i8.mifile.cn/b2c-mimall-media/41f858550f42eb1770b97faf219ae215.png"
-                                 width="70" height="70" class="img-circle">
-                        </div>
-                        <div>debuggor</div>
-                    </li>
-                    <li>
-                        <div>
-                            <img src="https://i8.mifile.cn/b2c-mimall-media/41f858550f42eb1770b97faf219ae215.png"
-                                 width="70" height="70" class="img-circle">
-                        </div>
-                        <div>debuggor</div>
-                    </li>
-                    <li>
-                        <div>
-                            <img src="https://i8.mifile.cn/b2c-mimall-media/41f858550f42eb1770b97faf219ae215.png"
-                                 width="70" height="70" class="img-circle">
-                        </div>
-                        <div>debuggor</div>
-                    </li>
-                    <li>
-                        <div>
-                            <img src="https://i8.mifile.cn/b2c-mimall-media/41f858550f42eb1770b97faf219ae215.png"
-                                 width="70" height="70" class="img-circle">
-                        </div>
-                        <div>debuggor</div>
-                    </li>
-                    <li>
-                        <div>
-                            <img src="https://i8.mifile.cn/b2c-mimall-media/41f858550f42eb1770b97faf219ae215.png"
-                                 width="70" height="70" class="img-circle">
-                        </div>
-                        <div>debuggor</div>
-                    </li>
-                    <li>
-                        <div>
-                            <img src="https://i8.mifile.cn/b2c-mimall-media/41f858550f42eb1770b97faf219ae215.png"
-                                 width="70" height="70" class="img-circle">
-                        </div>
-                        <div>debuggor</div>
-                    </li>
-                </ul>
+            <div class="fly-panel">
+                <div class="fly-panel-title">
+                    这里可作为广告区域
+                </div>
+                <div class="fly-panel-main">
+                    <a href="" target="_blank" class="fly-zanzhu" style="background-color: #393D49;">虚席以待</a>
+                </div>
             </div>
 
-            <div>
-                <h3>近期热帖</h3>
-                <ul class="nav nav-list" style="list-style-type: none;">
-                    <li>
-                        <div>
-                            一个非科班普通211硕士如何拿到腾讯、百度等offer
-                        </div>
-                        <div>
-                            发表于 今天 11:12:17 回复(17)
-                        </div>
-                        <div style="width: 100%;height: 2px;background-color: #e7e7e7"></div>
-                    </li>
-                    <li>
-                        <div>
-                            一个非科班普通211硕士如何拿到腾讯、百度等offer
-                        </div>
-                        <div>
-                            发表于 今天 11:12:17 回复(17)
-                        </div>
-                        <div style="width: 100%;height: 2px;background-color: #e7e7e7"></div>
-                    </li>
-                    <li>
-                        <div>
-                            一个非科班普通211硕士如何拿到腾讯、百度等offer
-                        </div>
-                        <div>
-                            发表于 今天 11:12:17 回复(17)
-                        </div>
-                        <div style="width: 100%;height: 2px;background-color: #e7e7e7"></div>
-                    </li>
-                </ul>
+            <div class="fly-panel fly-link">
+                <h3 class="fly-panel-title">友情链接</h3>
+                <dl class="fly-panel-main">
+                    <dd><a href="#" target="_blank">layui</a>
+                    <dd>
+                    <dd><a href="#" target="_blank">WebIM</a>
+                    <dd>
+                    <dd><a href="#" target="_blank">layer</a>
+                    <dd>
+                    <dd><a href="#" target="_blank">layDate</a>
+                    <dd>
+                    <dd><a href="" class="fly-link">申请友链</a>
+                    <dd>
+                </dl>
             </div>
+
         </div>
     </div>
 </div>
+
+<div class="fly-footer">
+    <p><a href="#" target="_blank">Fly社区</a> 2017 &copy; <a href="#" target="_blank">layui.com 出品</a></p>
+    <p>
+        <a href="#" target="_blank">付费计划</a>
+        <a href="#" target="_blank">获取Fly社区模版</a>
+        <a href="#" target="_blank">微信公众号</a>
+    </p>
+</div>
+
+<script src="..static/front/layui/layui.js" th:src="@{/front/layui/layui.js}"></script>
 
 <script>
     $(function () {

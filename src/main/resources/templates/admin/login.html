@@ -4,14 +4,14 @@
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <title>登录后台</title>
     <!-- Bootstrap core CSS -->
-    <link href="..static/css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+    <link href="..static/admin/css/bootstrap.min.css" th:href="@{/admin/css/bootstrap.min.css}" rel="stylesheet">
     <!-- Custom styles for this template -->
-    <link href="..static/css/signin.css" th:href="@{/css/signin.css}" rel="stylesheet">
+    <link href="..static/admin/css/signin.css" th:href="@{/admin/css/signin.css}" rel="stylesheet">
 </head>
 
 <body class="text-center">
 <form class="form-signin" action="#" th:action="@{/admin/main}" method="post">
-    <img class="mb-4" src="..static/img/bootstrap-solid.svg" th:src="@{/img/bootstrap-solid.svg}" alt="" width="72"
+    <img class="mb-4" src="..static/img/bootstrap-solid.svg" th:src="@{/admin/img/bootstrap-solid.svg}" alt="" width="72"
          height="72">
     <h1 class="h3 mb-3 font-weight-normal">请登录</h1>
     <h4 style="color: red" th:text="${msg}"></h4>
