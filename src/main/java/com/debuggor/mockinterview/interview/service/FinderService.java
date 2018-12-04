@@ -1,6 +1,8 @@
 package com.debuggor.mockinterview.interview.service;
 
+import com.debuggor.mockinterview.common.constant.MockConstant;
 import com.debuggor.mockinterview.common.constant.PageConstant;
+import com.debuggor.mockinterview.common.util.Md5Util;
 import com.debuggor.mockinterview.interview.bean.Finder;
 import com.debuggor.mockinterview.interview.dao.FinderDao;
 import com.github.pagehelper.PageHelper;
@@ -36,10 +38,29 @@ public class FinderService {
     /**
      * 用户登录
      */
-    public void login(Finder finder) {
+    public String login(Finder finder) {
+        if (finder == null) {
+            return MockConstant.LOGIN_ERROR;
+        }
         Finder user = null;
         if (finder.getEmail() != null) {
             user = finderDao.getFinderByEmail(finder.getEmail());
         }
+        if (user == null) {
+            return MockConstant.LOGIN_ERROR;
+        }
+        String passwordMD5 = Md5Util.hash(finder.getPassword());
+        if (!passwordMD5.equals(user.getPassword())) {
+            return MockConstant.LOGIN_ERROR;
+        }
+        return MockConstant.LOGIN_SUCCESS;
+    }
+
+    public Finder getFinderByEmail(String email) {
+        if (email == null) {
+            return null;
+        }
+        Finder finder = finderDao.getFinderByEmail(email);
+        return finder;
     }
 }

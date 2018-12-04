@@ -24,7 +24,13 @@
             parameterType="java.lang.String">
         SELECT * from j_finder WHERE username = #{username}
     </select>
+
+    <select id="getFinderByEmail" resultType="com.debuggor.mockinterview.interview.bean.Finder"
+            parameterType="java.lang.String">
+        SELECT * from j_finder WHERE email = #{email}
+    </select>
     <!--    <where>
             <include refid="query_finder_where"></include>
         </where>-->
+
 </mapper>

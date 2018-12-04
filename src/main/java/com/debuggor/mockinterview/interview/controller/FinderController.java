@@ -1,12 +1,18 @@
 package com.debuggor.mockinterview.interview.controller;
 
+import com.debuggor.mockinterview.common.constant.MockConstant;
 import com.debuggor.mockinterview.interview.bean.Finder;
+import com.debuggor.mockinterview.interview.service.FinderService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 
 /***
  * 求职者管理Controller
@@ -15,6 +21,9 @@ import javax.servlet.http.HttpSession;
 @RequestMapping("/finder")
 public class FinderController {
     Logger logger = LoggerFactory.getLogger(FinderController.class);
+
+    @Autowired
+    private FinderService finderService;
 
     /**
      * 求职者登录页面
@@ -36,9 +45,32 @@ public class FinderController {
         return "front/user/reg";
     }
 
+    /**
+     * 用户登录成功后，挑战到首页
+     *
+     * @param email
+     * @param password
+     * @param model
+     * @param session
+     * @return
+     */
     @RequestMapping("/loginAction")
-    public String loginToIndex(Finder finder, HttpSession session) {
+    public String loginToIndex(@RequestParam("email") String email,
+                               @RequestParam("password") String password,
+                               Model model, HttpSession session) {
+        Finder finder = new Finder();
+        finder.setEmail(email);
+        finder.setPassword(password);
 
-        return "front/forum/forum";
+        String result = finderService.login(finder);
+        if (!result.equals(MockConstant.LOGIN_SUCCESS)) {
+            model.addAttribute("msg", result);
+            // 这里存在问题，msg不能带过去
+            return "redirect:/finder/login";
+        }
+        Finder user = finderService.getFinderByEmail(email);
+        logger.info(user.getUsername() + "于" + new Date() + "登录");
+        session.setAttribute("user", user);
+        return "redirect:/forum";
     }
 }

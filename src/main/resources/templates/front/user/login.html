@@ -25,7 +25,8 @@
             <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">
                 <div class="layui-tab-item layui-show">
                     <div class="layui-form layui-form-pane">
-                        <form method="post">
+                        <form method="post" th:action="@{/finder/loginAction}">
+                            <span style="color: red" th:text="${msg}"></span>
                             <div class="layui-form-item">
                                 <label for="L_email" class="layui-form-label">邮箱</label>
                                 <div class="layui-input-inline">
@@ -36,7 +37,7 @@
                             <div class="layui-form-item">
                                 <label for="L_pass" class="layui-form-label">密码</label>
                                 <div class="layui-input-inline">
-                                    <input type="password" id="L_pass" name="pass" required lay-verify="required"
+                                    <input type="password" id="L_pass" name="password" required lay-verify="required"
                                            autocomplete="off" class="layui-input">
                                 </div>
                             </div>
