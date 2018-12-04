@@ -2,12 +2,13 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <title>Fly Template v3.0，基于 layui 的极简社区页面模版</title>
+    <title>[[${forum.title}]]</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="keywords" content="fly,layui,前端社区">
-    <meta name="description" content="Fly社区是模块化前端UI框架Layui的官网社区，致力于为web开发提供强劲动力">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
     <link rel="stylesheet" href="..static/front/layui/css/layui.css" th:href="@{/front/layui/css/layui.css}">
     <link rel="stylesheet" href="..static/front/css/global.css" th:href="@{/front/css/global.css}">
+    <link rel="stylesheet" href="..static/front/css/wangEditor.css" th:href="@{/front/css/wangEditor.css}">
 
 </head>
 <body>
@@ -21,7 +22,8 @@
         <div class="layui-col-md8 content detail">
             <br>
             <div>
-                首页 > 猿生活 > 打算去北上深工作的，就要做好这个心理准备
+                <a th:href="@{/forum}">首页</a> > <a th:href="@{/forum(tid=${forum.tid})}">[[${forum.typeName}]]</a> >
+                [[${forum.title}]]
             </div>
             <div class="fly-panel detail-box">
                 <h1>[[${forum.title}]]</h1>
@@ -44,8 +46,8 @@
                         </span>
                     </div>
                 </div>
-                <div class="detail-body photos">
-                    [[${forum.content}]]
+                <div class="detail-body photos" th:utext="${forum.content}">
+
                 </div>
             </div>
 
@@ -92,11 +94,9 @@
                 <div class="layui-form layui-form-pane">
                     <form action="/jie/reply/" method="post">
                         <div class="layui-form-item layui-form-text">
-                            <a name="comment"></a>
                             <div class="layui-input-block">
-                                <textarea id="L_content" name="content" required lay-verify="required"
-                                          placeholder="请输入内容" class="layui-textarea fly-editor"
-                                          style="height: 150px;"></textarea>
+                                    <textarea id="L_content" name="content" required lay-verify="required"
+                                              class="layui-textarea fly-editor" style="height: 260px;"></textarea>
                             </div>
                         </div>
                         <div class="layui-form-item">
@@ -139,7 +139,18 @@
 <div th:replace="front/common/bar::footerbar"></div>
 
 <script src="..static/front/layui/layui.js" th:src="@{/front/layui/layui.js}"></script>
+<script src="..static/admin/js/jquery.min.js" th:src="@{/admin/js/jquery.min.js}"></script>
+<script src="..static/front/js/wangEditor.js" th:src="@{/front/js/wangEditor.js}"></script>
+
 <script>
+    var editor = new wangEditor('L_content');
+
+    //配置处理图片上传的路径，最好用相对路径
+    editor.config.uploadImgUrl = 'upload.do';
+    //配置图片上传到后台的参数名称
+    editor.config.uploadImgFileName = 'myFileName';
+    editor.create();
+
     layui.use('element', function () {
         var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
         element.init();

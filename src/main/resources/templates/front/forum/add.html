@@ -9,6 +9,8 @@
 
     <link rel="stylesheet" href="..static/front/layui/css/layui.css" th:href="@{/front/layui/css/layui.css}">
     <link rel="stylesheet" href="..static/front/css/global.css" th:href="@{/front/css/global.css}">
+    <link rel="stylesheet" href="..static/front/css/wangEditor.css" th:href="@{/front/css/wangEditor.css}">
+
 </head>
 <body>
 <!--前台公共头部-->
@@ -79,8 +81,17 @@
 <script src="..static/front/layui/layui.js" th:src="@{/front/layui/layui.js}"></script>
 <script src="..static/front/js/verification.js" th:src="@{/front/js/verification.js}"></script>
 <script src="..static/admin/js/jquery.min.js" th:src="@{/admin/js/jquery.min.js}"></script>
+<script src="..static/front/js/wangEditor.js" th:src="@{/front/js/wangEditor.js}"></script>
 
 <script type="text/javascript">
+    var editor = new wangEditor('L_content');
+
+    //配置处理图片上传的路径，最好用相对路径
+    editor.config.uploadImgUrl = 'upload.do';
+    //配置图片上传到后台的参数名称
+    editor.config.uploadImgFileName = 'myFileName';
+    editor.create();
+
     $(function () {
         var show_num = [];
         draw(show_num);
