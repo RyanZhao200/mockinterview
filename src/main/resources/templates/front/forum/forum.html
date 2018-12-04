@@ -63,7 +63,7 @@
 
                 <div style="text-align: center">
                     <nav>
-                        <ul  class="pagination">
+                        <ul class="pagination">
                             <li><a th:href="@{/forum(pn=1,tid=${tid})}">首页</a></li>
                             <!--上一页-->
                             <li th:if="${pageInfo.hasPreviousPage}">
@@ -140,6 +140,12 @@
     $(function () {
         $("a[selected='selected']").css("color", "#5fb878");
     });
+
+    layui.use('element', function () {
+        var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+        element.init();
+    });
+
 </script>
 </body>
 </html>
