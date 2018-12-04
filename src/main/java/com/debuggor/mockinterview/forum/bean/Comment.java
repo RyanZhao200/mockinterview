@@ -13,18 +13,18 @@ public class Comment {
     // 用户ID
     private Integer uid;
     // 评论人姓名
-    private String nickname;
+    private String username;
     // 评论时间
     private Date commentTime;
     // 父ID
     private Integer parentId;
 
-    public String getNickname() {
-        return nickname;
+    public String getUsername() {
+        return username;
     }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
     public Integer getCid() {

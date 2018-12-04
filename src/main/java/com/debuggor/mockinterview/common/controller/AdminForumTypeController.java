@@ -16,8 +16,8 @@ import java.util.List;
 
 @Controller
 @RequestMapping("/admin/forum")
-public class ForumTypeController {
-    Logger logger = LoggerFactory.getLogger(ForumTypeController.class);
+public class AdminForumTypeController {
+    Logger logger = LoggerFactory.getLogger(AdminForumTypeController.class);
 
     @Autowired
     private ForumTypeService forumTypeService;

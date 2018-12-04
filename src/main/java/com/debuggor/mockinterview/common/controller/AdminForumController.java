@@ -28,16 +28,16 @@ public class AdminForumController {
     @RequestMapping("/postList")
     public String postList(@RequestParam(required = false, defaultValue = "1", value = "pn") Integer pn,
                            @RequestParam(required = false, value = "tid") Integer tid,
-                           @RequestParam(required = false, value = "nickname") String nickName, Model model) {
+                           @RequestParam(required = false, value = "username") String username, Model model) {
         Forum forum = new Forum();
         if (tid != null) {
             forum.setTid(tid);
         }
-        if (nickName != null) {
-            forum.setNickname(nickName);
+        if (username != null) {
+            forum.setUsername(username);
         }
         if (forum != null) {
-            logger.info(forum.getTid() + " " + forum.getNickname());
+            logger.info(forum.getTid() + " " + forum.getUsername());
         }
         PageInfo pageInfo = postService.getPostList(forum, pn);
         model.addAttribute("pageInfo", pageInfo);

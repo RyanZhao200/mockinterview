@@ -13,13 +13,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
 @RequestMapping("/admin")
 @Controller
-public class LoginController {
-    Logger logger = LoggerFactory.getLogger(LoginController.class);
+public class AdminLoginController {
+    Logger logger = LoggerFactory.getLogger(AdminLoginController.class);
 
     @Autowired
     private AdminService adminService;

@@ -9,7 +9,7 @@ public class Finder {
     private String username;
     // 密码
     private String password;
-    // 昵称
+    // 昵称---- 已经舍弃-------
     private String nickname;
     // 邮箱
     private String email;

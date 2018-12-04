@@ -10,6 +10,9 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
+/**
+ * 求职者
+ */
 @Service
 public class FinderService {
 
@@ -28,5 +31,15 @@ public class FinderService {
         List<Finder> finderList = finderDao.getFinderList(finder);
         PageInfo pageInfo = new PageInfo<>(finderList, PageConstant.Navigate_Pages);
         return pageInfo;
+    }
+
+    /**
+     * 用户登录
+     */
+    public void login(Finder finder) {
+        Finder user = null;
+        if (finder.getEmail() != null) {
+            user = finderDao.getFinderByEmail(finder.getEmail());
+        }
     }
 }

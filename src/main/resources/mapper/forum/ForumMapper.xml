@@ -14,7 +14,7 @@
     <select id="getPostList" resultType="com.debuggor.mockinterview.forum.bean.Forum"
             parameterType="com.debuggor.mockinterview.forum.bean.Forum">
         SELECT f.pid,f.title,f.content,
-        t.tid,t.type_name,j.fid,j.username,j.nickname,
+        t.tid,t.type_name,j.fid,j.username,
         f.scan_count,f.comment_count,f.create_time,f.update_time,f.reply_time
         from f_forum f
         LEFT JOIN j_finder j ON f.uid=j.fid
@@ -27,7 +27,7 @@
     <select id="getForumById" resultType="com.debuggor.mockinterview.forum.bean.Forum"
             parameterType="java.lang.Integer">
         SELECT f.pid,f.title,f.content,
-        t.tid,t.type_name,j.fid,j.username,j.nickname,
+        t.tid,t.type_name,j.fid,j.username,
         f.scan_count,f.comment_count,f.create_time,f.update_time,f.reply_time
         from f_forum f
         LEFT JOIN j_finder j ON f.uid=j.fid

@@ -56,7 +56,6 @@
                 <tr>
                     <th>用户名</th>
                     <th>性别</th>
-                    <th>昵称</th>
                     <th>邮箱</th>
                     <th>电话</th>
                     <th>微信</th>
@@ -69,7 +68,6 @@
                 <tr th:each="finder:${pageInfo.list}">
                     <td th:text="${finder.username}"></td>
                     <td th:text="${finder.sex}==1?'女':'男'"></td>
-                    <td th:text="${finder.nickname}"></td>
                     <td th:text="${finder.email}"></td>
                     <td th:text="${finder.phone}"></td>
                     <td th:text="${finder.weixin}"></td>

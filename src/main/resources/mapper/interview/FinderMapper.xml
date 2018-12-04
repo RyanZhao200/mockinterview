@@ -20,9 +20,9 @@
         SELECT * from j_finder
     </select>
 
-    <select id="getFinderByNickName" resultType="com.debuggor.mockinterview.interview.bean.Finder"
+    <select id="getFinderByUserName" resultType="com.debuggor.mockinterview.interview.bean.Finder"
             parameterType="java.lang.String">
-        SELECT * from j_finder WHERE nickname = #{nickName}
+        SELECT * from j_finder WHERE username = #{username}
     </select>
     <!--    <where>
             <include refid="query_finder_where"></include>

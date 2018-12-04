@@ -19,8 +19,8 @@ import java.util.List;
  */
 @Controller
 @RequestMapping("/admin/interview")
-public class InterviewTypeController {
-    Logger logger = LoggerFactory.getLogger(InterviewTypeController.class);
+public class AdminInterviewTypeController {
+    Logger logger = LoggerFactory.getLogger(AdminInterviewTypeController.class);
 
     @Autowired
     private InterviewTypeService interviewTypeService;

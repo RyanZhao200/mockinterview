@@ -16,8 +16,8 @@ public class Forum {
     private String typeName;
     // 创建人ID
     private Integer uid;
-    // 创建人昵称
-    private String nickname;
+    // 创建人姓名
+    private String username;
     // 浏览量
     private Integer scanCount;
     // 评论数量
@@ -32,6 +32,14 @@ public class Forum {
     private Date startTime;
     // 查询 结束时间
     private Date endTime;
+
+    public String getUsername() {
+        return username;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
 
     public Date getStartTime() {
         return startTime;
@@ -55,14 +63,6 @@ public class Forum {
 
     public void setTypeName(String typeName) {
         this.typeName = typeName;
-    }
-
-    public String getNickname() {
-        return nickname;
-    }
-
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
     }
 
     public Integer getTid() {

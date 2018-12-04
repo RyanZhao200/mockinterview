@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 @RequestMapping("/admin/interview")
-public class FinderController {
-    Logger logger = LoggerFactory.getLogger(FinderController.class);
+public class AdminFinderController {
+    Logger logger = LoggerFactory.getLogger(AdminFinderController.class);
 
     @Autowired
     private FinderService finderService;

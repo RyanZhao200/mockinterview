@@ -14,7 +14,7 @@
 
     <select id="getCommentListByPid" resultType="com.debuggor.mockinterview.forum.bean.Comment"
             parameterType="java.lang.Integer">
-        SELECT c.cid,c.comment,c.uid,f.nickname,c.pid,c.comment_time,c.parent_id
+        SELECT c.cid,c.comment,c.uid,f.username,c.pid,c.comment_time,c.parent_id
         from f_comment c
         LEFT JOIN j_finder f ON f.fid=c.uid
         WHERE c.pid = #{pid}

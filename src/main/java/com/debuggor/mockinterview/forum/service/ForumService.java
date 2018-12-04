@@ -29,8 +29,8 @@ public class ForumService {
      */
     public PageInfo getPostList(Forum forum, Integer pn) {
         if (forum != null) {
-            if (forum.getNickname() != null || !"".equals(forum.getNickname())) {
-                Finder finder = finderDao.getFinderByNickName(forum.getNickname());
+            if (forum.getUsername() != null || !"".equals(forum.getUsername())) {
+                Finder finder = finderDao.getFinderByUserName(forum.getUsername());
                 if (finder != null) {
                     forum.setUid(finder.getFid());
                 }

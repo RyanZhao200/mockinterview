@@ -10,5 +10,13 @@ public interface FinderDao {
 
     List<Finder> getFinderList(Finder finder);
 
-    Finder getFinderByNickName(String nickName);
+    Finder getFinderByUserName(String username);
+
+    /**
+     * 通过邮箱获得用户信息
+     *
+     * @param email
+     * @return
+     */
+    Finder getFinderByEmail(String email);
 }
