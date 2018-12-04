@@ -20,6 +20,7 @@ import java.util.Date;
 @Controller
 @RequestMapping("/finder")
 public class FinderController {
+
     Logger logger = LoggerFactory.getLogger(FinderController.class);
 
     @Autowired
@@ -72,5 +73,30 @@ public class FinderController {
         logger.info(user.getUsername() + "于" + new Date() + "登录");
         session.setAttribute("user", user);
         return "redirect:/forum";
+    }
+
+    /***
+     * 登出
+     * @param session
+     * @return
+     */
+    @RequestMapping("/logout")
+    public String logout(HttpSession session) {
+        session.setAttribute("user", null);
+        return "redirect:/finder/login";
+    }
+
+    /***
+     * 求职者设置页面
+     * @return
+     */
+    @RequestMapping("/toUpdate")
+    public String toSetFinderPage() {
+        return "front/user/set";
+    }
+
+    @RequestMapping("/forget")
+    public String forgetPasswordPage() {
+        return "front/user/forget";
     }
 }

@@ -93,15 +93,10 @@ public class ForumController {
      *
      * @param forum
      * @param session
-     * @param model
      * @return
      */
     @RequestMapping("/action")
-    public String addForum(Forum forum, HttpSession session, Model model) {
-        Finder finder = new Finder();
-        finder.setFid(1);
-        finder.setUsername("debuggor");
-        session.setAttribute("user", finder);
+    public String addForum(Forum forum, HttpSession session) {
 
         Finder user = (Finder) session.getAttribute("user");
         if (user != null) {

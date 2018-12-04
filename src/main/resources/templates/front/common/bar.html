@@ -44,7 +44,7 @@
                 </a>
                 <dl class="layui-nav-child" style="width: 150px;">
                     <dd>
-                        <a href="#"><i class="layui-icon">&#xe620;</i>基本设置</a>
+                        <a href="#" th:href="@{/finder/toUpdate}"><i class="layui-icon">&#xe620;</i>基本设置</a>
                     </dd>
                     <dd>
                         <a href="#"><i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息</a>
@@ -55,7 +55,7 @@
                         </a>
                     </dd>
                     <hr style="margin: 5px 0;">
-                    <dd><a href="" style="text-align: center;">退出</a></dd>
+                    <dd><a th:href="@{/finder/logout}" href="" style="text-align: center;">退出</a></dd>
                 </dl>
             </li>
         </ul>

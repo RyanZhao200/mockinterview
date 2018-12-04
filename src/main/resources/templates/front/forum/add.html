@@ -53,13 +53,13 @@
                                 </div>
                             </div>
                             <div class="layui-form-item">
-                                <label for="L_vercode" class="layui-form-label">答案</label>
+                                <label for="L_vercode" class="layui-form-label">验证码</label>
                                 <div class="layui-input-inline">
                                     <input type="text" id="L_vercode" name="vercode" required lay-verify="required"
-                                           placeholder="请回答后面的问题" autocomplete="off" class="layui-input">
+                                           placeholder="请输入验证码" autocomplete="off" class="layui-input">
                                 </div>
                                 <div class="layui-form-mid">
-                                    <span style="color: #c00;">1+1=?</span>
+                                    <canvas id="canvas" width="100" height="43"></canvas>
                                 </div>
                             </div>
                             <div class="layui-form-item">
@@ -77,9 +77,32 @@
 <div th:replace="front/common/bar::footerbar"></div>
 
 <script src="..static/front/layui/layui.js" th:src="@{/front/layui/layui.js}"></script>
-
+<script src="..static/front/js/verification.js" th:src="@{/front/js/verification.js}"></script>
+<script src="..static/admin/js/jquery.min.js" th:src="@{/admin/js/jquery.min.js}"></script>
 
 <script type="text/javascript">
+    $(function () {
+        var show_num = [];
+        draw(show_num);
+
+        $("#canvas").on('click', function () {
+            draw(show_num);
+        });
+        $(".layui-btn").on('click', function () {
+            var val = $("#L_vercode").val().toLowerCase();
+            var num = show_num.join("");
+            if (val == '') {
+                alert('请输入验证码！');
+            } else if (val == num) {
+                $("form").submit();
+            } else {
+                alert('验证码错误！请重新输入！');
+                $("#L_vercode").val('');
+                draw(show_num);
+            }
+        })
+    })
+
     <!--添加下面语句 select下拉框显示出来-->
     layui.use('form', function () {
         var form = layui.form;
