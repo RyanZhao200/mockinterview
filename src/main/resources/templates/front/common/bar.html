@@ -12,13 +12,13 @@
         </a>
         <ul class="layui-nav fly-nav layui-hide-xs">
             <li class="layui-nav-item">
-                <a href="#"><i class="iconfont icon-iconmingxinganli"></i>案例</a>
+                <a href="#"><i class="iconfont icon-iconmingxinganli"></i>首页</a>
             </li>
             <li class="layui-nav-item layui-this">
                 <a href="/" th:href="@{/forum}"><i class="iconfont icon-jiaoliu"></i>讨论区</a>
             </li>
             <li class="layui-nav-item">
-                <a href="#" target="_blank"><i class="iconfont icon-ui"></i>框架</a>
+                <a href="#" target="_blank"><i class="iconfont icon-ui"></i>关于我们</a>
             </li>
         </ul>
 
@@ -73,7 +73,7 @@
                    style="color: #000000;">[[${type.typeName}]]</a>
             </li>
         </ul>
-        <div class="fly-column-right layui-hide-xs">
+        <div class="fly-column-right layui-hide-xs" th:if="${not #lists.isEmpty(session.user)}">
             <a href="#" th:href="@{/forum/add}" class="layui-btn">发表新帖</a>
         </div>
     </div>

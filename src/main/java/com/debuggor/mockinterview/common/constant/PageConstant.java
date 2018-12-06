@@ -1,5 +1,8 @@
 package com.debuggor.mockinterview.common.constant;
 
+/**
+ * 存放关于页面的常数
+ */
 public class PageConstant {
 
     /**

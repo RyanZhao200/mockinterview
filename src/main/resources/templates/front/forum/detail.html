@@ -16,7 +16,7 @@
 <div th:replace="front/common/bar::topbar"></div>
 <!--论坛头部-->
 <!--<div th:replace="front/common/bar::forumtopbar"></div>-->
-
+<span id="top"></span>
 <div class="layui-container">
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md8 content detail">
@@ -27,12 +27,10 @@
             </div>
             <div class="fly-panel detail-box">
                 <h1>[[${forum.title}]]</h1>
-                <div class="fly-detail-info">
-
-                </div>
+                <div class="fly-detail-info"></div>
                 <div class="detail-about">
                     <a class="fly-avatar" href="#">
-                        <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg">
+                        <img src="" th:src="${forum.headUrl}">
                     </a>
                     <div class="fly-detail-user">
                         <a href="#" class="fly-link">
@@ -46,16 +44,13 @@
                         </span>
                     </div>
                 </div>
-                <div class="detail-body photos" th:utext="${forum.content}">
-
-                </div>
+                <div class="detail-body photos" th:utext="${forum.content}"></div>
             </div>
 
             <div class="fly-panel detail-box" id="flyReply">
                 <fieldset class="layui-elem-field layui-field-title" style="text-align: center;">
                     <legend>回帖</legend>
                 </fieldset>
-
                 <ul class="jieda" id="jieda">
                     <li th:each="comment:${comments}">
                         <div class="detail-about detail-about-reply">
@@ -90,7 +85,9 @@
                         </div>
                     </li>
                 </ul>
+            </div>
 
+            <div class="fly-panel detail-box" id="flyReply">
                 <div class="layui-form layui-form-pane">
                     <form action="/jie/reply/" method="post">
                         <div class="layui-form-item layui-form-text">
@@ -131,6 +128,17 @@
                 <p style="position: relative; color: #666;">微信扫码关注 layui 公众号</p>
             </div>
 
+            <!--评论、回到顶部-->
+            <div>
+                <ul class="layui-fixbar">
+                    <li class="layui-icon" lay-type="bar1" style="background-color:#009688"></li>
+                    <a href="#top">
+                        <li class="layui-icon layui-fixbar-top" lay-type="top"
+                            style="background-color: rgb(0, 150, 136); display: list-item;">
+                        </li>
+                    </a>
+                </ul>
+            </div>
         </div>
     </div>
 </div>

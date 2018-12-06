@@ -29,8 +29,14 @@
             parameterType="java.lang.String">
         SELECT * from j_finder WHERE email = #{email}
     </select>
-    <!--    <where>
-            <include refid="query_finder_where"></include>
-        </where>-->
+
+    <insert id="insert" parameterType="com.debuggor.mockinterview.interview.bean.Finder">
+        INSERT INTO j_finder(username,password,email,head_url,create_time,is_activate,activate_code)
+        VALUES (#{username},#{password},#{email},#{headUrl},#{createTime},#{isActivate},#{activateCode})
+    </insert>
+
+    <update id="updateActivate" parameterType="java.lang.String" >
+        UPDATE j_finder SET is_activate=1 WHERE activate_code = #{code}
+    </update>
 
 </mapper>

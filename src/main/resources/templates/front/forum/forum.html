@@ -39,14 +39,13 @@
                 <ul class="fly-list">
                     <li th:each="forum:${pageInfo.list}">
                         <a href="#" class="fly-avatar">
-                            <img src="https://tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"
-                                 alt="贤心">
+                            <img th:src="${forum.headUrl}">
                         </a>
                         <h2>
                             <a th:href="@{/forum/}+${forum.pid}"><span th:text="${forum.title}"></span></a>
                         </h2>
                         <div class="fly-list-info">
-                            <a href="user/home.html" link>
+                            <a href="#" link>
                                 <cite>[[${forum.username}]]</cite>
                             </a>
                             <span>[[${#dates.format(forum.createTime, 'yyyy-MM-dd')}]] &nbsp;<b>[[${forum.typeName}]]</b> 最后回复：[[${#dates.format(forum.replyTime, 'yyyy-MM-dd HH:mm')}]]</span>
@@ -59,7 +58,6 @@
                         </div>
                     </li>
                 </ul>
-
 
                 <div style="text-align: center">
                     <nav>

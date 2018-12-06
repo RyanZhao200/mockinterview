@@ -50,8 +50,7 @@
                             <div class="layui-form-item layui-form-text">
                                 <div class="layui-input-block">
                                     <textarea id="L_content" name="content" required lay-verify="required"
-                                              placeholder="详细描述" class="layui-textarea fly-editor"
-                                              style="height: 260px;"></textarea>
+                                              class="layui-textarea fly-editor" style="height: 300px;"></textarea>
                                 </div>
                             </div>
                             <div class="layui-form-item">
@@ -87,7 +86,7 @@
     var editor = new wangEditor('L_content');
 
     //配置处理图片上传的路径，最好用相对路径
-    editor.config.uploadImgUrl = 'upload.do';
+    editor.config.uploadImgUrl = '/util/uploadImage';
     //配置图片上传到后台的参数名称
     editor.config.uploadImgFileName = 'myFileName';
     editor.create();

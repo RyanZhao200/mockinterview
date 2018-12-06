@@ -19,4 +19,18 @@ public interface FinderDao {
      * @return
      */
     Finder getFinderByEmail(String email);
+
+    /**
+     * 插入求职者
+     *
+     * @param finder
+     */
+    void insert(Finder finder);
+
+    /**
+     * 跟新状态 激活
+     *
+     * @param code
+     */
+    Integer updateActivate(String code);
 }

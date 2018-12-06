@@ -18,6 +18,8 @@ public class Forum {
     private Integer uid;
     // 创建人姓名
     private String username;
+    // 创建人头像
+    private String headUrl;
     // 浏览量
     private Integer scanCount;
     // 评论数量
@@ -32,6 +34,14 @@ public class Forum {
     private Date startTime;
     // 查询 结束时间
     private Date endTime;
+
+    public String getHeadUrl() {
+        return headUrl;
+    }
+
+    public void setHeadUrl(String headUrl) {
+        this.headUrl = headUrl;
+    }
 
     public String getUsername() {
         return username;

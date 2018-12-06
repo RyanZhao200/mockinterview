@@ -1,15 +1,21 @@
 package com.debuggor.mockinterview.interview.service;
 
+import com.debuggor.mockinterview.common.async.MailTask;
+import com.debuggor.mockinterview.common.constant.MailConstant;
 import com.debuggor.mockinterview.common.constant.MockConstant;
 import com.debuggor.mockinterview.common.constant.PageConstant;
+import com.debuggor.mockinterview.common.util.ActivateCodeUtil;
 import com.debuggor.mockinterview.common.util.Md5Util;
 import com.debuggor.mockinterview.interview.bean.Finder;
 import com.debuggor.mockinterview.interview.dao.FinderDao;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.task.TaskExecutor;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -20,6 +26,10 @@ public class FinderService {
 
     @Autowired
     private FinderDao finderDao;
+    @Autowired
+    private JavaMailSender javaMailSender;
+    @Autowired
+    private TaskExecutor taskExecutor;
 
     /**
      * 查询所有求职者
@@ -62,5 +72,49 @@ public class FinderService {
         }
         Finder finder = finderDao.getFinderByEmail(email);
         return finder;
+    }
+
+    /**
+     * 求职者注册
+     *
+     * @param finder
+     * @param repassword
+     * @return
+     */
+    public String register(Finder finder, String repassword) {
+        if (finder == null || repassword == null) {
+            return null;
+        }
+        if (!repassword.equals(finder.getPassword())) {
+            return "两次密码不一致";
+        }
+        Finder finderByEmail = finderDao.getFinderByEmail(finder.getEmail());
+        if (finderByEmail != null) {
+            return "该邮箱已注册，换其他邮箱试试";
+        }
+        if (finder.getPassword() != null) {
+            finder.setPassword(Md5Util.hash(finder.getPassword()));
+        }
+        finder.setHeadUrl("https://dn-qiniu-avatar.qbox.me/avatar/6219d3089bbb149606e87debb24ddbdd?qiniu-avatar");
+        finder.setCreateTime(new Date());
+        // 未激活
+        finder.setIsActivate(0);
+        String activateCode = ActivateCodeUtil.createActivateCode();
+        finder.setActivateCode(activateCode);
+        finderDao.insert(finder);
+        taskExecutor.execute(new MailTask(activateCode, MailConstant.MAIL_FROM,
+                finder.getEmail(), javaMailSender, MailConstant.REGISTERED));
+        return "ok";
+    }
+
+    /**
+     * 求职者激活
+     */
+    public Integer isActivate(String code) {
+        Integer affected = null;
+        if (code != null) {
+            affected = finderDao.updateActivate(code);
+        }
+        return affected;
     }
 }

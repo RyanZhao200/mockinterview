@@ -75,6 +75,24 @@ public class FinderController {
         return "redirect:/forum";
     }
 
+    /**
+     * 注册
+     *
+     * @param finder
+     * @param repassword
+     * @param model
+     * @return
+     */
+    @RequestMapping("/register")
+    public String register(Finder finder, String repassword, Model model) {
+        String result = finderService.register(finder, repassword);
+        if (!"ok".equals(result)) {
+            model.addAttribute("msg", result);
+            return "front/user/reg";
+        }
+        return "front/user/tips";
+    }
+
     /***
      * 登出
      * @param session
@@ -98,5 +116,17 @@ public class FinderController {
     @RequestMapping("/forget")
     public String forgetPasswordPage() {
         return "front/user/forget";
+    }
+
+    @RequestMapping("/activate")
+    public String activate(String code, Model model) {
+        Integer affected = finderService.isActivate(code);
+        if (affected != null) {
+            model.addAttribute("msg", "邮箱已验证，请登录");
+            return "redirect:/finder/login";
+        } else {
+            model.addAttribute("msg", "验证失败，请重新注册");
+            return "redirect:/finder/reg";
+        }
     }
 }
