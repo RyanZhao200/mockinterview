@@ -5,6 +5,9 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.File;
 import java.io.IOException;
 
+/**
+ * 把图片保存在服务器
+ */
 public class FileUploadUtils {
     /**
      * 默认大小 2M
@@ -29,7 +32,7 @@ public class FileUploadUtils {
         if (fileSize > DEFAULT_MAX_SIZE) {
             return "文件大小大于2M";
         }
-        String path = DEFAULT_DIR + System.currentTimeMillis()+FileUploadUtils.IMAGE_JPG_EXTENSION;
+        String path = DEFAULT_DIR + System.currentTimeMillis() + FileUploadUtils.IMAGE_JPG_EXTENSION;
         File dest = new File(path);
         file.transferTo(dest);
         return path;
