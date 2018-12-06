@@ -32,6 +32,26 @@ public class Finder {
     // 电话
     private String phone;
 
+    @Override
+    public String toString() {
+        return "Finder{" +
+                "fid=" + fid +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", email='" + email + '\'' +
+                ", headUrl='" + headUrl + '\'' +
+                ", signature='" + signature + '\'' +
+                ", sex=" + sex +
+                ", createTime=" + createTime +
+                ", isActivate=" + isActivate +
+                ", activateCode='" + activateCode + '\'' +
+                ", qq='" + qq + '\'' +
+                ", weixin='" + weixin + '\'' +
+                ", phone='" + phone + '\'' +
+                '}';
+    }
+
     public Integer getFid() {
         return fid;
     }

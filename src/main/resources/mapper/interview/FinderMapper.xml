@@ -35,8 +35,24 @@
         VALUES (#{username},#{password},#{email},#{headUrl},#{createTime},#{isActivate},#{activateCode})
     </insert>
 
-    <update id="updateActivate" parameterType="java.lang.String" >
+    <update id="updateActivate" parameterType="java.lang.String">
         UPDATE j_finder SET is_activate=1 WHERE activate_code = #{code}
+    </update>
+
+    <update id="update" parameterType="com.debuggor.mockinterview.interview.bean.Finder">
+        UPDATE j_finder
+        <set>
+            <if test="email != null">email=#{email},</if>
+            <if test="username != null">username=#{username},</if>
+            <if test="phone != null">phone=#{phone},</if>
+            <if test="qq != null">qq=#{qq},</if>
+            <if test="weixin != null">weixin=#{weixin},</if>
+            <if test="sex != null">sex=#{sex},</if>
+            <if test="signature != null">signature=#{signature},</if>
+            <if test="password != null">password=#{password},</if>
+            <if test="headUrl != null">head_url=#{headUrl},</if>
+        </set>
+        WHERE fid = #{fid}
     </update>
 
 </mapper>

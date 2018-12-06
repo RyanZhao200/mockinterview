@@ -35,7 +35,7 @@ public class UtilController {
     public @ResponseBody
     String uploadImage(MultipartFile myFileName) throws IOException {
         // 文件类型限制
-        String[] allowedType = {"image/bmp", "image/gif", "image/jpeg", "image/png"};
+        String[] allowedType = {"image/bmp", "image/gif", "image/jpeg", "image/png","image/jpg"};
         boolean allowed = Arrays.asList(allowedType).contains(myFileName.getContentType());
         if (!allowed) {
             return "error|不支持的类型";

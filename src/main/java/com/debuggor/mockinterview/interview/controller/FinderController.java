@@ -109,8 +109,21 @@ public class FinderController {
      * @return
      */
     @RequestMapping("/toUpdate")
-    public String toSetFinderPage() {
+    public String toSetFinderPage(HttpSession session, Model model) {
+        Finder finder = (Finder) session.getAttribute("user");
+        model.addAttribute("finder", finder);
         return "front/user/set";
+    }
+
+    @RequestMapping("/update")
+    public String update(Finder finder, HttpSession session) {
+        logger.info("用户跟新操作：" + finder.toString());
+        finderService.update(finder);
+        Finder user = (Finder) session.getAttribute("user");
+        Finder finderByEmail = finderService.getFinderByEmail(user.getEmail());
+        session.setAttribute("user", finderByEmail);
+
+        return "redirect:/finder/toUpdate";
     }
 
     @RequestMapping("/forget")

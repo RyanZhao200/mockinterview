@@ -117,4 +117,10 @@ public class FinderService {
         }
         return affected;
     }
+
+    public void update(Finder finder) {
+        if (finder != null) {
+            finderDao.update(finder);
+        }
+    }
 }

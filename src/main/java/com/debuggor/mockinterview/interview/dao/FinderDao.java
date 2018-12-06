@@ -33,4 +33,11 @@ public interface FinderDao {
      * @param code
      */
     Integer updateActivate(String code);
+
+    /**
+     * 跟新求职者
+     *
+     * @param finder
+     */
+    void update(Finder finder);
 }
