@@ -103,8 +103,8 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label">性别</label>
                             <div class="layui-input-block">
-                                <input type="radio" name="sex" value="0" title="男" th:checked="${finder.sex eq 0 }" >
-                                <input type="radio" name="sex" value="1" title="女" th:checked="${finder.sex eq 1 }" >
+                                <input type="radio" name="sex" value="0" title="男" th:checked="${finder.sex eq 0 }">
+                                <input type="radio" name="sex" value="1" title="女" th:checked="${finder.sex eq 1 }">
                             </div>
                         </div>
                         <div class="layui-form-item layui-form-text">
@@ -123,32 +123,45 @@
 
                 <div class="layui-form layui-form-pane layui-tab-item">
                     <div class="layui-form-item">
+                        <span th:text="${msg}"></span>
                         <div class="avatar-add">
                             <p>建议尺寸168*168，支持jpg、png、gif，最大不能超过2MB</p>
-                            <button type="button" class="layui-btn upload-img" onclick="driverUpload()">
-                                <i class="layui-icon">&#xe67c;</i>上传头像
-                            </button>
-                            <img src="" th:src="${session.user.headUrl}">
-                            <input type="file" id="input_upload_driver" style="display: none"
-                                   accept="image/jpg, image/png, image/jpeg" onChange="preview(this,'img_driver');">
-                            <span class="loading"></span>
+                            <form id="headUrl" method="post" th:action="@{/finder/updateHeadUrl}"
+                                  enctype="multipart/form-data">
+                                <input type="hidden" name="fid" th:value="${finder.fid}">
+                                <div>
+                                    <label for="file" class='layui-btn upload-img'>
+                                        <i class="layui-icon">&#xe67c;</i>选择图片
+                                    </label>
+                                    <input id="file" class="inputfile" onchange="changepic(this)" type="file"
+                                           style="display: none" name="headUrl"
+                                           accept="image/png, image/jpeg, image/gif, image/jpg"><br>
+                                    <img src="" id="showPicture" th:src="${session.user.headUrl}">
+                                </div>
+                                <span class="loading"></span>
+                            </form>
+                        </div>
+                        <br>
+                        <div class="layui-form-item" style="position: relative;left: 130px;">
+                            <button class="layui-btn" key="set-mine" lay-filter="*" onclick="headUrlLoad()">提交</button>
                         </div>
                     </div>
                 </div>
 
                 <div class="layui-form layui-form-pane layui-tab-item">
-                    <form action="/user/repass" method="post">
+                    <p id="passwordMsg"></p>
+                    <form action="" id="updatePassword" method="post">
                         <div class="layui-form-item">
                             <label for="L_nowpass" class="layui-form-label">当前密码</label>
                             <div class="layui-input-inline">
-                                <input type="password" id="L_nowpass" name="nowpass" required lay-verify="required"
+                                <input type="password" id="L_nowpass" name="oldPassword" required lay-verify="required"
                                        autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-form-item">
                             <label for="L_pass" class="layui-form-label">新密码</label>
                             <div class="layui-input-inline">
-                                <input type="password" id="L_pass" name="pass" required lay-verify="required"
+                                <input type="password" id="L_pass" name="password" required lay-verify="required"
                                        autocomplete="off" class="layui-input">
                             </div>
                             <div class="layui-form-mid layui-word-aux">6到16个字符</div>
@@ -156,14 +169,16 @@
                         <div class="layui-form-item">
                             <label for="L_repass" class="layui-form-label">确认密码</label>
                             <div class="layui-input-inline">
-                                <input type="password" id="L_repass" name="repass" required lay-verify="required"
+                                <input type="password" id="L_repass" name="confirm" required lay-verify="required"
                                        autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <button class="layui-btn" key="set-mine" lay-filter="*" lay-submit>确认修改</button>
+                            <button class="layui-btn" key="set-mine" lay-filter="*" onclick="updatePassword()">确认修改
+                            </button>
                         </div>
                     </form>
+                    <form id="logout" th:action="@{/finder/logout}"></form>
                 </div>
 
                 <div class="layui-form layui-form-pane layui-tab-item">
@@ -211,8 +226,48 @@
         form.render();
     });
 
-    function driverUpload() {
-        $('#input_upload_driver').click();
+    function changepic(obj) {
+        //console.log(obj.files[0]);//这里可以获取上传文件的name
+        var newsrc = getObjectURL(obj.files[0]);
+        document.getElementById('showPicture').src = newsrc;
+    }
+
+    //建立一個可存取到該file的url
+    function getObjectURL(file) {
+        var url = null;
+        // 下面函数执行的效果是一样的，只是需要针对不同的浏览器执行不同的 js 函数而已
+        if (window.createObjectURL != undefined) { // basic
+            url = window.createObjectURL(file);
+        } else if (window.URL != undefined) { // mozilla(firefox)
+            url = window.URL.createObjectURL(file);
+        } else if (window.webkitURL != undefined) { // webkit or chrome
+            url = window.webkitURL.createObjectURL(file);
+        }
+        return url;
+    }
+
+    function headUrlLoad() {
+        $("#headUrl").submit();
+    }
+
+    // 这个功能不完善
+    function updatePassword() {
+        $.ajax({
+            type: 'POST',
+            url: '/finder/updatePassword',
+            data: $("#updatePassword").serialize(),
+            dataType: 'json',
+            success: function (data) {
+                if (JSON.stringify(data) == 'success') {
+                    alert("密码更新成功,请重新登录！");
+                    $("#logout").submit();
+                }
+            },
+            error: function (data) {
+                alert(JSON.stringify(data));
+                document.getElementById("passwordMsg").innerText = JSON.stringify(data);
+            }
+        });
     }
 
 </script>

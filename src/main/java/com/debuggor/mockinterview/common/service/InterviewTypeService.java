@@ -5,6 +5,7 @@ import com.debuggor.mockinterview.interview.bean.Type;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Service
@@ -52,5 +53,22 @@ public class InterviewTypeService {
             type.setParentName("无父栏目");
         }
         return type;
+    }
+
+    /**
+     * 得到所有的父栏目，并且父栏目里面包含子栏目
+     *
+     * @return
+     */
+    public List<Type> getInterviewTypeList() {
+        // 得到所有的父栏目
+        List<Type> parentType = interviewTypeDao.getTypeByParentId(0);
+        List<Type> typeList = new ArrayList<>();
+        for (Type parent : parentType) {
+            List<Type> tem = interviewTypeDao.getTypeByParentId(parent.getTid());
+            parent.setChildTypes(tem);
+            typeList.add(parent);
+        }
+        return typeList;
     }
 }

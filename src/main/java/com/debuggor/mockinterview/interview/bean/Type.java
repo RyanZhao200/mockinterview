@@ -1,5 +1,7 @@
 package com.debuggor.mockinterview.interview.bean;
 
+import java.util.List;
+
 public class Type {
 
     // 分类ID
@@ -12,6 +14,16 @@ public class Type {
     private Integer parentId;
     // 父栏目名称
     private String parentName;
+    // 子栏目
+    private List<Type> childTypes;
+
+    public List<Type> getChildTypes() {
+        return childTypes;
+    }
+
+    public void setChildTypes(List<Type> childTypes) {
+        this.childTypes = childTypes;
+    }
 
     public String getParentName() {
         return parentName;
