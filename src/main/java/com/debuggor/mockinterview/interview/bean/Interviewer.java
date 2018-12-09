@@ -1,6 +1,7 @@
 package com.debuggor.mockinterview.interview.bean;
 
 import java.util.Date;
+import java.util.List;
 
 public class Interviewer {
     // 面试官ID
@@ -9,7 +10,7 @@ public class Interviewer {
     private String username;
     // 密码
     private String password;
-    // 昵称
+    // 昵称（已舍弃）
     private String nickname;
     // 邮箱
     private String email;
@@ -34,7 +35,7 @@ public class Interviewer {
     // 是否认证（1：yes,0:no）
     private Integer isCertification;
     // 评分等级
-    private Integer grade;
+    private Float grade;
     // 收费
     private String cost;
     // QQ
@@ -45,6 +46,26 @@ public class Interviewer {
     private String phone;
     // 博客地址
     private String blogUrl;
+    // 面试官的类别（能面试哪些类别）
+    private List<String> types;
+    // 首页展示时的面试官类别
+    private String typeName;
+
+    public String getTypeName() {
+        return typeName;
+    }
+
+    public void setTypeName(String typeName) {
+        this.typeName = typeName;
+    }
+
+    public List<String> getTypes() {
+        return types;
+    }
+
+    public void setTypes(List<String> types) {
+        this.types = types;
+    }
 
     public String getStartTime() {
         return startTime;
@@ -166,11 +187,11 @@ public class Interviewer {
         this.isCertification = isCertification;
     }
 
-    public Integer getGrade() {
+    public Float getGrade() {
         return grade;
     }
 
-    public void setGrade(Integer grade) {
+    public void setGrade(Float grade) {
         this.grade = grade;
     }
 

@@ -45,7 +45,31 @@
             height: 250px;
         }
 
-     </style>
+        /* 星星评分开始 */
+        .vote-star {
+            display: inline-block; /*内联元素转换成块元素，并不换行*/
+            margin-right: 6px;
+            width: 75px; /*5个星星的宽度*/
+            height: 15px; /*1个星星的高度*/
+            overflow: hidden;
+            vertical-align: middle;
+            background: url(front/images/starsblack.png) repeat-x;
+        }
+
+        .vote-star i {
+            display: inline-block; /*内联元素转换成块元素，并不换行*/
+            height: 15px; /*1个星星的高度*/
+            background: url(front/images/starsyellow.png) repeat-x 00;
+        }
+
+        .vote-number {
+            vertical-align: middle;
+            font-family: 微软雅黑, Verdana, Geneva, sans-serif;
+            font-size: 12px;
+        }
+
+        /* 星星评分结束*/
+    </style>
 </head>
 <body>
 
@@ -83,10 +107,10 @@
             </div>
         </div>
     </div>
-    <!--主题部分-->
+    <!--推荐部分-->
     <div class="layui-row body-content">
         <div class="layui-col-md12">
-            <h2 style="font-size: 40px">后端开发</h2>
+            <h2 style="font-size: 40px">热门推荐</h2>
         </div>
         <div class="layui-col-md3">
             <div class="tutor-card">
@@ -162,6 +186,39 @@
         </div>
 
     </div>
+
+    <!--中间内容部分-->
+    <ul>
+        <li th:each="vo:${voList}">
+            <div class="layui-row body-content">
+                <div class="layui-col-md12">
+                    <h2 style="font-size: 40px">[[${vo.typeName}]]</h2>
+                </div>
+                <div class="layui-col-md3" th:each="interview:${vo.interviewers}">
+                    <div class="tutor-card">
+                        <img class="tutor-img"
+                             src="http://static.careerfrog.com.cn/cf-visitor/images/tutor/tutors/picEvian.b74795c3.jpg"/>
+                        <div class="tutor-info">
+                            <h2>[[${interview.username}]]</h2>
+                            <div class="tutor-type">
+                                <span>[[${interview.typeName}]]</span>
+                                <span class="star">
+                                    <span class="vote-star">
+                                        <i th:style="'width:'+@{(${interview.grade}*75/10)}+'px'"></i>
+                                    </span>
+                                    <span class="vote-number">[[${interview.grade}]]</span>
+                                </span>
+                            </div>
+                            <div>
+                                [[${interview.description}]]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </li>
+    </ul>
 
 </div>
 

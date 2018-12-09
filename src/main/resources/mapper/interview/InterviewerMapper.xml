@@ -22,4 +22,15 @@
             <include refid="query_interview_where"></include>
         </where>
     </select>
+
+    <select id="getInterviewerListIndexByTid" resultType="com.debuggor.mockinterview.interview.bean.Interviewer"
+            parameterType="java.lang.Integer">
+        SELECT i.username,i.email,i.head_url,i.sex,i.description,i.create_time,i.work_year,
+        i.is_certification,i.grade,i.cost,i.qq,i.weixin,i.phone,i.blog_url,t.type_name
+        from j_interviewer i
+        INNER JOIN j_interviewer_type it on i.iid=it.iid
+        INNER JOIN j_type t on t.tid=it.tid
+        WHERE t.tid=#{tid} OR t.parent_id=#{tid}
+        ORDER BY i.grade DESC LIMIT 0,4
+    </select>
 </mapper>
