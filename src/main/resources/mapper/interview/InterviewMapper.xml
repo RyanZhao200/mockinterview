@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.debuggor.mockinterview.interview.dao.InterviewDao">
+
+    <sql id="query_interview_where">
+        <if test="username != null and username !='' ">and username like #{username}</if>
+        <if test="workYear != null and workYear !='' ">and work_year=#{workYear}</if>
+        <if test="isCertification != null and isCertification !='' ">and is_certification=#{isCertification}</if>
+        <if test="isActivate != null and isActivate !='' ">and is_activate=#{isActivate}</if>
+        <if test="grade != null and grade !='' ">and grade=#{grade}</if>
+        <if test="phone != null and phone !='' ">and phone like #{phone}</if>
+        <if test="startTime != null and startTime !='' ">and create_time <![CDATA[ >= ]]> #{startTime}</if>
+        <if test="endTime != null and endTime !='' ">and create_time <![CDATA[ <= ]]> #{endTime}</if>
+        <if test="tid !=null and tid !='' ">
+            AND iid in ( SELECT it.iid from j_interviewer_type it
+            LEFT JOIN j_type t ON it.tid=t.tid
+            WHERE it.tid=${tid} or t.parent_id = ${tid} )
+        </if>
+    </sql>
+
+    <select id="getInterviewerList" resultType="com.debuggor.mockinterview.interview.bean.Interviewer"
+            parameterType="com.debuggor.mockinterview.interview.bean.Interviewer">
+        SELECT * from j_interviewer
+        <where>
+            <include refid="query_interview_where"></include>
+        </where>
+    </select>
+
+    <!-- 根据面试官的ID，获取面试官能面试的类别 -->
+    <select id="getInterviewTypes" resultType="java.lang.String" parameterType="java.lang.Integer">
+        SELECT t.type_name from j_interviewer_type it
+        LEFT JOIN j_type t on t.tid=it.tid
+        WHERE it.iid=#{iid}
+    </select>
+
+    <select id="getInterviewerListIndexByTid" resultType="com.debuggor.mockinterview.interview.bean.Interviewer"
+            parameterType="java.lang.Integer">
+        SELECT i.username,i.email,i.head_url,i.sex,i.description,i.create_time,i.work_year,
+        i.is_certification,i.grade,i.cost,i.qq,i.weixin,i.phone,i.blog_url,t.type_name
+        from j_interviewer i
+        INNER JOIN j_interviewer_type it on i.iid=it.iid
+        INNER JOIN j_type t on t.tid=it.tid
+        WHERE t.tid=#{tid} OR t.parent_id=#{tid}
+        ORDER BY i.grade DESC LIMIT 0,4
+    </select>
+</mapper>

@@ -4,7 +4,7 @@ import com.debuggor.mockinterview.common.bean.vo.InterviewerVo;
 import com.debuggor.mockinterview.common.service.InterviewTypeService;
 import com.debuggor.mockinterview.interview.bean.Interviewer;
 import com.debuggor.mockinterview.interview.bean.Type;
-import com.debuggor.mockinterview.interview.service.InterviewerService;
+import com.debuggor.mockinterview.interview.service.InterviewService;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -24,7 +24,7 @@ public class InterviewController {
     @Autowired
     private InterviewTypeService interviewTypeService;
     @Autowired
-    private InterviewerService interviewerService;
+    private InterviewService interviewService;
 
     /**
      * 首页
@@ -38,7 +38,7 @@ public class InterviewController {
         List<Type> interviewTypeList = interviewTypeService.getInterviewTypeList();
         model.addAttribute("parentList", interviewTypeList);
         // 获取首页展示的面试官
-        List<InterviewerVo> interviewerVoList = interviewerService.getInterviewerIndexList();
+        List<InterviewerVo> interviewerVoList = interviewService.getInterviewerIndexList();
         model.addAttribute("voList", interviewerVoList);
         return "front/index";
     }
@@ -61,7 +61,7 @@ public class InterviewController {
             interviewer.setTid(tid);
             model.addAttribute("tid", tid);
         }
-        PageInfo interviewerList = interviewerService.getInterviewerList(interviewer, pn);
+        PageInfo interviewerList = interviewService.getInterviewerList(interviewer, pn);
         logger.info("总共" + String.valueOf(interviewerList.getTotal()) + "条记录");
         model.addAttribute("pageInfo", interviewerList);
         return "front/interview/list";

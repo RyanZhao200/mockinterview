@@ -44,7 +44,7 @@ public class FinderController {
      */
     @RequestMapping("/login")
     public String login() {
-        return "front/user/login";
+        return "front/user/finder/login";
     }
 
     /**
@@ -54,7 +54,7 @@ public class FinderController {
      */
     @RequestMapping("/reg")
     public String reg() {
-        return "front/user/reg";
+        return "front/user/finder/reg";
     }
 
     /**
@@ -99,9 +99,9 @@ public class FinderController {
         String result = finderService.register(finder, repassword);
         if (!"ok".equals(result)) {
             model.addAttribute("msg", result);
-            return "front/user/reg";
+            return "front/user/finder/reg";
         }
-        return "front/user/tips";
+        return "front/user/finder/tips";
     }
 
     /***
@@ -123,7 +123,7 @@ public class FinderController {
     public String toSetFinderPage(HttpSession session, Model model) {
         Finder finder = (Finder) session.getAttribute("user");
         model.addAttribute("finder", finder);
-        return "front/user/set";
+        return "front/user/finder/set";
     }
 
     @RequestMapping("/update")
@@ -144,12 +144,12 @@ public class FinderController {
         boolean allowed = Arrays.asList(allowedType).contains(headUrl.getContentType());
         if (!allowed) {
             model.addAttribute("msg", "error|不支持的类型");
-            return "front/user/set";
+            return "front/user/finder/set";
         }
         // 图片大小限制
         if (headUrl.getSize() > 3 * 1024 * 1024) {
             model.addAttribute("msg", "error|图片大小不能超过3M");
-            return "front/user/set";
+            return "front/user/finder/set";
         }
         // 包含原始文件名的字符串
         String fi = headUrl.getOriginalFilename();
@@ -171,7 +171,7 @@ public class FinderController {
         user = finderService.getFinderByEmail(user.getEmail());
         session.setAttribute("user", user);
         model.addAttribute("finder", user);
-        return "front/user/set";
+        return "front/user/finder/set";
     }
 
     /**
@@ -211,7 +211,7 @@ public class FinderController {
 
     @RequestMapping("/forget")
     public String forgetPasswordPage() {
-        return "front/user/forget";
+        return "front/user/finder/forget";
     }
 
     @RequestMapping("/activate")
