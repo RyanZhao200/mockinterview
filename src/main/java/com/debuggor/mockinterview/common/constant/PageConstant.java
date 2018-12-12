@@ -8,7 +8,7 @@ public class PageConstant {
     /**
      * 每页显示的数量
      */
-    public static Integer Page_Sizes = 10;
+    public static Integer Page_Sizes = 20;
 
     /**
      * 换页处显示几页

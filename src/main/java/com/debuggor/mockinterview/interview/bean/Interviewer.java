@@ -48,8 +48,18 @@ public class Interviewer {
     private String blogUrl;
     // 面试官的类别（能面试哪些类别）
     private List<String> types;
+    // IT类别ID（用作列表分类查询）
+    private Integer tid;
     // 首页展示时的面试官类别
     private String typeName;
+
+    public Integer getTid() {
+        return tid;
+    }
+
+    public void setTid(Integer tid) {
+        this.tid = tid;
+    }
 
     public String getTypeName() {
         return typeName;
@@ -234,4 +244,5 @@ public class Interviewer {
     public void setBlogUrl(String blogUrl) {
         this.blogUrl = blogUrl;
     }
+
 }

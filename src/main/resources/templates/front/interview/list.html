@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- 上述3个meta标签*必须*放在最前面，任何其他内容都*必须*跟随其后！ -->
+
+    <title>IT模拟面试平台</title>
+    <link rel="stylesheet" href="..static/front/layui/css/layui.css" th:href="@{/front/layui/css/layui.css}">
+    <link rel="stylesheet" href="..static/front/css/global.css" th:href="@{/front/css/global.css}">
+
+</head>
+<body>
+
+<!--前台公共头部-->
+<div th:replace="front/common/bar::topbar"></div>
+<!--头部-->
+<div class="" style="padding: 0px 5% 0px 5%;">
+    <div class="">
+        <ul class="layui-nav"
+            style="background-color: #f2f2f2;height: 80px;padding-top: 15px;padding-left: 100px;">
+            <li class="layui-nav-item">
+                <a th:href="@{/list}">全部</a>
+            </li>
+            <li class="layui-nav-item" th:each="parent:${parentList}">
+                <a href="javascript:;" style="color: #000;">[[${parent.typeName}]]</a>
+                <dl class="layui-nav-child" th:if="${not #lists.isEmpty(parent.childTypes)}">
+                    <dd th:each="type:${parent.childTypes}">
+                        <a href="" th:href="@{/list(tid=${type.tid})}">[[${type.typeName}]]</a>
+                    </dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!--主体内容-->
+<div class="layui-container main-body">
+    <!--中间内容部分-->
+    <div class="layui-row body-content">
+        <div class="layui-col-md12">
+            <h2 style="font-size: 40px">全部</h2>
+        </div>
+        <ul>
+            <li th:each="interview:${pageInfo.list}">
+                <div class="layui-col-md3">
+                    <div class="tutor-card">
+                        <img class="tutor-img" src="" th:src="${interview.headUrl}"/>
+                        <div class="tutor-info">
+                            <h2>[[${interview.username}]]</h2>
+                            <div class="tutor-type">
+                                <span th:each="type:${interview.types}" th:text="${type}"></span>
+                                <span class="star">
+                                    <span class="vote-star">
+                                        <i th:style="'width:'+@{(${interview.grade}*75/10)}+'px'"></i>
+                                    </span>
+                                    <span class="vote-number">[[${interview.grade}]]</span>
+                                </span>
+                            </div>
+                            <div>
+                                [[${interview.description}]]
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </li>
+        </ul>
+        <div style="text-align: center">
+            <nav>
+                <ul class="pagination">
+                    <li><a th:href="@{/list(pn=1,tid=${tid})}">首页</a></li>
+                    <!--上一页-->
+                    <li th:if="${pageInfo.hasPreviousPage}">
+                        <a th:href="@{/list(pn=${pageInfo.pageNum-1},tid=${tid})}"
+                           aria-label="Previous">
+                            <span aria-hidden="true">«</span>
+                        </a>
+                    </li>
+                    <!--循环遍历连续显示的页面，若是当前页就高亮显示，并且没有链接-->
+                    <li th:each="page_num:${pageInfo.navigatepageNums}">
+                        <span class="active" th:if="${page_num == pageInfo.pageNum}"><a
+                                href="#">[[${page_num}]]</a></span>
+                        <span th:if="${page_num != pageInfo.pageNum}"><a
+                                th:href="@{/list(pn=${page_num},tid=${tid})}">[[${page_num}]]</a></span>
+                    </li>
+                    <!--下一页-->
+                    <li th:if="${pageInfo.hasNextPage}">
+                        <a th:href="@{/list(pn=${pageInfo.pageNum+1},tid=${tid})}" aria-label="Next">
+                            <span aria-hidden="true">»</span>
+                        </a>
+                    </li>
+                    <li><a th:href="@{/list(pn=${pageInfo.pages},tid=${tid})}">尾页</a></li>
+                </ul>
+            </nav>
+        </div>
+
+    </div>
+
+</div>
+
+<!--公共底部-->
+<div th:replace="front/common/bar::footerbar"></div>
+
+<script src="..static/front/layui/layui.js" th:src="@{/front/layui/layui.js}"></script>
+<script src="..static/admin/js/jquery.min.js" th:src="@{/admin/js/jquery.min.js}"></script>
+<script>
+    layui.use(['carousel', 'form', 'element'], function () {
+        var carousel = layui.carousel, form = layui.form;
+        var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+        //图片轮播
+        carousel.render({
+            elem: '#carouselImage'
+            , width: '100%'
+            , height: '600px'
+            , interval: 5000
+        });
+    });
+</script>
+</body>
+</html>

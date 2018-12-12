@@ -33,6 +33,14 @@ public class InterviewerService {
         PageHelper.startPage(pn, PageConstant.Page_Sizes);
         List<Interviewer> interviewerList = interviewerDao.getInterviewerList(interviewer);
         PageInfo pageInfo = new PageInfo<>(interviewerList, PageConstant.Navigate_Pages);
+        // 获取每个面试官所能面试的类别
+        List<Interviewer> interviewers = new ArrayList<>();
+        for (Interviewer iv : interviewerList) {
+            List<String> interviewTypes = interviewerDao.getInterviewTypes(iv.getIid());
+            iv.setTypes(interviewTypes);
+            interviewers.add(iv);
+        }
+        pageInfo.setList(interviewers);
         return pageInfo;
     }
 

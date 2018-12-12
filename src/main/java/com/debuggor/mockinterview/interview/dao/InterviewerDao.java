@@ -8,6 +8,11 @@ import java.util.List;
 @Repository
 public interface InterviewerDao {
 
+    /***
+     * 得到面试官列表
+     * @param interviewer
+     * @return
+     */
     List<Interviewer> getInterviewerList(Interviewer interviewer);
 
     /**
@@ -16,4 +21,12 @@ public interface InterviewerDao {
      * @return
      */
     List<Interviewer> getInterviewerListIndexByTid(Integer tid);
+
+    /**
+     * 根据面试官的ID，获取面试官所能面试的类别
+     *
+     * @param iid
+     * @return
+     */
+    List<String> getInterviewTypes(Integer iid);
 }

@@ -13,6 +13,11 @@
         <if test="phone != null and phone !='' ">and phone like #{phone}</if>
         <if test="startTime != null and startTime !='' ">and create_time <![CDATA[ >= ]]> #{startTime}</if>
         <if test="endTime != null and endTime !='' ">and create_time <![CDATA[ <= ]]> #{endTime}</if>
+        <if test="tid !=null and tid !='' ">
+            AND iid in ( SELECT it.iid from j_interviewer_type it
+            LEFT JOIN j_type t ON it.tid=t.tid
+            WHERE it.tid=${tid} or t.parent_id = ${tid} )
+        </if>
     </sql>
 
     <select id="getInterviewerList" resultType="com.debuggor.mockinterview.interview.bean.Interviewer"
@@ -21,6 +26,13 @@
         <where>
             <include refid="query_interview_where"></include>
         </where>
+    </select>
+
+    <!-- 根据面试官的ID，获取面试官能面试的类别 -->
+    <select id="getInterviewTypes" resultType="java.lang.String" parameterType="java.lang.Integer">
+        SELECT t.type_name from j_interviewer_type it
+        LEFT JOIN j_type t on t.tid=it.tid
+        WHERE it.iid=#{iid}
     </select>
 
     <select id="getInterviewerListIndexByTid" resultType="com.debuggor.mockinterview.interview.bean.Interviewer"
