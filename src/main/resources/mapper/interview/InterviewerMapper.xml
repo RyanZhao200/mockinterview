@@ -8,4 +8,13 @@
             parameterType="java.lang.String">
         SELECT * from j_interviewer WHERE email = #{email}
     </select>
+
+    <insert id="insert" parameterType="com.debuggor.mockinterview.interview.bean.Interviewer">
+        INSERT into j_interviewer(username,password,email,head_url,sex,create_time,is_activate,activate_code,is_certification)
+        VALUES (#{username},#{password},#{email},#{headUrl},#{sex},#{createTime},#{isActivate},#{activateCode},#{isCertification})
+    </insert>
+
+    <update id="updateActivate" parameterType="java.lang.String">
+        UPDATE j_interviewer SET is_activate=1 WHERE activate_code = #{code}
+    </update>
 </mapper>

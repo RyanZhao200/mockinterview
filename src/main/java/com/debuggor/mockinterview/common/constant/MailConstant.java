@@ -13,15 +13,19 @@ public class MailConstant {
      */
     public static final String DOMAIN_NAME = "http://localhost:8080/";
     /**
-     * 注册邮箱操作
+     * 求职者注册邮箱操作
      */
-    public static final int REGISTERED = 1;
+    public static final int REGISTERED_FINDER = 1;
+    /**
+     * 面试官注册邮箱操作
+     */
+    public static final int REGISTERED_INTERVIEWER = 2;
     /**
      * 重置密码
      */
-    public static final int RESET_PASSWORD = 2;
+    public static final int RESET_PASSWORD = 3;
     /**
      * 邮件通信
      */
-    public static final int COMMUNICATION = 3;
+    public static final int COMMUNICATION = 4;
 }

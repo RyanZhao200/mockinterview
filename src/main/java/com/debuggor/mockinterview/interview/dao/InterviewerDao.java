@@ -15,4 +15,19 @@ public interface InterviewerDao {
      * @return
      */
     Interviewer getInterviewerByEmail(String email);
+
+    /**
+     * 面试官注册
+     *
+     * @param interviewer
+     */
+    void insert(Interviewer interviewer);
+
+    /**
+     * 跟新面试官状态：是否激活
+     *
+     * @param code
+     * @return
+     */
+    Integer updateActivate(String code);
 }

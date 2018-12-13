@@ -103,7 +103,7 @@ public class FinderService {
         finder.setActivateCode(activateCode);
         finderDao.insert(finder);
         taskExecutor.execute(new MailTask(activateCode, MailConstant.MAIL_FROM,
-                finder.getEmail(), javaMailSender, MailConstant.REGISTERED));
+                finder.getEmail(), javaMailSender, MailConstant.REGISTERED_FINDER));
         return "ok";
     }
 

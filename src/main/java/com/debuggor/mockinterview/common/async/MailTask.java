@@ -77,8 +77,15 @@ public class MailTask implements Runnable {
                     sb.append(">点击激活</a>");
                     sb.append("<br>如果您并未申请IT模拟面试平台账户，可能是其他用户误输入了您的邮箱地址。请忽略此邮件，或者联系我们。<br>");
                 } else if (operation == 2) {
-                    mimeMessageHelper.setSubject("[IT模拟面试平台] 请确认修改您的密码");
+                    mimeMessageHelper.setSubject("[IT模拟面试平台] 邮箱激活通知");
+                    sb.append("尊敬的" + toEmail + "，您好,感谢您使用IT模拟面试平台。注册成为一名面试官！<br><br>");
+                    sb.append("请点击以下链接进行邮箱验证，以便开始使用您的账户：<br>");
+                    sb.append("<a href=" + MailConstant.DOMAIN_NAME + "interviewer/activate?code=" + code);
+                    sb.append(">点击激活</a>");
+                    sb.append("<br>如果您并未申请IT模拟面试平台账户，可能是其他用户误输入了您的邮箱地址。请忽略此邮件，或者联系我们。<br>");
                 } else if (operation == 3) {
+                    mimeMessageHelper.setSubject("[IT模拟面试平台] 请确认修改您的密码");
+                } else if (operation == 4) {
                     mimeMessageHelper.setSubject("您在IT模拟面试平台的小伙伴给你发消息啦");
                     sb.append(content);
                 }

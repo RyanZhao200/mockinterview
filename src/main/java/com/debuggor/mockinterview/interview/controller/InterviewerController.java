@@ -59,9 +59,30 @@ public class InterviewerController {
         return "front/user/interviewer/register";
     }
 
+    /**
+     * 面试官注册
+     *
+     * @param interviewer
+     * @param model
+     * @return
+     */
     @RequestMapping("/registerAction")
-    public String register(Interviewer interviewer, Model model) {
+    public String register(Interviewer interviewer, String repassword, Model model) {
+        logger.info(interviewer.getEmail() + " " + interviewer.getUsername());
+        String result = interviewerService.register(interviewer, repassword);
+        if (!"ok".equals(result)) {
+            model.addAttribute("msg",result);
+            return "front/user/interviewer/register";
+        }
+        return "front/user/interviewer/tips";
+    }
 
-        return "";
+    @RequestMapping("/activate")
+    public String activate(String code) {
+        Integer activate = interviewerService.isActivate(code);
+        if (activate == null) {
+            return "redirect:/interviewer/register";
+        }
+        return "redirect:/interviewer/login";
     }
 }

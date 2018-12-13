@@ -1,11 +1,18 @@
 package com.debuggor.mockinterview.interview.service;
 
+import com.debuggor.mockinterview.common.async.MailTask;
+import com.debuggor.mockinterview.common.constant.MailConstant;
 import com.debuggor.mockinterview.common.constant.MockConstant;
+import com.debuggor.mockinterview.common.util.ActivateCodeUtil;
 import com.debuggor.mockinterview.common.util.Md5Util;
 import com.debuggor.mockinterview.interview.bean.Interviewer;
 import com.debuggor.mockinterview.interview.dao.InterviewerDao;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.task.TaskExecutor;
+import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 
 /**
  * 面试官service层
@@ -14,7 +21,11 @@ import org.springframework.stereotype.Service;
 public class InterviewerService {
 
     @Autowired
-    InterviewerDao interviewerDao;
+    private InterviewerDao interviewerDao;
+    @Autowired
+    private JavaMailSender javaMailSender;
+    @Autowired
+    private TaskExecutor taskExecutor;
 
     /**
      * 面试官登录
@@ -46,4 +57,48 @@ public class InterviewerService {
         return interviewer;
     }
 
+    public String register(Interviewer interviewer, String repassword) {
+        if (interviewer == null || repassword == null) {
+            return null;
+        }
+        if (!repassword.equals(interviewer.getPassword())) {
+            return "两次密码不一致";
+        }
+        Interviewer interviewerByEmail = interviewerDao.getInterviewerByEmail(interviewer.getEmail());
+        if (interviewerByEmail != null) {
+            return "该邮箱已注册，换其他邮箱试试";
+        }
+        // 对密码进行加密
+        interviewer.setPassword(Md5Util.hash(interviewer.getPassword()));
+        // 设置默认头像
+        interviewer.setHeadUrl("https://dn-qiniu-avatar.qbox.me/avatar/6219d3089bbb149606e87debb24ddbdd?qiniu-avatar");
+        // 设置未激活
+        interviewer.setIsActivate(0);
+        // 设置未认证
+        interviewer.setIsCertification(0);
+        //注册时间
+        interviewer.setCreateTime(new Date());
+        // 设置激活码
+        String activateCode = ActivateCodeUtil.createActivateCode();
+        interviewer.setActivateCode(activateCode);
+        //设置默认性别为男
+        interviewer.setSex(0);
+        interviewerDao.insert(interviewer);
+        taskExecutor.execute(new MailTask(activateCode, MailConstant.MAIL_FROM,
+                interviewer.getEmail(), javaMailSender, MailConstant.REGISTERED_INTERVIEWER));
+        return "ok";
+    }
+
+    /**
+     * 激活面试官邮箱
+     *
+     * @param code
+     */
+    public Integer isActivate(String code) {
+        Integer result = null;
+        if (code != null) {
+            result = interviewerDao.updateActivate(code);
+        }
+        return result;
+    }
 }
