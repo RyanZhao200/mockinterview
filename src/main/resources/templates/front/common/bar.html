@@ -23,7 +23,8 @@
         </ul>
 
         <!-- 未登入的状态 -->
-        <ul class="layui-nav fly-nav-user" th:if="${#lists.isEmpty(session.user)}">
+        <ul class="layui-nav fly-nav-user"
+            th:if="${(#lists.isEmpty(session.finder)) and (#lists.isEmpty(session.interviewer))}">
             <li class="layui-nav-item">
                 <a class="iconfont icon-touxiang layui-hide-xs" href="#"></a>
             </li>
@@ -34,15 +35,16 @@
                 <a href="#" th:href="@{/finder/reg}">注册</a>
             </li>
         </ul>
-        <!--登入后的状态-->
-        <ul class="layui-nav fly-nav-user" th:if="${not #lists.isEmpty(session.user)}">
+        <!--求职者登入后的状态-->
+        <ul class="layui-nav fly-nav-user"
+            th:if="${(not #lists.isEmpty(session.finder)) and (#lists.isEmpty(session.interviewer))}">
             <li class="layui-nav-item">
                 <a class="fly-nav-avatar" href="javascript:;">
-                    <cite class="layui-hide-xs">[[${session.user.username}]]</cite>
+                    <cite class="layui-hide-xs">[[${session.finder.username}]]</cite>
                     <i class="iconfont icon-renzheng layui-hide-xs" title="认证"></i>
-                    <img src="" th:src="${session.user.headUrl}">
+                    <img src="" th:src="${session.finder.headUrl}">
                 </a>
-                <dl class="layui-nav-child" style="width: 150px;">
+                <dl class="layui-nav-child">
                     <dd>
                         <a href="#" th:href="@{/finder/toUpdate}"><i class="layui-icon">&#xe620;</i>基本设置</a>
                     </dd>
@@ -56,6 +58,33 @@
                     </dd>
                     <hr style="margin: 5px 0;">
                     <dd><a th:href="@{/finder/logout}" href="" style="text-align: center;">退出</a></dd>
+                </dl>
+            </li>
+        </ul>
+
+        <!--面试官登录后的状态-->
+        <ul class="layui-nav fly-nav-user"
+            th:if="${(#lists.isEmpty(session.finder)) and (not #lists.isEmpty(session.interviewer))}">
+            <li class="layui-nav-item">
+                <a class="fly-nav-avatar" href="javascript:;">
+                    <cite class="layui-hide-xs">[[${session.interviewer.username}]]</cite>
+                    <i class="iconfont icon-renzheng layui-hide-xs" title="认证"></i>
+                    <img src="" th:src="${session.interviewer.headUrl}">
+                </a>
+                <dl class="layui-nav-child">
+                    <dd>
+                        <a href="#" th:href="@{/finder/toUpdate}"><i class="layui-icon">&#xe620;</i>基本设置</a>
+                    </dd>
+                    <dd>
+                        <a href="#"><i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息</a>
+                    </dd>
+                    <dd>
+                        <a href="#">
+                            <i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页
+                        </a>
+                    </dd>
+                    <hr style="margin: 5px 0;">
+                    <dd><a th:href="@{/interviewer/logout}" href="" style="text-align: center;">退出</a></dd>
                 </dl>
             </li>
         </ul>

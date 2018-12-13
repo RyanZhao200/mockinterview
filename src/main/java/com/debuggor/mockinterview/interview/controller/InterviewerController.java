@@ -22,7 +22,7 @@ import java.util.Date;
 @RequestMapping("/interviewer")
 public class InterviewerController {
 
-    Logger logger = LoggerFactory.getLogger(InterviewerController.class);
+    private Logger logger = LoggerFactory.getLogger(InterviewerController.class);
 
     @Autowired
     private InterviewerService interviewerService;
@@ -54,6 +54,12 @@ public class InterviewerController {
         return "redirect:/";
     }
 
+    @RequestMapping("/logout")
+    public String logout(HttpSession session) {
+        session.invalidate();
+        return "redirect:/interviewer/login";
+    }
+
     @RequestMapping("/register")
     public String toRegister() {
         return "front/user/interviewer/register";
@@ -71,7 +77,7 @@ public class InterviewerController {
         logger.info(interviewer.getEmail() + " " + interviewer.getUsername());
         String result = interviewerService.register(interviewer, repassword);
         if (!"ok".equals(result)) {
-            model.addAttribute("msg",result);
+            model.addAttribute("msg", result);
             return "front/user/interviewer/register";
         }
         return "front/user/interviewer/tips";

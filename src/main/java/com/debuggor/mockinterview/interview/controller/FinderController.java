@@ -30,7 +30,7 @@ import java.util.UUID;
 @RequestMapping("/finder")
 public class FinderController {
 
-    Logger logger = LoggerFactory.getLogger(FinderController.class);
+    private Logger logger = LoggerFactory.getLogger(FinderController.class);
 
     @Autowired
     private FinderService finderService;
@@ -82,7 +82,7 @@ public class FinderController {
         }
         Finder user = finderService.getFinderByEmail(email);
         logger.info(user.getUsername() + "于" + new Date() + "登录");
-        session.setAttribute("user", user);
+        session.setAttribute("finder", user);
         return "redirect:/forum";
     }
 
@@ -111,7 +111,7 @@ public class FinderController {
      */
     @RequestMapping("/logout")
     public String logout(HttpSession session) {
-        session.setAttribute("user", null);
+        session.invalidate();
         return "redirect:/finder/login";
     }
 
@@ -121,7 +121,7 @@ public class FinderController {
      */
     @RequestMapping("/toUpdate")
     public String toSetFinderPage(HttpSession session, Model model) {
-        Finder finder = (Finder) session.getAttribute("user");
+        Finder finder = (Finder) session.getAttribute("finder");
         model.addAttribute("finder", finder);
         return "front/user/finder/set";
     }
@@ -130,9 +130,9 @@ public class FinderController {
     public String update(Finder finder, HttpSession session) {
         logger.info("用户跟新操作：" + finder.toString());
         finderService.update(finder);
-        Finder user = (Finder) session.getAttribute("user");
+        Finder user = (Finder) session.getAttribute("finder");
         Finder finderByEmail = finderService.getFinderByEmail(user.getEmail());
-        session.setAttribute("user", finderByEmail);
+        session.setAttribute("finder", finderByEmail);
 
         return "redirect:/finder/toUpdate";
     }
@@ -167,9 +167,9 @@ public class FinderController {
         finder.setHeadUrl(headImage);
         finderService.update(finder);
 
-        Finder user = (Finder) session.getAttribute("user");
+        Finder user = (Finder) session.getAttribute("finder");
         user = finderService.getFinderByEmail(user.getEmail());
-        session.setAttribute("user", user);
+        session.setAttribute("finder", user);
         model.addAttribute("finder", user);
         return "front/user/finder/set";
     }
@@ -195,7 +195,7 @@ public class FinderController {
         if (oldPassword.equals(password)) {
             return "新密码与原密码相同，请重新修改！";
         }
-        Finder user = (Finder) session.getAttribute("user");
+        Finder user = (Finder) session.getAttribute("finder");
         Finder finder1 = finderService.getFinderByEmail(user.getEmail());
         String oldhash = Md5Util.hash(oldPassword);
         if (!oldhash.equals(finder1.getPassword())) {
