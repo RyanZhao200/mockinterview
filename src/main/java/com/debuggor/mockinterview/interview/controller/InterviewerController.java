@@ -1,6 +1,7 @@
 package com.debuggor.mockinterview.interview.controller;
 
 import com.debuggor.mockinterview.common.constant.MockConstant;
+import com.debuggor.mockinterview.interview.bean.Finder;
 import com.debuggor.mockinterview.interview.bean.Interviewer;
 import com.debuggor.mockinterview.interview.service.InterviewerService;
 import org.slf4j.Logger;
@@ -91,4 +92,12 @@ public class InterviewerController {
         }
         return "redirect:/interviewer/login";
     }
+
+    @RequestMapping("/toUpdate")
+    public String toSetFinderPage(HttpSession session, Model model) {
+        Interviewer interviewer = (Interviewer) session.getAttribute("interviewer");
+        model.addAttribute("interviewer", interviewer);
+        return "front/user/interviewer/set";
+    }
+
 }

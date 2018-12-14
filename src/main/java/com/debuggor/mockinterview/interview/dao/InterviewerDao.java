@@ -30,4 +30,12 @@ public interface InterviewerDao {
      * @return
      */
     Integer updateActivate(String code);
+
+    /**
+     * 根据面试官的ID，获取面试官的信息
+     *
+     * @param iid
+     * @return
+     */
+    Interviewer getInterviewerById(Integer iid);
 }

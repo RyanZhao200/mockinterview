@@ -81,12 +81,12 @@
         <ul class="layui-nav"
             style="background-color: #f2f2f2;height: 80px;padding-top: 15px;padding-left: 100px;">
             <li class="layui-nav-item">
-                <a th:href="@{/list}">全部</a>
+                <a th:href="@{/interviewer}">全部</a>
             </li>
             <li class="layui-nav-item" th:each="parent:${parentList}">
                 <a href="javascript:;" style="color: #000;">[[${parent.typeName}]]</a>
                 <dl class="layui-nav-child" th:if="${not #lists.isEmpty(parent.childTypes)}">
-                    <dd th:each="type:${parent.childTypes}"><a href="" th:href="@{/list(tid=${type.tid})}">[[${type.typeName}]]</a>
+                    <dd th:each="type:${parent.childTypes}"><a href="" th:href="@{/interviewer(tid=${type.tid})}">[[${type.typeName}]]</a>
                     </dd>
                 </dl>
             </li>

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>面试官详情</title>
+    <link rel="stylesheet" href="..static/front/layui/css/layui.css" th:href="@{/front/layui/css/layui.css}">
+    <link rel="stylesheet" href="..static/front/css/global.css" th:href="@{/front/css/global.css}">
+</head>
+<body>
+<!--前台公共头部-->
+<div th:replace="front/common/bar::topbar"></div>
+
+<!--主体部分-->
+<div style="background-color: #F2F2F2;">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12" style="padding: 20px 100px 20px 100px;">
+            <div class="layui-card" style="background-color: white">
+                <div class="layui-col-md5">
+                    <img th:src="${interviewer.headUrl}">
+                    <span>关注</span>
+                </div>
+                <div class="layui-col-md7">
+                    <div>[[${interviewer.username}]]</div>
+                    <span th:each="type:${interviewer.types}" th:text="${type}"
+                          style="border:1px solid #a1a1a1;border-radius: 5px;margin: 30px 5px;padding: 5px;">
+                    </span>
+                    <div>tel:17859735390</div>
+                    <div>
+                        <span>已有12人咨询</span>
+                        <button>联系他</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div style="padding: 100px;">
+            <div class="layui-col-md9">
+                <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief" style="background-color: white">
+                    <ul class="layui-tab-title">
+                        <li class="layui-this">个人介绍</li>
+                        <li>用户评价</li>
+                    </ul>
+                    <div class="layui-tab-content" style="padding: 50px;">
+                        <div class="layui-tab-item layui-show">
+                            [[${interviewer.description}]]
+                        </div>
+                        <div class="layui-tab-item">内容2</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="layui-col-md3">
+                <div style="background-color: white">
+                    东北大学软件学院张爽老师的《软件工程》慕课在我个人看来是非常值得学习的课程，以下是我对这门课程的详细评价： 一、课程方面
+                    张爽老师的《软件工程》涵盖了面向对象软件工程的近乎全部内容，对主干知识都进行了深入讲解。而且张爽老师授课的方式非常易懂
+                    ，无论是具有计算机知识基础还是从没接触过计算机相关知识，都能很容易的学懂这门课。
+                    而且课程知识的应用方面不仅是软件行业，还适用于生活中非常多的事情。
+                    这门课最终学到的不光是软件工程的知识和思想，也使得分析事情的能力得到增强。
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--公共底部-->
+<div th:replace="front/common/bar::footerbar"></div>
+
+<script src="..static/front/layui/layui.js" th:src="@{/front/layui/layui.js}"></script>
+<script src="..static/admin/js/jquery.min.js" th:src="@{/admin/js/jquery.min.js}"></script>
+<script>
+    layui.use('element', function () {
+        var element = layui.element;
+    });
+</script>
+</body>
+</html>

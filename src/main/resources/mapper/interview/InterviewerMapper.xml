@@ -9,6 +9,11 @@
         SELECT * from j_interviewer WHERE email = #{email}
     </select>
 
+    <select id="getInterviewerById" resultType="com.debuggor.mockinterview.interview.bean.Interviewer"
+            parameterType="java.lang.Integer">
+        SELECT * from j_interviewer WHERE iid = #{iid}
+    </select>
+
     <insert id="insert" parameterType="com.debuggor.mockinterview.interview.bean.Interviewer">
         INSERT into j_interviewer(username,password,email,head_url,sex,create_time,is_activate,activate_code,is_certification)
         VALUES (#{username},#{password},#{email},#{headUrl},#{sex},#{createTime},#{isActivate},#{activateCode},#{isCertification})

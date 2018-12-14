@@ -21,13 +21,13 @@
         <ul class="layui-nav"
             style="background-color: #f2f2f2;height: 80px;padding-top: 15px;padding-left: 100px;">
             <li class="layui-nav-item">
-                <a th:href="@{/list}">全部</a>
+                <a th:href="@{/interviewer}">全部</a>
             </li>
             <li class="layui-nav-item" th:each="parent:${parentList}">
                 <a href="javascript:;" style="color: #000;">[[${parent.typeName}]]</a>
                 <dl class="layui-nav-child" th:if="${not #lists.isEmpty(parent.childTypes)}">
                     <dd th:each="type:${parent.childTypes}">
-                        <a href="" th:href="@{/list(tid=${type.tid})}">[[${type.typeName}]]</a>
+                        <a href="" th:href="@{/interviewer(tid=${type.tid})}">[[${type.typeName}]]</a>
                     </dd>
                 </dl>
             </li>
@@ -35,69 +35,140 @@
     </div>
 </div>
 
-<!--主体内容-->
-<div class="layui-container main-body">
-    <!--中间内容部分-->
-    <div class="layui-row body-content">
-        <div class="layui-col-md12">
-            <h2 style="font-size: 40px">全部</h2>
-        </div>
-        <ul>
-            <li th:each="interview:${pageInfo.list}">
-                <div class="layui-col-md3">
-                    <div class="tutor-card">
-                        <img class="tutor-img" src="" th:src="${interview.headUrl}"/>
-                        <div class="tutor-info">
-                            <h2>[[${interview.username}]]</h2>
-                            <div class="tutor-type">
-                                <span th:each="type:${interview.types}" th:text="${type}"></span>
-                                <span class="star">
-                                    <span class="vote-star">
-                                        <i th:style="'width:'+@{(${interview.grade}*75/10)}+'px'"></i>
-                                    </span>
-                                    <span class="vote-number">[[${interview.grade}]]</span>
-                                </span>
-                            </div>
-                            <div>
-                                [[${interview.description}]]
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </li>
-        </ul>
-        <div style="text-align: center">
-            <nav>
-                <ul class="pagination">
-                    <li><a th:href="@{/list(pn=1,tid=${tid})}">首页</a></li>
-                    <!--上一页-->
-                    <li th:if="${pageInfo.hasPreviousPage}">
-                        <a th:href="@{/list(pn=${pageInfo.pageNum-1},tid=${tid})}"
-                           aria-label="Previous">
-                            <span aria-hidden="true">«</span>
-                        </a>
-                    </li>
-                    <!--循环遍历连续显示的页面，若是当前页就高亮显示，并且没有链接-->
-                    <li th:each="page_num:${pageInfo.navigatepageNums}">
-                        <span class="active" th:if="${page_num == pageInfo.pageNum}"><a
-                                href="#">[[${page_num}]]</a></span>
-                        <span th:if="${page_num != pageInfo.pageNum}"><a
-                                th:href="@{/list(pn=${page_num},tid=${tid})}">[[${page_num}]]</a></span>
-                    </li>
-                    <!--下一页-->
-                    <li th:if="${pageInfo.hasNextPage}">
-                        <a th:href="@{/list(pn=${pageInfo.pageNum+1},tid=${tid})}" aria-label="Next">
-                            <span aria-hidden="true">»</span>
-                        </a>
-                    </li>
-                    <li><a th:href="@{/list(pn=${pageInfo.pages},tid=${tid})}">尾页</a></li>
-                </ul>
-            </nav>
-        </div>
+<!-- 头部导航栏-->
 
+<!-- 面试官列表-->
+<div class="layui-container">
+    <div style="margin: 20px;">
+        <span style="border:1px solid #a1a1a1;border-radius: 5px;padding: 5px;background-color: #4cae4c">java</span>
     </div>
 
+    <div class="layui-row layui-col-space20">
+        <div class="layui-col-md8">
+            <div class="fly-panel" style="margin-bottom: 0;">
+                <div class="fly-panel-title fly-filter">
+                    <a href="" class="layui-this">综合</a>
+                    <span class="fly-mid"></span>
+                    <a href="">未结</a>
+                    <span class="fly-mid"></span>
+                    <a href="">已结</a>
+                    <span class="fly-mid"></span>
+                    <a href="">精华</a>
+                    <span class="fly-filter-right layui-hide-xs">
+                        <a href="" class="layui-this">按最新</a>
+                        <span class="fly-mid"></span>
+                        <a href="">按热议</a>
+                    </span>
+                </div>
+
+                <ul class="fly-list">
+                    <li th:each="interview:${pageInfo.list}"
+                        style="height: auto;width: 100%;padding: 30px  20px 50px 20px;">
+                        <span style="display:inline-block;">
+                            <a href="#" th:href="@{/interviewer/}+${interview.iid}">
+                                <img style="width: 140px;height: 140px;border-radius: 70px;"
+                                     th:src="${interview.headUrl}">
+                            </a>
+                        </span>
+                        <span style="display:inline-block;margin: 0px 50px;">
+                            <div style="line-height:25px;">
+                                <h1>
+                                    <a th:href="@{/interviewer/}+${interview.iid}">
+                                        <span th:text="${interview.username}"></span>
+                                    </a>
+                                </h1>
+                                <span>[[${interview.description}]]</span>
+                            </div>
+                            <div>
+                                <span style="position: absolute;right: 200px;">4.9分</span>
+                                <span style="position: absolute;right: 60px;">
+                                    <span style="font-size: 30px;color: #ff6600">80</span>元</span>
+                            </div>
+                            <div style="position: absolute;bottom: 50px;line-height:25px;">
+                                <div>3年工作经验 帮助过8123人次</div>
+                                <span th:each="type:${interview.types}" th:text="${type}"
+                                      style="border:1px solid #a1a1a1;border-radius: 5px;margin: 30px 5px;padding: 5px;"></span>
+                                <span style="position: absolute;right: -350px;border:1px solid #a1a1a1;border-radius: 5px;padding: 5px;">
+                                    <a th:href="@{/interviewer/}+${interview.iid}">
+                                        <i class="iconfont icon-jiaoliu" style="color: #4cae4c"></i> 联系Ta
+                                    </a>
+                                </span>
+                        </div>
+                        </span>
+
+                        <div class="fly-list-badge" style="width: 100%"></div>
+                    </li>
+                </ul>
+
+                <div style="text-align: center">
+                    <nav>
+                        <ul class="pagination">
+                            <li><a th:href="@{/interviewer(pn=1,tid=${tid})}">首页</a></li>
+                            <!--上一页-->
+                            <li th:if="${pageInfo.hasPreviousPage}">
+                                <a th:href="@{/interviewer(pn=${pageInfo.pageNum-1},tid=${tid})}"
+                                   aria-label="Previous">
+                                    <span aria-hidden="true">«</span>
+                                </a>
+                            </li>
+                            <!--循环遍历连续显示的页面，若是当前页就高亮显示，并且没有链接-->
+                            <li th:each="page_num:${pageInfo.navigatepageNums}">
+                        <span class="active" th:if="${page_num == pageInfo.pageNum}"><a
+                                href="#">[[${page_num}]]</a></span>
+                                <span th:if="${page_num != pageInfo.pageNum}"><a
+                                        th:href="@{/interviewer(pn=${page_num},tid=${tid})}">[[${page_num}]]</a></span>
+                            </li>
+                            <!--下一页-->
+                            <li th:if="${pageInfo.hasNextPage}">
+                                <a th:href="@{/interviewer(pn=${pageInfo.pageNum+1},tid=${tid})}" aria-label="Next">
+                                    <span aria-hidden="true">»</span>
+                                </a>
+                            </li>
+                            <li><a th:href="@{/interviewer(pn=${pageInfo.pages},tid=${tid})}">尾页</a></li>
+                        </ul>
+                    </nav>
+                </div>
+
+            </div>
+        </div>
+        <div class="layui-col-md4">
+            <dl class="fly-panel fly-list-one">
+                <dt class="fly-panel-title">本周热议</dt>
+                <dd>
+                    <a href="">基于 layui 的极简社区页面模版</a>
+                    <span><i class="iconfont icon-pinglun1"></i> 16</span>
+                </dd>
+            </dl>
+
+            <div class="fly-panel">
+                <div class="fly-panel-title">
+                    这里可作为广告区域
+                </div>
+                <div class="fly-panel-main">
+                    <a href="" target="_blank" class="fly-zanzhu" style="background-color: #393D49;">虚席以待</a>
+                </div>
+            </div>
+
+            <div class="fly-panel fly-link">
+                <h3 class="fly-panel-title">友情链接</h3>
+                <dl class="fly-panel-main">
+                    <dd><a href="#" target="_blank">layui</a>
+                    <dd>
+                    <dd><a href="#" target="_blank">WebIM</a>
+                    <dd>
+                    <dd><a href="#" target="_blank">layer</a>
+                    <dd>
+                    <dd><a href="#" target="_blank">layDate</a>
+                    <dd>
+                    <dd><a href="" class="fly-link">申请友链</a>
+                    <dd>
+                </dl>
+            </div>
+
+        </div>
+    </div>
 </div>
+
 
 <!--公共底部-->
 <div th:replace="front/common/bar::footerbar"></div>
@@ -108,13 +179,6 @@
     layui.use(['carousel', 'form', 'element'], function () {
         var carousel = layui.carousel, form = layui.form;
         var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
-        //图片轮播
-        carousel.render({
-            elem: '#carouselImage'
-            , width: '100%'
-            , height: '600px'
-            , interval: 5000
-        });
     });
 </script>
 </body>
