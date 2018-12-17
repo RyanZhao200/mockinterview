@@ -101,4 +101,15 @@ public class InterviewerService {
         }
         return result;
     }
+
+    /**
+     * 跟新面试官信息
+     *
+     * @param interviewer
+     */
+    public void update(Interviewer interviewer) {
+        if (interviewer != null) {
+            interviewerDao.update(interviewer);
+        }
+    }
 }

@@ -22,4 +22,23 @@
     <update id="updateActivate" parameterType="java.lang.String">
         UPDATE j_interviewer SET is_activate=1 WHERE activate_code = #{code}
     </update>
+
+    <update id="update" parameterType="com.debuggor.mockinterview.interview.bean.Interviewer">
+        UPDATE j_interviewer
+        <set>
+            <if test="email != null">email=#{email},</if>
+            <if test="username != null">username=#{username},</if>
+            <if test="phone != null">phone=#{phone},</if>
+            <if test="qq != null">qq=#{qq},</if>
+            <if test="weixin != null">weixin=#{weixin},</if>
+            <if test="sex != null">sex=#{sex},</if>
+            <if test="description != null">description=#{description},</if>
+            <if test="password != null">password=#{password},</if>
+            <if test="headUrl != null">head_url=#{headUrl},</if>
+            <if test="blogUrl != null">blog_url=#{blogUrl},</if>
+            <if test="cost != null">cost=#{cost},</if>
+            <if test="workYear != null">work_year=#{workYear},</if>
+        </set>
+        WHERE iid = #{iid}
+    </update>
 </mapper>

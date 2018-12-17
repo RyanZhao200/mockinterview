@@ -245,4 +245,33 @@ public class Interviewer {
         this.blogUrl = blogUrl;
     }
 
+    @Override
+    public String toString() {
+        return "Interviewer{" +
+                "iid=" + iid +
+                ", username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                ", nickname='" + nickname + '\'' +
+                ", email='" + email + '\'' +
+                ", headUrl='" + headUrl + '\'' +
+                ", sex=" + sex +
+                ", description='" + description + '\'' +
+                ", createTime=" + createTime +
+                ", startTime='" + startTime + '\'' +
+                ", endTime='" + endTime + '\'' +
+                ", workYear=" + workYear +
+                ", isActivate=" + isActivate +
+                ", activateCode='" + activateCode + '\'' +
+                ", isCertification=" + isCertification +
+                ", grade=" + grade +
+                ", cost='" + cost + '\'' +
+                ", qq='" + qq + '\'' +
+                ", weixin='" + weixin + '\'' +
+                ", phone='" + phone + '\'' +
+                ", blogUrl='" + blogUrl + '\'' +
+                ", types=" + types +
+                ", tid=" + tid +
+                ", typeName='" + typeName + '\'' +
+                '}';
+    }
 }

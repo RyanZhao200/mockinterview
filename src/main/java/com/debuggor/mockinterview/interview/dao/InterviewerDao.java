@@ -38,4 +38,11 @@ public interface InterviewerDao {
      * @return
      */
     Interviewer getInterviewerById(Integer iid);
+
+    /**
+     * 跟新面试官信息
+     *
+     * @param interviewer
+     */
+    void update(Interviewer interviewer);
 }

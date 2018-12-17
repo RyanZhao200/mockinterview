@@ -175,35 +175,37 @@ public class FinderController {
     }
 
     /**
-     * 密码更新还未完成
-     * @param oldPassword
-     * @param password
-     * @param confirm
+     * 求职者修改密码的时候判断当前密码是否正确
+     *
+     * @param oldPwd
+     * @return
+     */
+    @RequestMapping("/judgeOldPwd")
+    public @ResponseBody
+    String judgeOldPwd(@RequestParam(required = false, value = "oldPwd") String oldPwd,
+                       HttpSession session) {
+        Finder finder = (Finder) session.getAttribute("finder");
+        String oldHash = Md5Util.hash(oldPwd);
+        if (!finder.getPassword().equals(oldHash)) {
+            return "no";
+        }
+        return "success";
+    }
+
+    /**
+     * 求职者修改密码
+     *
      * @param session
      * @return
      */
     @RequestMapping("/updatePassword")
     public @ResponseBody
-    String updatePassword(@RequestParam("oldPassword") String oldPassword,
-                          @RequestParam("password") String password,
-                          @RequestParam("confirm") String confirm,
+    String updatePassword(@RequestParam(required = false, value = "pwd") String pwd,
                           HttpSession session) {
-        logger.info(oldPassword + password + confirm);
-        if (!password.equals(confirm)) {
-            return "两次输入密码不相等！";
-        }
-        if (oldPassword.equals(password)) {
-            return "新密码与原密码相同，请重新修改！";
-        }
-        Finder user = (Finder) session.getAttribute("finder");
-        Finder finder1 = finderService.getFinderByEmail(user.getEmail());
-        String oldhash = Md5Util.hash(oldPassword);
-        if (!oldhash.equals(finder1.getPassword())) {
-            return "当前密码错误！";
-        }
-        String hash = Md5Util.hash(password);
+        Finder finder1 = (Finder) session.getAttribute("finder");
         Finder finder = new Finder();
         finder.setFid(finder1.getFid());
+        String hash = Md5Util.hash(pwd);
         finder.setPassword(hash);
         finderService.update(finder);
         return "success";

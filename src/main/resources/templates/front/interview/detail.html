@@ -61,8 +61,8 @@
                         <li>用户评价</li>
                     </ul>
                     <div class="layui-tab-content" style="padding: 50px;">
-                        <div class="layui-tab-item layui-show">
-                            [[${interviewer.description}]]
+                        <div class="layui-tab-item layui-show" th:utext="${interviewer.description}">
+
                         </div>
                         <div class="layui-tab-item">内容2</div>
                     </div>

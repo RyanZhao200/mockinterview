@@ -154,8 +154,8 @@
                         <div class="layui-form-item">
                             <label for="L_nowpass" class="layui-form-label">当前密码</label>
                             <div class="layui-input-inline">
-                                <input type="password" id="L_nowpass" name="oldPassword" required lay-verify="required"
-                                       autocomplete="off" class="layui-input">
+                                <input type="password" id="L_nowpass" name="oldPassword" placeholder="请输入当前密码"
+                                       onblur="judgeOldPwd(this.value)" autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-form-item">
@@ -174,8 +174,7 @@
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <button class="layui-btn" key="set-mine" lay-filter="*" onclick="updatePassword()">确认修改
-                            </button>
+                            <button class="layui-btn" key="set-mine"  onclick="save()">确认修改</button>
                         </div>
                     </form>
                     <form id="logout" th:action="@{/finder/logout}"></form>
@@ -250,22 +249,61 @@
         $("#headUrl").submit();
     }
 
-    // 这个功能不完善
-    function updatePassword() {
+
+    //判断旧密码是否正确
+    function judgeOldPwd(pwd){
         $.ajax({
-            type: 'POST',
-            url: '/finder/updatePassword',
-            data: $("#updatePassword").serialize(),
-            dataType: 'json',
-            success: function (data) {
-                if (JSON.stringify(data) == 'success') {
-                    alert("密码更新成功,请重新登录！");
-                    $("#logout").submit();
+            url : '/finder/judgeOldPwd?oldPwd='+pwd,
+            data : "",
+            async : false,
+            dataType : "html",
+            success : function(data){
+                if(data === 'no'){
+                    layer.msg('旧密码不正确！', function(){
+                        $('#L_nowpass').val('');
+                    });
                 }
-            },
-            error: function (data) {
-                alert(JSON.stringify(data));
-                document.getElementById("passwordMsg").innerText = JSON.stringify(data);
+            }
+        });
+    }
+
+    function save(){
+        if(!$('#L_nowpass').val()){
+            layer.msg('当前密码不能为空！', function(){
+                $('#L_nowpass').focus();
+            });
+            return false;
+        }else if (!$('#L_pass').val()){
+            layer.msg('新密码不能为空！', function(){
+                $('#L_pass').focus();
+            });
+            return false;
+        }
+        else if(!$('#L_repass').val()){
+            layer.msg('确认密码不能为空！', function(){
+                $('#L_repass').focus();
+            });
+            return false;
+        }
+        else if($("#L_pass").val() != $("#L_repass").val()){
+            layer.msg('新密码和确认密码不一致！', function(){
+            });
+            return false;
+        }
+        $.ajax({
+            url : '/finder/updatePassword?pwd=' + $('#L_pass').val(),
+            data : "",
+            async : false,
+            dataType : "html",
+            success : function(data) {
+                if(data == 'success'){
+                    layer.msg('密码修改成功！', {icon: 1});
+                    $('#L_nowpass').val('');
+                    $('#L_pass').val('');
+                    $('#L_repass').val('');
+                }else{
+                    layer.msg('密码修改失败，请重试！', {icon: 5});
+                }
             }
         });
     }
