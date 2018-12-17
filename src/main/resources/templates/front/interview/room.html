@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>room</title>
+    <script src="..static/front/js/pili-rtc-web.js" th:src="@{/front/js/pili-rtc-web.js}"></script>
+    <style>
+        /* css/room.css */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        .qnrtc-stream-player {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+        }
+
+        .fullscreen-player {
+            width: 100vw;
+            height: 100vh;
+            position: absolute;
+            top: 0;
+            left: 0;
+            background: #000;
+        }
+
+        .mini-player {
+            width: 300px;
+            height: 200px;
+            position: absolute;
+            bottom: 10px;
+            right: 10px;
+            background: #000;
+            z-index: 10;
+        }
+        /* -- */
+        .fullscreen-player,.mini-player {
+            transition: all ease 0.6s;
+        }
+        .btn {
+            outline: none;
+            border: none;
+            position: absolute;
+            z-index: 9;
+            padding: 5px;
+        }
+        .screen-switch {
+            bottom: 230px;
+            right: 30px;
+        }
+        body {
+            overflow: hidden;
+            background: #000;
+        }
+
+    </style>
+</head>
+<body>
+<div id="localplayer" class="mini-player"></div>
+<div id="remoteplayer" class="fullscreen-player">
+    <canvas width="640" height="480" id="remotewave"></canvas>
+</div>
+<!-- 添加大小窗切换的按钮 -->
+<button class="btn screen-switch" onclick="switchScreen()">大小窗切换</button>
+<div>
+    <input type="hidden" name="roomToken" id="roomToken" th:value="${roomToken}">
+</div>
+
+<script>
+    //切换窗口
+    function switchScreen() {
+        const localPlayer = document.getElementById("localplayer");
+        const remotePlayer = document.getElementById("remoteplayer");
+        // 交换 2 个元素的 class
+        if (localPlayer.className === "mini-player") {
+            localPlayer.className = "fullscreen-player";
+            remotePlayer.className = "mini-player";
+        } else {
+            localPlayer.className = "mini-player";
+            remotePlayer.className = "fullscreen-player";
+        }
+    }
+    // 订阅用户的函数，myRTC 代表之前初始化 SDK 后拿到的示例
+    // user 代表加入房间返回或者事件返回的单个用户对象
+    function subscribeUser(myRTC, user) {
+        // 如果用户没有发布就直接返回
+        if (!user.published) {
+            return;
+        }
+        // 注意这里订阅使用了 Promise 的写法而没有用 async/await
+        // 因为在我们 Demo 中并没有依赖订阅这个操作的后续操作
+        // 即没有操作必须等到订阅操作结束之后再运行
+        myRTC.subscribe(user.userId).then(remoteStream => {
+            // 我们在 room 页面上准备用来显示远端媒体流的元素
+            const remotePlayer = document.getElementById('remoteplayer');
+        // 在我们准备的元素上播放远端媒体流
+        remoteStream.play(remotePlayer);
+    }).catch(e => {
+            console.log('subscribe error!', e);
+    });
+    }
+
+    (async () => {
+        const roomToken = document.getElementById("roomToken").value;
+        // 初始化 SDK
+        const myRTC = new QNRTC.QNRTCSession();
+        try {
+            // 调用 SDK 加入房间
+            const users = await myRTC.joinRoomWithToken(roomToken);
+            console.log('joinRoom success! 当前房间用户:', users);
+            // 加入房间成功后注册事件，当页面被关闭就离开房间
+            window.onbeforeunload = () => {
+                myRTC.leaveRoom();
+            };
+
+            // 监听房间里的用户发布事件，一旦有用户发布，就订阅他
+            myRTC.on('user-publish', user => {
+                subscribeUser(myRTC, user);
+            });
+            // 判断房间当前的用户是否有可以订阅的
+            for (let i = 0; i < users.length; i += 1) {
+                const user = users[i];
+                // 如果当前房间的用户不是自己并且已经发布
+                // 那就订阅他
+                if (user.published && user.userId !== myRTC.userId) {
+                    subscribeUser(myRTC, user);
+                }
+            }
+
+            // 采集本地媒体流，视频和音频都采集
+            const localStream = await QNRTC.deviceManager.getLocalStream({
+                video: { enabled: true, width: 640, height: 480, bitrate: 600 },
+                audio: { enabled: true, bitrate: 32 },
+            });
+            // 获取我们 room.html 中准备用来显示本地媒体流的元素
+            const localPlayer = document.getElementById('localplayer');
+            // 调用媒体流的 play 方法，在我们指定的元素上播放媒体流，其中第二个参数代表 静音播放
+            localStream.play(localPlayer, true);
+            // 发布刚刚采集到的媒体流到房间
+            await myRTC.publish(localStream);
+            console.log('publish success!');
+        } catch (e) {
+            console.log('error!', e);
+        }
+    })();
+
+
+</script>
+</body>
+</html>

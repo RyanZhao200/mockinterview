@@ -103,7 +103,7 @@ public class InterviewController {
 
         String roomToken = qiniuService.getRoomToken(93, 93, UserConstant.Interviewer_Type);
         model.addAttribute("roomToken", roomToken);
-        return "/front/interview/publish";
+        return "/front/interview/room";
     }
 
     /**
@@ -118,6 +118,6 @@ public class InterviewController {
 //        String roomToken = qiniuService.getRoomToken(iid, finder.getFid(), UserConstant.Finder_Type);
         String roomToken = qiniuService.getRoomToken(93, 93, UserConstant.Finder_Type);
         model.addAttribute("roomToken", roomToken);
-        return "/front/interview/subscribe";
+        return "/front/interview/room";
     }
 }
