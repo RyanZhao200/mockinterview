@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>Subscribe</title>
+    <script src="..static/front/js/pili-rtc-web.js" th:src="@{/front/js/pili-rtc-web.js}"></script>
+
+</head>
+<body>
+<div id="remoteplayer" style="width: 640px;height: 480px;background: #000"></div>
+<button onclick="joinRoom()">加入房间</button>
+
+<div>
+    <input type="hidden" name="roomToken" id="roomToken" th:value="${roomToken}">
+</div>
+
+<script>
+    async function joinRoom() {
+        // 使用局部变量，将全局变量的 QNRTC 销毁
+        const QNRTC = window.QNRTC;
+        window.QNRTC = undefined;
+        // 同上一章，我们先加入房间，注意这里 roomToken 需要满足上文的要求
+        var roomToken = document.getElementById("roomToken").value;
+        const myRTC = new QNRTC.QNRTCSession();
+        const users = await myRTC.joinRoomWithToken(roomToken);
+        // 准备好用来播放的元素
+        const remoteVideo = document.getElementById('remoteplayer');
+        myRTC.on("user-publish", async (user) => {
+            const remoteStream = await myRTC.subscribe(user.userId);
+        remoteStream.play(remoteVideo);
+    });
+        for (let i = 0; i < users.length; i+=1) {
+            const user = users[i];
+            // 如果这个用户正在发布并且不是自己，我们就订阅他
+            if (user.published && user.userId !== myRTC.userId) {
+                // 通过用户的 userId 订阅目标用户
+                // 这里返回和我们最初从本地获取媒体流时的返回格式一样
+                // 都是封装后的 Stream 对象
+                const remoteStream = await myRTC.subscribe(user.userId);
+                // 同样，调用 play 方法，选择页面上准备好用来播放的元素，就可以播放啦
+                remoteStream.play(remoteVideo);
+            }
+        }
+    }
+</script>
+</body>
+</html>

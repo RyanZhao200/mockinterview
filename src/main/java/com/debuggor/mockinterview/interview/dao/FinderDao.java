@@ -40,4 +40,12 @@ public interface FinderDao {
      * @param finder
      */
     void update(Finder finder);
+
+    /**
+     * 根据用户ID，获取用户信息
+     *
+     * @param fid
+     * @return
+     */
+    Finder getFinderById(Integer fid);
 }

@@ -1,11 +1,16 @@
 package com.debuggor.mockinterview.interview.controller;
 
 import com.debuggor.mockinterview.common.bean.vo.InterviewerVo;
+import com.debuggor.mockinterview.common.constant.UserConstant;
 import com.debuggor.mockinterview.common.service.InterviewTypeService;
+import com.debuggor.mockinterview.common.service.QiniuService;
+import com.debuggor.mockinterview.common.util.RtcRoomManager;
+import com.debuggor.mockinterview.interview.bean.Finder;
 import com.debuggor.mockinterview.interview.bean.Interviewer;
 import com.debuggor.mockinterview.interview.bean.Type;
 import com.debuggor.mockinterview.interview.service.InterviewService;
 import com.github.pagehelper.PageInfo;
+import com.qiniu.util.Auth;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +20,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpSession;
 import java.util.List;
 
 @Controller
@@ -26,6 +32,8 @@ public class InterviewController {
     private InterviewTypeService interviewTypeService;
     @Autowired
     private InterviewService interviewService;
+    @Autowired
+    private QiniuService qiniuService;
 
     /**
      * 首页
@@ -79,5 +87,37 @@ public class InterviewController {
         Interviewer interviewer = interviewService.getInterviewerById(iid);
         model.addAttribute("interviewer", interviewer);
         return "/front/interview/detail";
+    }
+
+    /**
+     * 面试官向求职者发起视频聊天
+     *
+     * @return
+     */
+    @RequestMapping("/publish")
+    public String interviewerToFinder(@RequestParam(required = false, value = "fid") Integer fid,
+                                      HttpSession session, Model model) throws Exception {
+        Interviewer interviewer = (Interviewer) session.getAttribute("interviewer");
+
+//        String roomToken = qiniuService.getRoomToken(interviewer.getIid(), fid, UserConstant.Interviewer_Type);
+
+        String roomToken = qiniuService.getRoomToken(93, 93, UserConstant.Interviewer_Type);
+        model.addAttribute("roomToken", roomToken);
+        return "/front/interview/publish";
+    }
+
+    /**
+     * 面试官向求职者发起视频聊天
+     *
+     * @return
+     */
+    @RequestMapping("/subscribe")
+    public String finderToInterviewer(@RequestParam(required = false, value = "iid") Integer iid,
+                                      HttpSession session, Model model) throws Exception {
+        Finder finder = (Finder) session.getAttribute("finder");
+//        String roomToken = qiniuService.getRoomToken(iid, finder.getFid(), UserConstant.Finder_Type);
+        String roomToken = qiniuService.getRoomToken(93, 93, UserConstant.Finder_Type);
+        model.addAttribute("roomToken", roomToken);
+        return "/front/interview/subscribe";
     }
 }

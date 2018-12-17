@@ -30,6 +30,11 @@
         SELECT * from j_finder WHERE email = #{email}
     </select>
 
+    <select id="getFinderById" resultType="com.debuggor.mockinterview.interview.bean.Finder"
+            parameterType="java.lang.Integer">
+        SELECT * from j_finder WHERE fid = #{fid}
+    </select>
+
     <insert id="insert" parameterType="com.debuggor.mockinterview.interview.bean.Finder">
         INSERT INTO j_finder(username,password,email,head_url,create_time,is_activate,activate_code)
         VALUES (#{username},#{password},#{email},#{headUrl},#{createTime},#{isActivate},#{activateCode})

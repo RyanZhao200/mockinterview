@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8"/>
+    <title>Publish</title>
+    <script src="..static/front/js/pili-rtc-web.js" th:src="@{/front/js/pili-rtc-web.js}"></script>
+
+</head>
+<body>
+<div id="localplayer" style="width: 640px; height: 480px; background: #000"></div>
+<div>
+    <input type="hidden" name="roomToken" id="roomToken" th:value="${roomToken}">
+</div>
+
+<script>
+    (async() => {
+        var roomToken = document.getElementById("roomToken").value;
+    const QNRTC = window.QNRTC;
+    window.QNRTC = undefined;
+    const myRTC = new QNRTC.QNRTCSession(); // 初始化我们的 SDK (QNRTC的引入方式见上)
+    try {
+        const users = await myRTC.joinRoomWithToken(roomToken); // 加入房间
+
+        // 因为 await 的特性，当代码执行到这里的时候，joinRoomWithToken 这个异步请求已经完成
+        // 如果过程中出现错误，会直接 throw 出来，如果需要处理只要 try/catch 就好
+        // 这里的 users 表示该房间中已经存在的用户，具体可以参照 API 文档
+        // 你也随时可以通过 myRTC.users 获取当前的用户列表
+        console.log('current users', users);
+    } catch (e) {
+        // 加入房间失败，关于错误处理可以参考下文的 错误处理 一节
+        console.log('join room error!', e);
+    }
+    // 使用内置的 deviceManager 对象采集本地媒体数据
+    const stream = await QNRTC.deviceManager.getLocalStream({
+        video: { enabled: true },
+        audio: { enabled: true },
+    });
+
+    // 页面上准备用来播放的元素，就是我们刚刚创建的
+    const localVideo = document.getElementById('localplayer');
+
+    // 拿到 stream 对象后，调用 play 就可以播放了
+    // sdk 会在指定的元素下创建相应的 video/audio 标签完成播放
+    // 这里第二个参数代表用 静音模式 来播放，本地预览的时候一般我们会设置成静音
+    stream.play(localVideo, true);
+
+    // 发布自己本地的流
+    try {
+        await myRTC.publish(stream);
+        console.log("publish success!");
+    } catch (e) {
+        console.log('publish error!', e);
+    }
+    })()
+</script>
+</body>
+</html>
