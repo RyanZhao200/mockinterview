@@ -1,0 +1,56 @@
+/* 填写订单页面 */
+/*step*/
+.order_steps {
+    height: 46px;
+    position: relative;
+    margin-top: 40px;
+    border-bottom: 2px solid #ececec;
+    margin-bottom: 30px;
+    padding-bottom: 10px;
+}
+
+.order_steps ol {
+    width: 100%;
+    margin: 0 auto;
+    padding: 0;
+}
+
+.order_steps ol li {
+    display: inline;
+    float: left;
+    width: 25%;
+    text-align: center;
+    height: 46px;
+    line-height: 46px;
+    font-size: 18px;
+    color: #999;
+    font-family: "\5FAE\8F6F\96C5\9ED1", "\534E\6587\7EC6\9ED1", "\9ED1\4F53", arial;
+}
+
+.order_steps ol li i {
+    display: inline-block;
+    zoom: 1;
+    *display: inline;
+    margin-right: 5px;
+    width: 24px;
+    height: 24px;
+    text-align: center;
+    font-style: normal;
+    line-height: 24px;
+    font-size: 14px;
+    font-weight: bold;
+    color: #FFF;
+    background: url('../images/pay/step_circle_gray@2x.png') no-repeat 0 0;
+    background-size: 100%
+}
+
+.order_steps ol li.active {
+    color: #1dc35f;
+    border-bottom: 2px solid #1dc35f;
+    padding-bottom: 10px;
+}
+
+.order_steps ol li.active i {
+    background-image: url('../images/pay/step_circle@2x.png');
+    background-size: 100%;
+}

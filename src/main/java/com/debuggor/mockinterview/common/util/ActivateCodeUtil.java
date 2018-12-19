@@ -19,6 +19,6 @@ public class ActivateCodeUtil {
     }
 
     public static void main(String[] args) {
-        System.out.println(createActivateCode().length());
+        System.out.println(createActivateCode());
     }
 }

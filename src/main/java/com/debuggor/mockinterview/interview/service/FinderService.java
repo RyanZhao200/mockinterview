@@ -123,4 +123,18 @@ public class FinderService {
             finderDao.update(finder);
         }
     }
+
+    /**
+     * 根据求职者ID，获取求职者信息
+     *
+     * @param fid
+     * @return
+     */
+    public Finder getFinderById(Integer fid) {
+        Finder finder = null;
+        if (fid != null) {
+            finder = finderDao.getFinderById(fid);
+        }
+        return finder;
+    }
 }

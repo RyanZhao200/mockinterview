@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>订单页面</title>
+    <link rel="stylesheet" href="..static/front/layui/css/layui.css" th:href="@{/front/layui/css/layui.css}">
+    <link rel="stylesheet" href="..static/front/css/global.css" th:href="@{/front/css/global.css}">
+    <link rel="stylesheet" href="..static/front/css/order.css" th:href="@{/front/css/order.css}">
+
+</head>
+<body>
+<!--前台公共头部-->
+<div th:replace="front/common/bar::topbar"></div>
+
+<!-- 内容主体 -->
+<div class="">
+
+    <!--form-->
+    <div class="layui-container">
+        <div class="layui-row">
+            <div class="order_steps">
+                <ol>
+                    <li class="active"><i>1</i><span>填写订单</span></li>
+                    <li><i>2</i><span>付款</span></li>
+                    <li><i>3</i><span>面试</span></li>
+                    <li><i>4</i><span>评价</span></li>
+                </ol>
+            </div>
+
+            <div class="layui-col-md12" style="background-color: white">
+                <div class="layui-card" style="padding:30px;">
+                    <div>
+                        <span>
+                            <img style="width: 100px;height: 100px;border-radius: 50px;"
+                                 th:src="${interviewer.headUrl}">
+                        </span>
+                        <span>
+                            <span >
+                                 [[${interviewer.username}]]
+                            </span>
+                            <span>
+                                 累计已帮助过20896人  收到466次感谢
+                            </span>
+                            <span>
+                                工作年限：4年
+                            </span>
+                        </span>
+                    </div>
+
+                    <div style="padding: 50px;">
+                        <form th:action="@{/pay/pay}" method="post">
+                            <div>
+                                <label>费用小计</label>
+                                <div>
+                                    <span style="font-size: 30px;color: red;">[[${interviewer.cost}]]元</span>
+                                    <input type="hidden" name="interviewerId" th:value="${interviewer.iid}">
+                                </div>
+                            </div>
+                            <div style="margin-top: 20px;">
+                                <label>个人简历 </label>
+                                <span style="margin-left: 20px;">
+                                   <input type="file" />
+                               </span>
+                            </div>
+                            <div style="margin-top: 10px;">
+                                <label>个人描述(所应聘的职位等)</label>
+                                <div>
+                                    <textarea id="" name="introduction" autocomplete="off" class="layui-textarea"
+                                              style="height: 100px;" placeholder="描述文字最少10个字"></textarea>
+                                </div>
+                            </div>
+                            <div style="margin-top: 10px;">
+                                <span>
+                                     <input type="checkbox" checked> 提交预约申请即代表您确认并接受《咨询服务协议》。
+                                </span>
+                            </div>
+                            <div class="layui-form-item" style="margin-top: 10px;">
+                                <button class="layui-btn" key="set-mine" lay-filter="*" lay-submit>提交</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--公共底部-->
+<div th:replace="front/common/bar::footerbar"></div>
+
+<script src="..static/front/layui/layui.js" th:src="@{/front/layui/layui.js}"></script>
+<script src="..static/admin/js/jquery.min.js" th:src="@{/admin/js/jquery.min.js}"></script>
+<script>
+    layui.use(['element'], function () {
+        var element = layui.element;
+    });
+</script>
+</body>
+</html>

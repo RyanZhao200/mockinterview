@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.debuggor.mockinterview.interview.dao.OrdersDao">
+
+    <insert id="insert" parameterType="com.debuggor.mockinterview.interview.bean.Order">
+        INSERT into j_order(order_num,order_status,order_amount,introduction,resume_url,finder_id,interviewer_id,create_time)
+        VALUES(#{orderNum},#{orderStatus},#{orderAmount},#{introduction},#{resumeUrl},#{finderId},#{interviewerId},#{createTime})
+    </insert>
+
+    <select id="getOrderByOrderNum" parameterType="java.lang.String"
+            resultType="com.debuggor.mockinterview.interview.bean.Order">
+        SELECT * from j_order WHERE order_num = #{orderNum}
+    </select>
+
+    <update id="update" parameterType="com.debuggor.mockinterview.interview.bean.Order">
+        UPDATE j_order
+        <set>
+            <if test="orderStatus != null">order_status=#{orderStatus},</if>
+            <if test="paidAmount != null">paid_amount=#{paidAmount},</if>
+            <if test="paidTime != null">paid_time=#{paidTime},</if>
+        </set>
+        WHERE order_num = #{orderNum}
+    </update>
+</mapper>

@@ -9,6 +9,7 @@ import com.debuggor.mockinterview.interview.bean.Finder;
 import com.debuggor.mockinterview.interview.bean.Interviewer;
 import com.debuggor.mockinterview.interview.bean.Type;
 import com.debuggor.mockinterview.interview.service.InterviewService;
+import com.debuggor.mockinterview.interview.service.InterviewerService;
 import com.github.pagehelper.PageInfo;
 import com.qiniu.util.Auth;
 import org.slf4j.Logger;
@@ -34,6 +35,8 @@ public class InterviewController {
     private InterviewService interviewService;
     @Autowired
     private QiniuService qiniuService;
+    @Autowired
+    private InterviewerService interviewerService;
 
     /**
      * 首页
@@ -119,5 +122,14 @@ public class InterviewController {
         String roomToken = qiniuService.getRoomToken(93, 93, UserConstant.Finder_Type);
         model.addAttribute("roomToken", roomToken);
         return "/front/interview/room";
+    }
+
+
+    @RequestMapping("/interview/interview/{iid}")
+    public String interviewPage(@PathVariable("iid") Integer iid, Model model) {
+        // 获取面试官信息
+        Interviewer interviewer = interviewerService.getInterviewerById(iid);
+        model.addAttribute("interviewer", interviewer);
+        return "/front/interview/interview";
     }
 }

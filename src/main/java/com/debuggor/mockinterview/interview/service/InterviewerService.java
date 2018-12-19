@@ -57,6 +57,14 @@ public class InterviewerService {
         return interviewer;
     }
 
+    public Interviewer getInterviewerById(Integer iid){
+        Interviewer interviewer = null;
+        if (iid != null) {
+            interviewer = interviewerDao.getInterviewerById(iid);
+        }
+        return interviewer;
+    }
+
     public String register(Interviewer interviewer, String repassword) {
         if (interviewer == null || repassword == null) {
             return null;
