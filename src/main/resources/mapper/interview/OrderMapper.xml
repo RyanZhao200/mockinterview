@@ -15,13 +15,24 @@
         SELECT * from j_order WHERE order_num = #{orderNum}
     </select>
 
+    <select id="getOrderById" parameterType="java.lang.Integer"
+            resultType="com.debuggor.mockinterview.interview.bean.Order">
+        SELECT * from j_order WHERE oid=#{oid}
+    </select>
+
     <update id="update" parameterType="com.debuggor.mockinterview.interview.bean.Order">
         UPDATE j_order
         <set>
             <if test="orderStatus != null">order_status=#{orderStatus},</if>
             <if test="paidAmount != null">paid_amount=#{paidAmount},</if>
             <if test="paidTime != null">paid_time=#{paidTime},</if>
+            <if test="isInterviewed != null">is_interviewed=#{isInterviewed},</if>
+            <if test="isOrdered != null">is_ordered=#{isOrdered},</if>
+            <if test="isEvaluation != null">is_evaluation=#{isEvaluation},</if>
+            <if test="evaluationId != null">evaluation_id=#{evaluationId},</if>
+            <if test="orderedTime != null">ordered_time=#{orderedTime},</if>
         </set>
         WHERE order_num = #{orderNum}
     </update>
+
 </mapper>

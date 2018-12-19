@@ -13,8 +13,31 @@ public class Evaluation {
     private Integer iid;
     // 评价者ID
     private Integer fid;
+    // 订单ID
+    private Integer oid;
     // 创建时间
     private Date createTime;
+
+    @Override
+    public String toString() {
+        return "Evaluation{" +
+                "eid=" + eid +
+                ", comment='" + comment + '\'' +
+                ", grade=" + grade +
+                ", iid=" + iid +
+                ", fid=" + fid +
+                ", oid=" + oid +
+                ", createTime=" + createTime +
+                '}';
+    }
+
+    public Integer getOid() {
+        return oid;
+    }
+
+    public void setOid(Integer oid) {
+        this.oid = oid;
+    }
 
     public Integer getEid() {
         return eid;

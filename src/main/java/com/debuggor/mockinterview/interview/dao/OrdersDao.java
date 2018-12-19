@@ -29,4 +29,12 @@ public interface OrdersDao {
      * @return
      */
     Order getOrderByOrderNum(String orderNum);
+
+    /**
+     * 根据订单ID，获取订单信息
+     *
+     * @param oid
+     * @return
+     */
+    Order getOrderById(Integer oid);
 }

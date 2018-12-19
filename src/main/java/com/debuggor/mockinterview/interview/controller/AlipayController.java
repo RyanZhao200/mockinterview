@@ -8,6 +8,7 @@ import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.debuggor.mockinterview.common.config.AlipayConfig;
 import com.debuggor.mockinterview.common.util.OrdersNumberUtil;
 import com.debuggor.mockinterview.common.util.OrdersStatusEnum;
+import com.debuggor.mockinterview.common.util.StatusEnum;
 import com.debuggor.mockinterview.interview.bean.Finder;
 import com.debuggor.mockinterview.interview.bean.Flow;
 import com.debuggor.mockinterview.interview.bean.Interviewer;
@@ -190,6 +191,12 @@ public class AlipayController {
             order.setOrderStatus(OrdersStatusEnum.PAID.key);
             order.setPaidAmount(total_amount);
             order.setPaidTime(new Date());
+            // 未面试
+            order.setIsInterviewed(StatusEnum.NO.key);
+            // 未结单
+            order.setIsOrdered(StatusEnum.NO.key);
+            // 还未评价
+            order.setIsEvaluation(StatusEnum.NO.key);
             ordersService.updateOrder(order);
             order = ordersService.getOrderByOrderNum(out_trade_no);
 
@@ -209,7 +216,7 @@ public class AlipayController {
             logger.info("* 实付金额: {}", total_amount);
             logger.info("***************************************************************");
 
-            return "redirect:/interview/interview/" + order.getInterviewerId();
+            return "redirect:/interview/interview/" + order.getOid();
         } else {
             logger.info("支付, 验签失败...");
             return "";

@@ -24,17 +24,34 @@ public class OrdersService {
         ordersDao.insert(order);
     }
 
+    /**
+     * 根据订单号获取订单详情
+     *
+     * @param orderNum
+     * @return
+     */
     public Order getOrderByOrderNum(String orderNum) {
         Order order = ordersDao.getOrderByOrderNum(orderNum);
         return order;
     }
 
     /**
-     * 跟新订单号
+     * 更新订单号
      *
      * @param order
      */
     public void updateOrder(Order order) {
         ordersDao.update(order);
+    }
+
+    /**
+     * 根据订单ID获取订单
+     *
+     * @param oid
+     * @return
+     */
+    public Order getOrderById(Integer oid) {
+        Order order = ordersDao.getOrderById(oid);
+        return order;
     }
 }

@@ -5,11 +5,12 @@ import com.debuggor.mockinterview.common.constant.UserConstant;
 import com.debuggor.mockinterview.common.service.InterviewTypeService;
 import com.debuggor.mockinterview.common.service.QiniuService;
 import com.debuggor.mockinterview.common.util.RtcRoomManager;
-import com.debuggor.mockinterview.interview.bean.Finder;
-import com.debuggor.mockinterview.interview.bean.Interviewer;
-import com.debuggor.mockinterview.interview.bean.Type;
+import com.debuggor.mockinterview.common.util.StatusEnum;
+import com.debuggor.mockinterview.interview.bean.*;
+import com.debuggor.mockinterview.interview.service.EvaluationService;
 import com.debuggor.mockinterview.interview.service.InterviewService;
 import com.debuggor.mockinterview.interview.service.InterviewerService;
+import com.debuggor.mockinterview.interview.service.OrdersService;
 import com.github.pagehelper.PageInfo;
 import com.qiniu.util.Auth;
 import org.slf4j.Logger;
@@ -22,6 +23,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 import java.util.List;
 
 @Controller
@@ -37,6 +39,10 @@ public class InterviewController {
     private QiniuService qiniuService;
     @Autowired
     private InterviewerService interviewerService;
+    @Autowired
+    private OrdersService ordersService;
+    @Autowired
+    private EvaluationService evaluationService;
 
     /**
      * 首页
@@ -97,39 +103,117 @@ public class InterviewController {
      *
      * @return
      */
-    @RequestMapping("/publish")
+    @RequestMapping("/interview/publish")
     public String interviewerToFinder(@RequestParam(required = false, value = "fid") Integer fid,
                                       HttpSession session, Model model) throws Exception {
         Interviewer interviewer = (Interviewer) session.getAttribute("interviewer");
-
-//        String roomToken = qiniuService.getRoomToken(interviewer.getIid(), fid, UserConstant.Interviewer_Type);
-
-        String roomToken = qiniuService.getRoomToken(93, 93, UserConstant.Interviewer_Type);
+        if (interviewer == null) {
+            return "/";
+        }
+        String roomToken = qiniuService.getRoomToken(interviewer.getIid(), fid, UserConstant.Interviewer_Type);
         model.addAttribute("roomToken", roomToken);
+        logger.info("面试官：" + interviewer.getUsername() + "发起了面试");
         return "/front/interview/room";
     }
 
     /**
-     * 面试官向求职者发起视频聊天
+     * 求职者向面试官发起视频聊天
      *
      * @return
      */
-    @RequestMapping("/subscribe")
+    @RequestMapping("/interview/subscribe")
     public String finderToInterviewer(@RequestParam(required = false, value = "iid") Integer iid,
                                       HttpSession session, Model model) throws Exception {
         Finder finder = (Finder) session.getAttribute("finder");
-//        String roomToken = qiniuService.getRoomToken(iid, finder.getFid(), UserConstant.Finder_Type);
-        String roomToken = qiniuService.getRoomToken(93, 93, UserConstant.Finder_Type);
+        if (finder == null) {
+            return "/";
+        }
+        String roomToken = qiniuService.getRoomToken(iid, finder.getFid(), UserConstant.Finder_Type);
         model.addAttribute("roomToken", roomToken);
+        logger.info("求职者：" + finder.getUsername() + "发起了面试");
         return "/front/interview/room";
     }
 
-
-    @RequestMapping("/interview/interview/{iid}")
-    public String interviewPage(@PathVariable("iid") Integer iid, Model model) {
+    /**
+     * 面试流程-面试 环节
+     *
+     * @param oid   订单ID
+     * @param model
+     * @return
+     */
+    @RequestMapping("/interview/interview/{oid}")
+    public String interviewPage(@PathVariable("oid") Integer oid, Model model) {
+        if (oid == null) {
+            return "/";
+        }
+        Order order = ordersService.getOrderById(oid);
         // 获取面试官信息
-        Interviewer interviewer = interviewerService.getInterviewerById(iid);
+        Interviewer interviewer = interviewerService.getInterviewerById(order.getInterviewerId());
         model.addAttribute("interviewer", interviewer);
+        model.addAttribute("order", order);
         return "/front/interview/interview";
+    }
+
+    /**
+     * 确认结单 并 跳转到评论页面
+     *
+     * @return
+     */
+    @RequestMapping("/interview/confirmOrder")
+    public String confirmOrder(@RequestParam(required = false, value = "oid") Integer oid) {
+        if (oid == null) {
+            return "/";
+        }
+        Order orderById = ordersService.getOrderById(oid);
+        Order order = new Order();
+        order.setOrderNum(orderById.getOrderNum());
+        // 结单:状态改变、新加结单时间
+        order.setIsOrdered(StatusEnum.YES.key);
+        order.setOrderedTime(new Date());
+        ordersService.updateOrder(order);
+
+        return "redirect:/interview/evaluate/" + orderById.getOid();
+    }
+
+    /**
+     * 求职者对面试官进行评论
+     *
+     * @param oid
+     * @param model
+     * @return
+     */
+    @RequestMapping("/interview/evaluate/{oid}")
+    public String evaluationPage(@PathVariable("oid") Integer oid, Model model) {
+        if (oid == null) {
+            return "/";
+        }
+        Order order = ordersService.getOrderById(oid);
+        Interviewer interviewer = interviewerService.getInterviewerById(order.getInterviewerId());
+        model.addAttribute("order", order);
+        model.addAttribute("interviewer", interviewer);
+        return "/front/interview/evaluation";
+    }
+
+    /**
+     * 提交评论&更新订单表
+     *
+     * @param evaluation
+     * @return
+     */
+    @RequestMapping("/interview/evaluateAction")
+    public String evaluation(Evaluation evaluation, Model model) {
+        evaluation.setCreateTime(new Date());
+        logger.info(evaluation.toString());
+        Integer eid = evaluationService.insert(evaluation);
+        Order orderById = ordersService.getOrderById(evaluation.getOid());
+        Order order = new Order();
+        if (orderById != null) {
+            order.setOrderNum(orderById.getOrderNum());
+            order.setIsEvaluation(StatusEnum.YES.key);
+            order.setEvaluationId(eid);
+        }
+        ordersService.updateOrder(order);
+        model.addAttribute("iid", evaluation.getIid());
+        return "/front/interview/tips";
     }
 }

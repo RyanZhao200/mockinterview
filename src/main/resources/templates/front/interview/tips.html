@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>提示页面</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="stylesheet" href="..static/front/layui/css/layui.css" th:href="@{/front/layui/css/layui.css}">
+    <link rel="stylesheet" href="..static/front/css/global.css" th:href="@{/front/css/global.css}">
+</head>
+<body>
+<!--前台公共头部-->
+<div th:replace="front/common/bar::topbar"></div>
+
+
+<div style="margin:30px 80px;background-color: #F2F2F2;height: 100px;">
+    <div class="layui-row layui-col-space15">
+        <div class="layui-col-md12">
+            <div class="layui-card">
+                <div class="layui-card-body" style="height: 100%;padding: 50px 200px;">
+                    <p style="font-size: 20px;font-family: serif">感谢您的评论,本页面将在<span id="jump">5</span>秒之后跳转到面试官详情页</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--公共底部-->
+<div th:replace="front/common/bar::footerbar"></div>
+
+<script src="..static/front/layui/layui.js" th:src="@{/front/layui/layui.js}"></script>
+<script type="text/javascript">
+    window.onload = function () {
+        var count = 5; //倒计时5秒；
+        setTimeout(fn, 1000);
+
+        function fn() {
+            count--;
+            document.getElementById("jump").innerHTML = count;
+            // 如果等于0秒，页面自动跳转到新页面
+            if (count <= 0) {
+                window.location.href = "/interviewer/" + [[${iid}]];
+            } else {
+                setTimeout(fn, 1000);
+            }
+        }
+    }
+</script>
+</body>
+</html>

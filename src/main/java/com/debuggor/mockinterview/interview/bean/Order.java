@@ -43,6 +43,22 @@ public class Order {
      */
     private Integer interviewerId;
     /**
+     * 是否面试（1：是,2：否）（面试官跟新）
+     */
+    private String isInterviewed;
+    /**
+     * 是否结单（1：是,2：否）(求职者跟新)
+     */
+    private String isOrdered;
+    /**
+     * 是否已经评价（1：是,2：否）
+     */
+    private String isEvaluation;
+    /**
+     * 评论表单ID
+     */
+    private Integer evaluationId;
+    /**
      * 订单创建时间
      */
     private Date createTime;
@@ -50,6 +66,10 @@ public class Order {
      * 支付时间
      */
     private Date paidTime;
+    /**
+     * 结单时间
+     */
+    private Date orderedTime;
 
     @Override
     public String toString() {
@@ -63,9 +83,54 @@ public class Order {
                 ", resumeUrl='" + resumeUrl + '\'' +
                 ", finderId=" + finderId +
                 ", interviewerId=" + interviewerId +
+                ", isInterviewed='" + isInterviewed + '\'' +
+                ", isOrdered='" + isOrdered + '\'' +
+                ", isEvaluation='" + isEvaluation + '\'' +
+                ", evaluationId=" + evaluationId +
                 ", createTime=" + createTime +
                 ", paidTime=" + paidTime +
+                ", orderedTime=" + orderedTime +
                 '}';
+    }
+
+    public String getIsInterviewed() {
+        return isInterviewed;
+    }
+
+    public void setIsInterviewed(String isInterviewed) {
+        this.isInterviewed = isInterviewed;
+    }
+
+    public String getIsOrdered() {
+        return isOrdered;
+    }
+
+    public void setIsOrdered(String isOrdered) {
+        this.isOrdered = isOrdered;
+    }
+
+    public String getIsEvaluation() {
+        return isEvaluation;
+    }
+
+    public void setIsEvaluation(String isEvaluation) {
+        this.isEvaluation = isEvaluation;
+    }
+
+    public Integer getEvaluationId() {
+        return evaluationId;
+    }
+
+    public void setEvaluationId(Integer evaluationId) {
+        this.evaluationId = evaluationId;
+    }
+
+    public Date getOrderedTime() {
+        return orderedTime;
+    }
+
+    public void setOrderedTime(Date orderedTime) {
+        this.orderedTime = orderedTime;
     }
 
     public String getIntroduction() {

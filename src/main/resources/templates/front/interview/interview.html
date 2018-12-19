@@ -27,8 +27,13 @@
                 </ol>
             </div>
 
-            <div class="layui-col-md12" style="background-color: #fcf8e4;padding: 20px;">
+            <div th:if="${order.isInterviewed}=='2'" class="layui-col-md12"
+                 style="background-color: #fcf8e4;padding: 20px;">
                 <span style="color: #987a24;margin: 20px;font-size: 20px;">等待面试官发起面试！！！</span>
+            </div>
+            <div th:if="${order.isInterviewed}=='1'" class="layui-col-md12"
+                 style="background-color: #fcf8e4;padding: 20px;">
+                <span style="color: #987a24;margin: 20px;font-size: 20px;">面试已结束！！！请确认结单并进行评价!</span>
             </div>
 
             <div class="layui-col-md12" style="background-color: white;margin-top: 20px;padding: 20px;">
@@ -55,8 +60,10 @@
                         <span>[[${interviewer.email}]]</span>
                     </div>
                     <div class="layui-form-item" style="margin-top: 10px;">
-                        <button class="layui-btn" key="set-mine" lay-filter="*" lay-submit>发起/加入视频</button>
-                        <button class="layui-btn" key="set-mine" lay-filter="*" lay-submit>确认结单</button>
+                        <a class="layui-btn" th:href="@{/interview/subscribe(iid=${interviewer.iid})}">发起/加入视频
+                        </a>
+                        <a class="layui-btn" th:href="@{/interview/confirmOrder(oid=${order.oid})}"
+                           onclick="if(confirm('确认结单吗？')==false)return false;">确认结单</a>
                     </div>
                 </div>
             </div>
