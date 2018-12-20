@@ -10,7 +10,7 @@ import java.util.UUID;
 public class OrdersNumberUtil {
 
     public static String formatDate(Date date) {
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddhhMMss");
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
         return sdf.format(date);
     }
 

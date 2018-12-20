@@ -1,18 +1,20 @@
 package com.debuggor.mockinterview.interview.controller;
 
+import com.debuggor.mockinterview.common.bean.Message;
 import com.debuggor.mockinterview.common.bean.vo.InterviewerVo;
 import com.debuggor.mockinterview.common.constant.UserConstant;
+import com.debuggor.mockinterview.common.enumerate.MessageStatusEnum;
+import com.debuggor.mockinterview.common.enumerate.StatusEnum;
+import com.debuggor.mockinterview.common.enumerate.StatusTypeEnum;
 import com.debuggor.mockinterview.common.service.InterviewTypeService;
+import com.debuggor.mockinterview.common.service.MessageService;
 import com.debuggor.mockinterview.common.service.QiniuService;
-import com.debuggor.mockinterview.common.util.RtcRoomManager;
-import com.debuggor.mockinterview.common.util.StatusEnum;
 import com.debuggor.mockinterview.interview.bean.*;
 import com.debuggor.mockinterview.interview.service.EvaluationService;
 import com.debuggor.mockinterview.interview.service.InterviewService;
 import com.debuggor.mockinterview.interview.service.InterviewerService;
 import com.debuggor.mockinterview.interview.service.OrdersService;
 import com.github.pagehelper.PageInfo;
-import com.qiniu.util.Auth;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,6 +45,8 @@ public class InterviewController {
     private OrdersService ordersService;
     @Autowired
     private EvaluationService evaluationService;
+    @Autowired
+    private MessageService messageService;
 
     /**
      * 首页
@@ -171,6 +175,15 @@ public class InterviewController {
         order.setIsOrdered(StatusEnum.YES.key);
         order.setOrderedTime(new Date());
         ordersService.updateOrder(order);
+        // 更新消息
+        Message m = messageService.getMessageByOid(oid);
+        Message message = new Message();
+        message.setMid(m.getMid());
+        message.setUpdateTime(new Date());
+        message.setMessageUrl("/interview/evaluate/" + oid    );
+        message.setStatusType(StatusTypeEnum.WAIT_COMMENT.key);
+        message.setMessageStatus(MessageStatusEnum.NOT_READ.key);
+        messageService.update(message);
 
         return "redirect:/interview/evaluate/" + orderById.getOid();
     }
@@ -214,6 +227,15 @@ public class InterviewController {
         }
         ordersService.updateOrder(order);
         model.addAttribute("iid", evaluation.getIid());
+        // 更新消息
+        Message m = messageService.getMessageByOid(evaluation.getOid());
+        Message message = new Message();
+        message.setMid(m.getMid());
+        message.setUpdateTime(new Date());
+        message.setStatusType(StatusTypeEnum.OVER_INTERVIEW.key);
+        message.setMessageStatus(MessageStatusEnum.NOT_READ.key);
+        message.setMessageUrl("/interviewer/" + evaluation.getIid());
+        messageService.update(message);
         return "/front/interview/tips";
     }
 }

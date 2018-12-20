@@ -1,11 +1,17 @@
 package com.debuggor.mockinterview.interview.controller;
 
+import com.debuggor.mockinterview.common.bean.Message;
 import com.debuggor.mockinterview.common.constant.MockConstant;
 import com.debuggor.mockinterview.common.constant.QiniuConstant;
+import com.debuggor.mockinterview.common.enumerate.UserEnum;
+import com.debuggor.mockinterview.common.service.MessageService;
 import com.debuggor.mockinterview.common.service.QiniuService;
 import com.debuggor.mockinterview.common.util.Md5Util;
 import com.debuggor.mockinterview.interview.bean.Finder;
+import com.debuggor.mockinterview.interview.bean.Order;
 import com.debuggor.mockinterview.interview.service.FinderService;
+import com.debuggor.mockinterview.interview.service.InterviewerService;
+import com.debuggor.mockinterview.interview.service.OrdersService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +27,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /***
@@ -36,6 +43,12 @@ public class FinderController {
     private FinderService finderService;
     @Autowired
     private QiniuService qiniuService;
+    @Autowired
+    private OrdersService ordersService;
+    @Autowired
+    private InterviewerService interviewerService;
+    @Autowired
+    private MessageService messageService;
 
     /**
      * 求职者登录页面
@@ -226,5 +239,23 @@ public class FinderController {
             model.addAttribute("msg", "验证失败，请重新注册");
             return "redirect:/finder/reg";
         }
+    }
+
+    /**
+     * 求职者 面试消息记录
+     *
+     * @param session
+     * @param model
+     * @return
+     */
+    @RequestMapping("/messageInterview")
+    public String toMessageInterview(HttpSession session, Model model) {
+        Finder finder = (Finder) session.getAttribute("finder");
+        model.addAttribute("finder", finder);
+
+        List<Message> messages = messageService.getMessageByUid(finder.getFid(), UserEnum.FINDER.key);
+
+        model.addAttribute("messages", messages);
+        return "/front/user/finder/messageInterview";
     }
 }

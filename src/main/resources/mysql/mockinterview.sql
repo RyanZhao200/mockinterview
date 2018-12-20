@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50638
 File Encoding         : 65001
 
-Date: 2018-12-08 23:03:01
+Date: 2018-12-20 17:14:33
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -41,6 +41,25 @@ CREATE TABLE `c_article` (
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`aid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文章内容';
+
+-- ----------------------------
+-- Table structure for c_message
+-- ----------------------------
+DROP TABLE IF EXISTS `c_message`;
+CREATE TABLE `c_message` (
+  `mid` int(11) NOT NULL AUTO_INCREMENT COMMENT '消息ID',
+  `content` varchar(50) DEFAULT NULL COMMENT '消息内容',
+  `message_url` varchar(30) DEFAULT NULL COMMENT '消息链接',
+  `uid` int(11) DEFAULT NULL COMMENT '用户ID',
+  `user_type` varchar(4) DEFAULT NULL COMMENT '用户类别（1、求职者，2、面试官）',
+  `message_type` varchar(4) DEFAULT NULL COMMENT '消息类别（1：论坛；2：面试）',
+  `oid` int(11) DEFAULT NULL COMMENT '订单ID',
+  `status_type` varchar(4) DEFAULT NULL COMMENT '状态类别（面试：1、待付款，2、待面试，3、待结单，4、待评价，5、面试结束；论坛：1、帖子，2、评论）',
+  `message_status` varchar(4) DEFAULT NULL COMMENT '消息状态（1、未读，2、已读，3、已删）',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  `update_time` datetime DEFAULT NULL COMMENT '最近更新时间',
+  PRIMARY KEY (`mid`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='消息表（论坛、面试）';
 
 -- ----------------------------
 -- Table structure for c_url
@@ -105,9 +124,10 @@ CREATE TABLE `j_evaluation` (
   `grade` int(20) DEFAULT NULL COMMENT '评星',
   `iid` bigint(20) DEFAULT NULL COMMENT '面试官ID',
   `fid` int(20) DEFAULT NULL COMMENT '评价者ID',
+  `oid` int(11) DEFAULT NULL COMMENT '订单ID',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`eid`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='求职者对面试官评价';
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8 COMMENT='求职者对面试官评价';
 
 -- ----------------------------
 -- Table structure for j_finder
@@ -132,6 +152,21 @@ CREATE TABLE `j_finder` (
 ) ENGINE=InnoDB AUTO_INCREMENT=94 DEFAULT CHARSET=utf8 COMMENT='求职者';
 
 -- ----------------------------
+-- Table structure for j_flow
+-- ----------------------------
+DROP TABLE IF EXISTS `j_flow`;
+CREATE TABLE `j_flow` (
+  `fid` int(11) NOT NULL AUTO_INCREMENT COMMENT '流水ID',
+  `flow_num` varchar(30) DEFAULT NULL COMMENT '流水号',
+  `order_num` varchar(30) DEFAULT NULL COMMENT '订单号',
+  `paid_amount` varchar(30) DEFAULT NULL COMMENT '支付金额',
+  `finder_id` int(11) DEFAULT NULL COMMENT '求职者ID（付款人ID）',
+  `interviewer_id` int(11) DEFAULT NULL COMMENT '面试官ID（准收款人ID）',
+  `create_time` datetime DEFAULT NULL COMMENT '创建时间',
+  PRIMARY KEY (`fid`)
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8 COMMENT='流水表';
+
+-- ----------------------------
 -- Table structure for j_interviewer
 -- ----------------------------
 DROP TABLE IF EXISTS `j_interviewer`;
@@ -148,7 +183,7 @@ CREATE TABLE `j_interviewer` (
   `is_activate` int(2) DEFAULT '0' COMMENT '是否激活（1：激活，0：未激活）',
   `activate_code` varchar(255) DEFAULT NULL COMMENT '激活码',
   `is_certification` int(2) DEFAULT '0' COMMENT '是否认证（1：yes,0:no）',
-  `grade` int(11) DEFAULT NULL COMMENT '评分等级',
+  `grade` float(4,1) DEFAULT NULL COMMENT '评分等级',
   `cost` varchar(255) DEFAULT '50' COMMENT '收费',
   `qq` varchar(255) DEFAULT NULL COMMENT 'QQ',
   `weixin` varchar(255) DEFAULT NULL COMMENT '微信',
@@ -156,7 +191,7 @@ CREATE TABLE `j_interviewer` (
   `blog_url` varchar(255) DEFAULT NULL COMMENT '博客地址',
   `nickname` varchar(255) DEFAULT NULL COMMENT '昵称（已弃用）',
   PRIMARY KEY (`iid`)
-) ENGINE=InnoDB AUTO_INCREMENT=93 DEFAULT CHARSET=utf8 COMMENT='面试官';
+) ENGINE=InnoDB AUTO_INCREMENT=94 DEFAULT CHARSET=utf8 COMMENT='面试官';
 
 -- ----------------------------
 -- Table structure for j_interviewer_type
@@ -167,7 +202,31 @@ CREATE TABLE `j_interviewer_type` (
   `iid` bigint(20) DEFAULT NULL COMMENT '面试官ID',
   `tid` bigint(20) DEFAULT NULL COMMENT '类别ID',
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='面试官和类别中间表';
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8 COMMENT='面试官和类别中间表';
+
+-- ----------------------------
+-- Table structure for j_order
+-- ----------------------------
+DROP TABLE IF EXISTS `j_order`;
+CREATE TABLE `j_order` (
+  `oid` int(11) NOT NULL AUTO_INCREMENT COMMENT '订单ID',
+  `order_num` varchar(30) DEFAULT NULL COMMENT '订单号',
+  `order_status` varchar(30) DEFAULT NULL COMMENT '订单状态 1：待付款  2：已付款',
+  `order_amount` varchar(30) DEFAULT NULL COMMENT '订单金额',
+  `paid_amount` varchar(30) DEFAULT NULL COMMENT '实际支付金额',
+  `introduction` text COMMENT '求职者个人介绍',
+  `resume_url` varchar(255) DEFAULT NULL COMMENT '简历链接',
+  `finder_id` int(11) DEFAULT NULL COMMENT '求职者ID',
+  `interviewer_id` int(11) DEFAULT NULL COMMENT '面试官ID',
+  `is_interviewed` varchar(10) DEFAULT NULL COMMENT '是否面试（1：是,2：否）（面试官跟新）',
+  `is_ordered` varchar(10) DEFAULT NULL COMMENT '是否结单（1：是,2：否）(求职者跟新)',
+  `is_evaluation` varchar(10) DEFAULT NULL COMMENT '是否已经评价（1：是,2：否）',
+  `evaluation_id` int(11) DEFAULT NULL COMMENT '评论表单ID',
+  `create_time` datetime DEFAULT NULL COMMENT '订单创建时间',
+  `paid_time` datetime DEFAULT NULL COMMENT '支付时间',
+  `ordered_time` datetime DEFAULT NULL COMMENT '结单时间',
+  PRIMARY KEY (`oid`)
+) ENGINE=InnoDB AUTO_INCREMENT=32 DEFAULT CHARSET=utf8 COMMENT='订单表';
 
 -- ----------------------------
 -- Table structure for j_type

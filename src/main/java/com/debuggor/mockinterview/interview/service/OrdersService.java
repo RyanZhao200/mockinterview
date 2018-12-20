@@ -1,9 +1,14 @@
 package com.debuggor.mockinterview.interview.service;
 
+import com.debuggor.mockinterview.interview.bean.Interviewer;
 import com.debuggor.mockinterview.interview.bean.Order;
+import com.debuggor.mockinterview.interview.dao.InterviewerDao;
 import com.debuggor.mockinterview.interview.dao.OrdersDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 订单的service层
@@ -13,6 +18,8 @@ public class OrdersService {
 
     @Autowired
     private OrdersDao ordersDao;
+    @Autowired
+    private InterviewerDao interviewerDao;
 
     /**
      * 插入一条订单
@@ -53,5 +60,25 @@ public class OrdersService {
     public Order getOrderById(Integer oid) {
         Order order = ordersDao.getOrderById(oid);
         return order;
+    }
+
+    /**
+     * 根据求职者ID，查询出求职者的订单记录
+     *
+     * @param fid
+     * @return
+     */
+    public List<Order> getOrderByFinderId(Integer fid) {
+        List<Order> orders = new ArrayList<>();
+        if (fid != null) {
+            List<Order> orderList = ordersDao.getOrderByFinderId(fid);
+            Interviewer interviewer = null;
+            for (Order order : orderList) {
+                interviewer = interviewerDao.getInterviewerById(order.getInterviewerId());
+                order.setInterviewerName(interviewer.getUsername());
+                orders.add(order);
+            }
+        }
+        return orders;
     }
 }

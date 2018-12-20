@@ -1,28 +1,27 @@
-package com.debuggor.mockinterview.common.util;
+package com.debuggor.mockinterview.common.enumerate;
 
 /**
- * 订单状态
+ * 用户类型
+ * 0、管理员，1、求职者，2、面试官
  */
-public enum OrdersStatusEnum {
-    // 代付款
-    WAIT_PAY("1", "待付款"),
-    // 已付款
-    PAID("2", "已付款"),
-    // 已取消
-    CANCELED("3", "已取消"),
-    // 超时未支付, 交易关闭
-    CLOSED("4", "交易关闭");
+public enum UserEnum {
+    // 管理员
+    ADMIN("0", "管理员"),
+    // 求职者
+    FINDER("1", "求职者"),
+    // 面试官
+    INTERVIEWER("2", "面试官");
 
     public final String key;
     public final String value;
 
-    OrdersStatusEnum(String key, String value) {
+    UserEnum(String key, String value) {
         this.key = key;
         this.value = value;
     }
 
     public static String getName(String key) {
-        for (OrdersStatusEnum status : OrdersStatusEnum.values()) {
+        for (UserEnum status : UserEnum.values()) {
             if (status.getKey().equals(key)) {
                 return status.value;
             }

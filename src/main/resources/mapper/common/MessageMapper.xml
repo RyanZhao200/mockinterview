@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.debuggor.mockinterview.common.dao.MessageDao">
+
+    <insert id="insert" parameterType="com.debuggor.mockinterview.common.bean.Message">
+        insert into c_message (content,message_url,uid,user_type,message_type,oid,status_type,message_status,create_time,update_time)
+        values (#{content},#{messageUrl},#{uid},#{userType},#{messageType},#{oid},#{statusType},#{messageStatus},#{createTime},#{updateTime})
+    </insert>
+
+    <select id="getMessageByOid" parameterType="java.lang.Integer"
+            resultType="com.debuggor.mockinterview.common.bean.Message">
+        SELECT * from c_message WHERE oid=#{oid}
+    </select>
+
+    <update id="update" parameterType="com.debuggor.mockinterview.common.bean.Message">
+        UPDATE c_message
+        <set>
+            <if test="content != null">content=#{content},</if>
+            <if test="messageUrl != null">message_url=#{messageUrl},</if>
+            <if test="statusType != null">status_type=#{statusType},</if>
+            <if test="messageStatus != null">message_status=#{messageStatus},</if>
+            <if test="updateTime != null">update_time=#{updateTime},</if>
+        </set>
+        WHERE mid=#{mid}
+    </update>
+
+    <select id="getMessageByUid" resultType="com.debuggor.mockinterview.common.bean.Message">
+        SELECT  * from c_message WHERE uid=#{uid} and user_type=#{userType}
+    </select>
+</mapper>

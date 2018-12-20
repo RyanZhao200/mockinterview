@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>面试记录</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="..static/front/layui/css/layui.css" th:href="@{/front/layui/css/layui.css}">
+    <link rel="stylesheet" href="..static/front/css/global.css" th:href="@{/front/css/global.css}">
+</head>
+<body>
+<!--前台公共头部-->
+<div th:replace="front/common/bar::topbar"></div>
+
+<div class="layui-container fly-marginTop fly-user-main">
+    <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="user">
+        <li class="layui-nav-item">
+            <a href="#">
+                <i class="layui-icon">&#xe609;</i> 我的主页
+            </a>
+        </li>
+        <li class="layui-nav-item">
+            <a href="#">
+                <i class="layui-icon">&#xe612;</i> 用户中心
+            </a>
+        </li>
+        <li class="layui-nav-item">
+            <a href="" th:href="@{/finder/toUpdate}">
+                <i class="layui-icon">&#xe620;</i> 基本设置
+            </a>
+        </li>
+        <li class="layui-nav-item layui-this">
+            <a href="" th:href="@{/finder/messageInterview}">
+                <i class="layui-icon">&#xe66c;</i> 面试记录
+            </a>
+        </li>
+    </ul>
+
+
+    <div class="fly-panel fly-panel-user" pad20>
+        <div class="layui-tab layui-tab-brief" id="LAY_msg" style="margin-top: 15px;">
+            <button class="layui-btn layui-btn-danger" id="LAY_delallmsg">清空全部记录</button>
+            <div id="LAY_minemsg" style="margin-top: 10px;">
+                <div class="fly-none" th:if="${#lists.isEmpty(messages)}">您还未有面试记录，赶快去预约面试官进行面试吧！</div>
+                <ul class="mine-msg" th:if="${not #lists.isEmpty(messages)}">
+                    <li data-id="123" th:each="message:${messages}">
+                        <blockquote class="layui-elem-quote">
+                            <a href="" th:href="${message.messageUrl}" target="_blank">
+                                <span th:utext="${message.content}"></span>
+                                <cite th:if="${message.statusType}=='1'">待付款，立即去付款</cite>
+                                <cite th:if="${message.statusType}=='2'">待面试</cite>
+                                <cite th:if="${message.statusType}=='3'">待结单</cite>
+                                <cite th:if="${message.statusType}=='4'">待评价</cite>
+                                <cite th:if="${message.statusType}=='5'">面试结束</cite>
+                            </a>
+                            <span style="position: absolute;right: 20px;bottom: 20px;">
+                                <a href="javascript:;"
+                                   class="layui-btn layui-btn-small layui-btn-danger fly-delete">删除</a>
+                            </span>
+                        </blockquote>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--公共底部-->
+<div th:replace="front/common/bar::footerbar"></div>
+
+<script src="..static/front/layui/layui.js" th:src="@{/front/layui/layui.js}"></script>
+<script src="..static/admin/js/jquery.min.js" th:src="@{/admin/js/jquery.min.js}"></script>
+
+<script>
+    layui.use('element', function () {
+        var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+        element.init();
+    });
+
+</script>
+
+</body>
+</html>

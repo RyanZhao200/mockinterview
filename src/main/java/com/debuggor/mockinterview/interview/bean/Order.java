@@ -39,9 +39,17 @@ public class Order {
      */
     private Integer finderId;
     /**
+     * 求职者用户名
+     */
+    private String finderName;
+    /**
      * 面试官ID
      */
     private Integer interviewerId;
+    /**
+     * 面试官用户名
+     */
+    private String interviewerName;
     /**
      * 是否面试（1：是,2：否）（面试官跟新）
      */
@@ -91,6 +99,22 @@ public class Order {
                 ", paidTime=" + paidTime +
                 ", orderedTime=" + orderedTime +
                 '}';
+    }
+
+    public String getFinderName() {
+        return finderName;
+    }
+
+    public void setFinderName(String finderName) {
+        this.finderName = finderName;
+    }
+
+    public String getInterviewerName() {
+        return interviewerName;
+    }
+
+    public void setInterviewerName(String interviewerName) {
+        this.interviewerName = interviewerName;
     }
 
     public String getIsInterviewed() {

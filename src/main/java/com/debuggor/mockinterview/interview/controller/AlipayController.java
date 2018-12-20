@@ -5,10 +5,12 @@ import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradePagePayRequest;
+import com.debuggor.mockinterview.common.bean.Message;
 import com.debuggor.mockinterview.common.config.AlipayConfig;
+import com.debuggor.mockinterview.common.enumerate.*;
+import com.debuggor.mockinterview.common.service.MessageService;
+import com.debuggor.mockinterview.common.util.ActivateCodeUtil;
 import com.debuggor.mockinterview.common.util.OrdersNumberUtil;
-import com.debuggor.mockinterview.common.util.OrdersStatusEnum;
-import com.debuggor.mockinterview.common.util.StatusEnum;
 import com.debuggor.mockinterview.interview.bean.Finder;
 import com.debuggor.mockinterview.interview.bean.Flow;
 import com.debuggor.mockinterview.interview.bean.Interviewer;
@@ -25,11 +27,9 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.io.UnsupportedEncodingException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -53,6 +53,8 @@ public class AlipayController {
     private OrdersService ordersService;
     @Autowired
     private FlowService flowService;
+    @Autowired
+    private MessageService messageService;
 
     /**
      * 用户提交订单页面
@@ -70,10 +72,11 @@ public class AlipayController {
 
     /**
      * 订单表中插入一条记录，跳转到用户确认订单支付的页面
+     * 消息表中插入一条消息（用户待付款）
      *
      * @return
      */
-    @RequestMapping("/pay")
+    @RequestMapping("/toPay")
     public String toPay(Integer interviewerId, String introduction,
                         HttpSession session, Model model) {
         Finder finder = (Finder) session.getAttribute("finder");
@@ -81,7 +84,8 @@ public class AlipayController {
 
         Order order = new Order();
         // 订单号 30位 单一无二
-        order.setOrderNum(OrdersNumberUtil.createOrdersNumber());
+        String orderNum = OrdersNumberUtil.createOrdersNumber();
+        order.setOrderNum(orderNum);
         order.setOrderAmount(interviewer.getCost());
         // 1：待付款  2：已付款 3：已取消 4：交易关闭
         order.setOrderStatus(OrdersStatusEnum.WAIT_PAY.key);
@@ -92,7 +96,37 @@ public class AlipayController {
         logger.info(order.toString());
         // 插入一条订单
         ordersService.insert(order);
+        order = ordersService.getOrderByOrderNum(orderNum);
+        //插入一条消息
+        Message message = new Message();
+        String content = "于" + ActivateCodeUtil.formatDate(new Date()) + "向<b>" + interviewer.getUsername() + "</b>发起面试邀约";
+        message.setContent(content);
+        message.setMessageUrl("/pay/pay/" + order.getOid());
+        message.setUid(finder.getFid());
+        message.setUserType(UserEnum.FINDER.key);
+        message.setMessageType(MessageEnum.INTERVIEW.key);
+        message.setStatusType(StatusTypeEnum.WAIT_PAY.key);
+        message.setMessageStatus(MessageStatusEnum.NOT_READ.key);
+        message.setCreateTime(new Date());
+        message.setUpdateTime(new Date());
+        message.setOid(order.getOid());
+        messageService.insert(message);
 
+        return "redirect:/pay/pay/" + order.getOid();
+    }
+
+    /**
+     * 用户确认订单支付的页面
+     *
+     * @param oid
+     * @param model
+     * @return
+     */
+    @RequestMapping("/pay/{oid}")
+    public String payPage(@PathVariable("oid") Integer oid, Model model) {
+        Order order = ordersService.getOrderById(oid);
+        Finder finder = finderService.getFinderById(order.getFinderId());
+        Interviewer interviewer = interviewerService.getInterviewerById(order.getInterviewerId());
         model.addAttribute("finder", finder);
         model.addAttribute("interviewer", interviewer);
         model.addAttribute("order", order);
@@ -150,7 +184,7 @@ public class AlipayController {
 
     /**
      * 支付宝同步通知页面
-     * 更新订单、插入一条流水记录
+     * 更新订单、插入一条流水记录、更新消息
      * 付款成功后，跳转到面试环节
      *
      * @return
@@ -199,7 +233,7 @@ public class AlipayController {
             order.setIsEvaluation(StatusEnum.NO.key);
             ordersService.updateOrder(order);
             order = ordersService.getOrderByOrderNum(out_trade_no);
-
+            Interviewer interviewer = interviewerService.getInterviewerById(order.getInterviewerId());
             //新增支付流水
             Flow flow = new Flow();
             flow.setFlowNum(trade_no);
@@ -209,6 +243,18 @@ public class AlipayController {
             flow.setInterviewerId(order.getInterviewerId());
             flow.setCreateTime(new Date());
             flowService.insert(flow);
+
+            // 更新消息
+            Message m = messageService.getMessageByOid(order.getOid());
+            Message message = new Message();
+            message.setMid(m.getMid());
+            String content = "于" + ActivateCodeUtil.formatDate(new Date()) + "向<b>" + interviewer.getUsername() + "</b>发起IT模拟面试邀请";
+            message.setContent(content);
+            message.setMessageUrl("/interview/interview/" + order.getOid());
+            message.setStatusType(StatusTypeEnum.WAIT_INTERVIEW.key);
+            message.setMessageStatus(MessageStatusEnum.NOT_READ.key);
+            message.setUpdateTime(new Date());
+            messageService.update(message);
 
             logger.info("********************** 支付成功(支付宝同步通知) **********************");
             logger.info("* 订单号: {}", out_trade_no);

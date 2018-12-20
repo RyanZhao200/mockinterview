@@ -3,6 +3,8 @@ package com.debuggor.mockinterview.interview.dao;
 import com.debuggor.mockinterview.interview.bean.Order;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * 订单的dao层
  */
@@ -37,4 +39,13 @@ public interface OrdersDao {
      * @return
      */
     Order getOrderById(Integer oid);
+
+    /**
+     * 根据求职者ID，找到求职者的订单记录
+     *
+     * @param fid
+     * @return
+     */
+    List<Order> getOrderByFinderId(Integer fid);
+
 }

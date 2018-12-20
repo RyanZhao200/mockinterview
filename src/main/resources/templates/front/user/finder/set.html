@@ -4,8 +4,6 @@
     <meta charset="utf-8">
     <title>帐号设置</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="keywords" content="fly,layui,前端社区">
-    <meta name="description" content="Fly社区是模块化前端UI框架Layui的官网社区，致力于为web开发提供强劲动力">
     <link rel="stylesheet" href="..static/front/layui/css/layui.css" th:href="@{/front/layui/css/layui.css}">
     <link rel="stylesheet" href="..static/front/css/global.css" th:href="@{/front/css/global.css}">
 </head>
@@ -31,8 +29,8 @@
             </a>
         </li>
         <li class="layui-nav-item">
-            <a href="#">
-                <i class="layui-icon">&#xe611;</i> 我的消息
+            <a href="" th:href="@{/finder/messageInterview}">
+                <i class="layui-icon">&#xe66c;</i> 面试记录
             </a>
         </li>
     </ul>
@@ -174,7 +172,7 @@
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <button class="layui-btn" key="set-mine"  onclick="save()">确认修改</button>
+                            <button class="layui-btn" key="set-mine" onclick="save()">确认修改</button>
                         </div>
                     </form>
                     <form id="logout" th:action="@{/finder/logout}"></form>
@@ -251,15 +249,15 @@
 
 
     //判断旧密码是否正确
-    function judgeOldPwd(pwd){
+    function judgeOldPwd(pwd) {
         $.ajax({
-            url : '/finder/judgeOldPwd?oldPwd='+pwd,
-            data : "",
-            async : false,
-            dataType : "html",
-            success : function(data){
-                if(data === 'no'){
-                    layer.msg('旧密码不正确！', function(){
+            url: '/finder/judgeOldPwd?oldPwd=' + pwd,
+            data: "",
+            async: false,
+            dataType: "html",
+            success: function (data) {
+                if (data === 'no') {
+                    layer.msg('旧密码不正确！', function () {
                         $('#L_nowpass').val('');
                     });
                 }
@@ -267,41 +265,41 @@
         });
     }
 
-    function save(){
-        if(!$('#L_nowpass').val()){
-            layer.msg('当前密码不能为空！', function(){
+    function save() {
+        if (!$('#L_nowpass').val()) {
+            layer.msg('当前密码不能为空！', function () {
                 $('#L_nowpass').focus();
             });
             return false;
-        }else if (!$('#L_pass').val()){
-            layer.msg('新密码不能为空！', function(){
+        } else if (!$('#L_pass').val()) {
+            layer.msg('新密码不能为空！', function () {
                 $('#L_pass').focus();
             });
             return false;
         }
-        else if(!$('#L_repass').val()){
-            layer.msg('确认密码不能为空！', function(){
+        else if (!$('#L_repass').val()) {
+            layer.msg('确认密码不能为空！', function () {
                 $('#L_repass').focus();
             });
             return false;
         }
-        else if($("#L_pass").val() != $("#L_repass").val()){
-            layer.msg('新密码和确认密码不一致！', function(){
+        else if ($("#L_pass").val() != $("#L_repass").val()) {
+            layer.msg('新密码和确认密码不一致！', function () {
             });
             return false;
         }
         $.ajax({
-            url : '/finder/updatePassword?pwd=' + $('#L_pass').val(),
-            data : "",
-            async : false,
-            dataType : "html",
-            success : function(data) {
-                if(data == 'success'){
+            url: '/finder/updatePassword?pwd=' + $('#L_pass').val(),
+            data: "",
+            async: false,
+            dataType: "html",
+            success: function (data) {
+                if (data == 'success') {
                     layer.msg('密码修改成功！', {icon: 1});
                     $('#L_nowpass').val('');
                     $('#L_pass').val('');
                     $('#L_repass').val('');
-                }else{
+                } else {
                     layer.msg('密码修改失败，请重试！', {icon: 5});
                 }
             }

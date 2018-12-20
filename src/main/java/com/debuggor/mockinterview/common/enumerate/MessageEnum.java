@@ -1,24 +1,24 @@
-package com.debuggor.mockinterview.common.util;
+package com.debuggor.mockinterview.common.enumerate;
 
 /**
- * 是否 状态
+ * 消息类别 1、论坛消息，2、面试的消息
  */
-public enum StatusEnum {
-    // 是
-    YES("1", "是"),
-    // 否
-    NO("2", "否");
+public enum MessageEnum {
+    // 论坛消息
+    FORUM("1", "论坛"),
+    // 面试
+    INTERVIEW("2", "面试");
 
     public final String key;
     public final String value;
 
-    StatusEnum(String key, String value) {
+    MessageEnum(String key, String value) {
         this.key = key;
         this.value = value;
     }
 
     public static String getName(String key) {
-        for (OrdersStatusEnum status : OrdersStatusEnum.values()) {
+        for (MessageEnum status : MessageEnum.values()) {
             if (status.getKey().equals(key)) {
                 return status.value;
             }

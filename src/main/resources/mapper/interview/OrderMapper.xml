@@ -35,4 +35,10 @@
         WHERE order_num = #{orderNum}
     </update>
 
+    <select id="getOrderByFinderId" resultType="com.debuggor.mockinterview.interview.bean.Order"
+            parameterType="java.lang.Integer">
+        SELECT * from j_order
+        WHERE finder_id=#{fid}
+        ORDER BY create_time DESC
+    </select>
 </mapper>
