@@ -6,6 +6,7 @@
     <link rel="stylesheet" href="..static/front/layui/css/layui.css" th:href="@{/front/layui/css/layui.css}">
     <link rel="stylesheet" href="..static/front/css/global.css" th:href="@{/front/css/global.css}">
     <link rel="stylesheet" href="..static/front/css/order.css" th:href="@{/front/css/order.css}">
+    <link rel="stylesheet" href="..static/front/window/window.css" th:href="@{/front/window/window.css}">
 
 </head>
 <body>
@@ -60,10 +61,11 @@
                         <span>[[${interviewer.email}]]</span>
                     </div>
                     <div class="layui-form-item" style="margin-top: 10px;">
-                        <a class="layui-btn" th:href="@{/interview/subscribe(iid=${interviewer.iid})}">发起/加入视频
+                        <a class="layui-btn" th:href="@{/interview/subscribe(iid=${interviewer.iid})}">
+                            发起/加入视频
                         </a>
-                        <a class="layui-btn" th:href="@{/interview/confirmOrder(oid=${order.oid})}"
-                           onclick="if(confirm('确认结单吗？')==false)return false;">确认结单</a>
+                        <button class="layui-btn" onclick="confirmOrder()">确认结单</button>
+                        <a id="confirmOrder" th:href="@{/interview/confirmOrder(oid=${order.oid})}"></a>
                     </div>
                 </div>
             </div>
@@ -77,10 +79,22 @@
 
 <script src="..static/front/layui/layui.js" th:src="@{/front/layui/layui.js}"></script>
 <script src="..static/admin/js/jquery.min.js" th:src="@{/admin/js/jquery.min.js}"></script>
+<script src="..static/front/window/window.js" th:src="@{/front/window/window.js}"></script>
+
 <script>
     layui.use(['element'], function () {
         var element = layui.element;
     });
+
+    // 结单
+    function confirmOrder() {
+        win.confirm('温馨提示', '确定结单吗？', function (r) {
+            if (r) {
+                var href = document.getElementById("confirmOrder");
+                window.open(href, name = "_self");  // 在当前窗口打开链接
+            }
+        });
+    }
 </script>
 </body>
 </html>

@@ -2,9 +2,11 @@ package com.debuggor.mockinterview.common.service;
 
 import com.debuggor.mockinterview.common.bean.Message;
 import com.debuggor.mockinterview.common.dao.MessageDao;
+import com.debuggor.mockinterview.common.enumerate.MessageStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -61,5 +63,22 @@ public class MessageService {
             messages = messageDao.getMessageByUid(uid, userType);
         }
         return messages;
+    }
+
+    /**
+     * 根据用户ID，更新用户的所有消息的状态
+     *
+     * @param uid
+     * @param userType
+     */
+    public void updateByUid(Integer uid, String userType) {
+        if (uid != null) {
+            Message message = new Message();
+            message.setUid(uid);
+            message.setUserType(userType);
+            message.setMessageStatus(MessageStatusEnum.DELETE.key);
+            message.setUpdateTime(new Date());
+            messageDao.updateByUid(message);
+        }
     }
 }

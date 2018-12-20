@@ -3,6 +3,7 @@ package com.debuggor.mockinterview.interview.controller;
 import com.debuggor.mockinterview.common.bean.Message;
 import com.debuggor.mockinterview.common.constant.MockConstant;
 import com.debuggor.mockinterview.common.constant.QiniuConstant;
+import com.debuggor.mockinterview.common.enumerate.MessageStatusEnum;
 import com.debuggor.mockinterview.common.enumerate.UserEnum;
 import com.debuggor.mockinterview.common.service.MessageService;
 import com.debuggor.mockinterview.common.service.QiniuService;
@@ -17,10 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpSession;
@@ -257,5 +255,27 @@ public class FinderController {
 
         model.addAttribute("messages", messages);
         return "/front/user/finder/messageInterview";
+    }
+
+    /**
+     * 求职者删除面试记录（改变消息状态，让求职者不可见）
+     *
+     * @param mid
+     * @return
+     */
+    @RequestMapping("/deleteMessage/{mid}")
+    public String deleteMessageByMid(@PathVariable("mid") Integer mid) {
+        Message message = new Message();
+        message.setMid(mid);
+        message.setMessageStatus(MessageStatusEnum.DELETE.key);
+        message.setUpdateTime(new Date());
+        messageService.update(message);
+        return "redirect:/finder/messageInterview";
+    }
+
+    @RequestMapping("/deleteMessageAll/{fid}")
+    public String deleteMessageAll(@PathVariable("fid") Integer fid) {
+        messageService.updateByUid(fid,UserEnum.FINDER.key);
+        return "redirect:/finder/messageInterview";
     }
 }

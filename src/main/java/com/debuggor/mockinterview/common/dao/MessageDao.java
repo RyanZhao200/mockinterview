@@ -41,4 +41,11 @@ public interface MessageDao {
      * @return
      */
     List<Message> getMessageByUid(@Param("uid") Integer uid, @Param("userType") String userType);
+
+    /**
+     * 根据用户的ID，更新消息的状态为用户不可见
+     *
+     * @param message
+     */
+    void updateByUid(Message message);
 }

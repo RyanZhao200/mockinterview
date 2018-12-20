@@ -27,6 +27,17 @@
     </update>
 
     <select id="getMessageByUid" resultType="com.debuggor.mockinterview.common.bean.Message">
-        SELECT  * from c_message WHERE uid=#{uid} and user_type=#{userType}
+        SELECT  * from c_message
+        WHERE uid=#{uid} and user_type=#{userType} and message_status != '3'
+        order by create_time DESC
     </select>
+
+    <update id="updateByUid">
+        UPDATE c_message
+        <set>
+            <if test="messageStatus != null">message_status=#{messageStatus},</if>
+            <if test="updateTime != null">update_time=#{updateTime},</if>
+        </set>
+        WHERE uid=#{uid} and user_type=#{userType}
+    </update>
 </mapper>
