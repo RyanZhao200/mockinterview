@@ -6,14 +6,12 @@ import com.debuggor.mockinterview.common.constant.UserConstant;
 import com.debuggor.mockinterview.common.enumerate.MessageStatusEnum;
 import com.debuggor.mockinterview.common.enumerate.StatusEnum;
 import com.debuggor.mockinterview.common.enumerate.StatusTypeEnum;
+import com.debuggor.mockinterview.common.enumerate.UserEnum;
 import com.debuggor.mockinterview.common.service.InterviewTypeService;
 import com.debuggor.mockinterview.common.service.MessageService;
 import com.debuggor.mockinterview.common.service.QiniuService;
 import com.debuggor.mockinterview.interview.bean.*;
-import com.debuggor.mockinterview.interview.service.EvaluationService;
-import com.debuggor.mockinterview.interview.service.InterviewService;
-import com.debuggor.mockinterview.interview.service.InterviewerService;
-import com.debuggor.mockinterview.interview.service.OrdersService;
+import com.debuggor.mockinterview.interview.service.*;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -47,6 +45,8 @@ public class InterviewController {
     private EvaluationService evaluationService;
     @Autowired
     private MessageService messageService;
+    @Autowired
+    private FinderService finderService;
 
     /**
      * 首页
@@ -139,7 +139,7 @@ public class InterviewController {
     }
 
     /**
-     * 面试流程-面试 环节
+     * 求职者面试流程-面试 环节
      *
      * @param oid   订单ID
      * @param model
@@ -175,16 +175,23 @@ public class InterviewController {
         order.setIsOrdered(StatusEnum.YES.key);
         order.setOrderedTime(new Date());
         ordersService.updateOrder(order);
-        // 更新消息
-        Message m = messageService.getMessageByOid(oid);
+        // 更新求职者消息
+        Message m = messageService.getMessageByOid(oid, UserEnum.FINDER.key);
         Message message = new Message();
         message.setMid(m.getMid());
         message.setUpdateTime(new Date());
-        message.setMessageUrl("/interview/evaluate/" + oid    );
+        message.setMessageUrl("/interview/evaluate/" + oid);
         message.setStatusType(StatusTypeEnum.WAIT_COMMENT.key);
         message.setMessageStatus(MessageStatusEnum.NOT_READ.key);
         messageService.update(message);
-
+        //更新面试官消息  面试完成
+        m = messageService.getMessageByOid(oid, UserEnum.INTERVIEWER.key);
+        message.setMid(m.getMid());
+        // ---------------------------求职者的首页，后续再更新这里 -----------------------------------------------
+        message.setMessageUrl("");
+        message.setStatusType(StatusTypeEnum.OVER_INTERVIEW.key);
+        message.setMessageStatus(MessageStatusEnum.NOT_READ.key);
+        messageService.update(message);
         return "redirect:/interview/evaluate/" + orderById.getOid();
     }
 
@@ -228,7 +235,7 @@ public class InterviewController {
         ordersService.updateOrder(order);
         model.addAttribute("iid", evaluation.getIid());
         // 更新消息
-        Message m = messageService.getMessageByOid(evaluation.getOid());
+        Message m = messageService.getMessageByOid(evaluation.getOid(), UserEnum.FINDER.key);
         Message message = new Message();
         message.setMid(m.getMid());
         message.setUpdateTime(new Date());
@@ -237,5 +244,52 @@ public class InterviewController {
         message.setMessageUrl("/interviewer/" + evaluation.getIid());
         messageService.update(message);
         return "/front/interview/tips";
+    }
+
+    /**
+     * 面试官向求职者发起面试的页面
+     *
+     * @return
+     */
+    @RequestMapping("/interview/finder/{oid}")
+    public String interviewToFinder(@PathVariable("oid") Integer oid, Model model) {
+        Order order = ordersService.getOrderById(oid);
+        model.addAttribute("order", order);
+        Finder finder = null;
+        if (order != null) {
+            finder = finderService.getFinderById(order.getFinderId());
+        }
+        model.addAttribute("finder", finder);
+        return "/front/interview/interviewToFinder";
+    }
+
+    @RequestMapping("/interview/orderEnd")
+    public String interviewerEnd(@RequestParam(required = false, value = "oid") Integer oid) {
+        if (oid == null) {
+            return "/";
+        }
+        // 更新订单
+        Order o = ordersService.getOrderById(oid);
+        Order order = new Order();
+        order.setOrderNum(o.getOrderNum());
+        // 面试官更新已经面试完成
+        order.setIsInterviewed(StatusEnum.YES.key);
+        ordersService.updateOrder(order);
+        //更新求职者消息
+        Message m = messageService.getMessageByOid(oid, UserEnum.FINDER.key);
+        Message message = new Message();
+        message.setMid(m.getMid());
+        message.setStatusType(StatusTypeEnum.WAIT_ORDERED.key);
+        message.setUpdateTime(new Date());
+        messageService.update(message);
+        //面试官更新消息
+        m = messageService.getMessageByOid(oid, UserEnum.INTERVIEWER.key);
+        message = new Message();
+        message.setMid(m.getMid());
+        message.setStatusType(StatusTypeEnum.OVER_INTERVIEW.key);
+        message.setUpdateTime(new Date());
+        message.setMessageStatus(MessageStatusEnum.NOT_READ.key);
+        messageService.update(message);
+        return "redirect:/interviewer/messageInterview";
     }
 }

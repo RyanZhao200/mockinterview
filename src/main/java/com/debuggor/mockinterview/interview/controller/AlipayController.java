@@ -234,6 +234,7 @@ public class AlipayController {
             ordersService.updateOrder(order);
             order = ordersService.getOrderByOrderNum(out_trade_no);
             Interviewer interviewer = interviewerService.getInterviewerById(order.getInterviewerId());
+            Finder finder = finderService.getFinderById(order.getFinderId());
             //新增支付流水
             Flow flow = new Flow();
             flow.setFlowNum(trade_no);
@@ -244,8 +245,9 @@ public class AlipayController {
             flow.setCreateTime(new Date());
             flowService.insert(flow);
 
-            // 更新消息
-            Message m = messageService.getMessageByOid(order.getOid());
+            // 更新求职者消息
+            logger.info(order.toString());
+            Message m = messageService.getMessageByOid(order.getOid(),UserEnum.FINDER.key);
             Message message = new Message();
             message.setMid(m.getMid());
             String content = "于" + ActivateCodeUtil.formatDate(new Date()) + "向<b>" + interviewer.getUsername() + "</b>发起IT模拟面试邀请";
@@ -255,6 +257,19 @@ public class AlipayController {
             message.setMessageStatus(MessageStatusEnum.NOT_READ.key);
             message.setUpdateTime(new Date());
             messageService.update(message);
+            // 插入面试官一条消息
+            content = "<b>" + finder.getUsername() + "</b>在" + ActivateCodeUtil.formatDate(new Date()) + "向您发起IT模拟面试邀请";
+            message.setContent(content);
+            message.setMessageUrl("/interview/finder/" + order.getOid());
+            message.setUid(interviewer.getIid());
+            message.setUserType(UserEnum.INTERVIEWER.key);
+            message.setMessageType(MessageEnum.INTERVIEW.key);
+            message.setOid(order.getOid());
+            message.setStatusType(StatusTypeEnum.WAIT_INTERVIEW.key);
+            message.setMessageStatus(MessageStatusEnum.NOT_READ.key);
+            message.setCreateTime(new Date());
+            message.setUpdateTime(new Date());
+            messageService.insert(message);
 
             logger.info("********************** 支付成功(支付宝同步通知) **********************");
             logger.info("* 订单号: {}", out_trade_no);

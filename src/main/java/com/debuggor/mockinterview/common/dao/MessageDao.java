@@ -29,9 +29,10 @@ public interface MessageDao {
      * 根据订单ID获取消息
      *
      * @param oid
+     * @param userType
      * @return
      */
-    Message getMessageByOid(Integer oid);
+    Message getMessageByOid(@Param("oid") Integer oid, @Param("userType") String userType);
 
     /**
      * 根据用户ID获取用户消息

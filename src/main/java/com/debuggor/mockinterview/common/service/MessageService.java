@@ -40,12 +40,13 @@ public class MessageService {
      * 根据订单ID获取消息
      *
      * @param oid
+     * @param userType
      * @return
      */
-    public Message getMessageByOid(Integer oid) {
+    public Message getMessageByOid(Integer oid, String userType) {
         Message message = null;
-        if (oid != null) {
-            message = messageDao.getMessageByOid(oid);
+        if (oid != null && userType != null) {
+            message = messageDao.getMessageByOid(oid,userType);
         }
         return message;
     }

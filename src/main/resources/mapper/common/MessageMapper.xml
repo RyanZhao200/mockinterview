@@ -9,9 +9,8 @@
         values (#{content},#{messageUrl},#{uid},#{userType},#{messageType},#{oid},#{statusType},#{messageStatus},#{createTime},#{updateTime})
     </insert>
 
-    <select id="getMessageByOid" parameterType="java.lang.Integer"
-            resultType="com.debuggor.mockinterview.common.bean.Message">
-        SELECT * from c_message WHERE oid=#{oid}
+    <select id="getMessageByOid" resultType="com.debuggor.mockinterview.common.bean.Message">
+        SELECT * from c_message WHERE oid=#{oid} and user_type=#{userType}
     </select>
 
     <update id="update" parameterType="com.debuggor.mockinterview.common.bean.Message">

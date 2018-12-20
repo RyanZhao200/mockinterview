@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>提示页面</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="">
+    <meta name="description" content="">
+    <link rel="stylesheet" href="..static/front/layui/css/layui.css" th:href="@{/front/layui/css/layui.css}">
+    <link rel="stylesheet" href="..static/front/css/global.css" th:href="@{/front/css/global.css}">
+</head>
+<body>
+<!--前台公共头部-->
+<div th:replace="front/common/bar::topbar"></div>
+
+<!-- 主体 -->
+<div class="layui-container" style="margin-top: 30px;">
+    <div class="layui-row">
+        <div class="layui-col-md12" style="background-color: white;padding: 20px;">
+            <label style="font-size: 20px;">求职者信息</label>
+            <div>
+                <label>用户名：</label>
+                <span>
+                    [[${finder.username}]]
+                </span>
+            </div>
+            <div>
+                <label>性别：</label>
+                <span>
+                    [[${finder.sex}]]
+                </span>
+            </div>
+            <div>
+                <label>电话号码：</label>
+                <span>
+                    [[${finder.phone}]]
+                </span>
+            </div>
+            <div>
+                <label>邮箱：</label>
+                <span>
+                    [[${finder.email}]]
+                </span>
+            </div>
+            <div>
+                <label>QQ：</label>
+                <span>
+                    [[${finder.qq}]]
+                </span>
+            </div>
+            <div>
+                <label>微信：</label>
+                <span>
+                    [[${finder.weixin}]]
+                </span>
+            </div>
+            <div>
+                <label>描述：</label>
+                <span>
+                    [[${order.introduction}]]
+                </span>
+            </div>
+            <div class="layui-form-item" style="margin-top: 10px;">
+                <a class="layui-btn" th:href="@{/interview/publish(fid=${finder.fid})}" target="_blank">发起视频</a>
+                <a class="layui-btn" th:href="@{/interview/orderEnd(oid=${order.oid})}">面试结束</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--公共底部-->
+<div th:replace="front/common/bar::footerbar"></div>
+
+<script src="..static/front/layui/layui.js" th:src="@{/front/layui/layui.js}"></script>
+<script type="text/javascript">
+    layui.use(['element'], function () {
+        var element = layui.element;
+    });
+</script>
+</body>
+</html>

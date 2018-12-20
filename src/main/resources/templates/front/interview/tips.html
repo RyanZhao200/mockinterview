@@ -31,6 +31,9 @@
 
 <script src="..static/front/layui/layui.js" th:src="@{/front/layui/layui.js}"></script>
 <script type="text/javascript">
+    layui.use(['element'], function () {
+        var element = layui.element;
+    });
     window.onload = function () {
         var count = 5; //倒计时5秒；
         setTimeout(fn, 1000);

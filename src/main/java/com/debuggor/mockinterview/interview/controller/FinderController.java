@@ -273,9 +273,15 @@ public class FinderController {
         return "redirect:/finder/messageInterview";
     }
 
+    /**
+     * 根据求职者ID，删除求职者的所有面试记录
+     *
+     * @param fid
+     * @return
+     */
     @RequestMapping("/deleteMessageAll/{fid}")
     public String deleteMessageAll(@PathVariable("fid") Integer fid) {
-        messageService.updateByUid(fid,UserEnum.FINDER.key);
+        messageService.updateByUid(fid, UserEnum.FINDER.key);
         return "redirect:/finder/messageInterview";
     }
 }

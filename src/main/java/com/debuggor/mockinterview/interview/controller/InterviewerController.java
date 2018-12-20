@@ -1,7 +1,11 @@
 package com.debuggor.mockinterview.interview.controller;
 
+import com.debuggor.mockinterview.common.bean.Message;
 import com.debuggor.mockinterview.common.constant.MockConstant;
 import com.debuggor.mockinterview.common.constant.QiniuConstant;
+import com.debuggor.mockinterview.common.enumerate.MessageStatusEnum;
+import com.debuggor.mockinterview.common.enumerate.UserEnum;
+import com.debuggor.mockinterview.common.service.MessageService;
 import com.debuggor.mockinterview.common.service.QiniuService;
 import com.debuggor.mockinterview.common.util.Md5Util;
 import com.debuggor.mockinterview.interview.bean.Finder;
@@ -12,10 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
@@ -23,6 +24,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.Date;
+import java.util.List;
 import java.util.UUID;
 
 /**
@@ -38,6 +40,8 @@ public class InterviewerController {
     private InterviewerService interviewerService;
     @Autowired
     private QiniuService qiniuService;
+    @Autowired
+    private MessageService messageService;
 
     @RequestMapping("/login")
     public String tologin() {
@@ -198,5 +202,50 @@ public class InterviewerController {
         interviewer.setPassword(hash);
         interviewerService.update(interviewer);
         return "success";
+    }
+
+    /**
+     * 面试官 面试的记录
+     *
+     * @param session
+     * @param model
+     * @return
+     */
+    @RequestMapping("/messageInterview")
+    public String toMessageInterview(HttpSession session, Model model) {
+        Interviewer interviewer = (Interviewer) session.getAttribute("interviewer");
+        model.addAttribute("interviewer", interviewer);
+
+        List<Message> messages = messageService.getMessageByUid(interviewer.getIid(), UserEnum.INTERVIEWER.key);
+        model.addAttribute("messages", messages);
+        return "/front/user/interviewer/messageInterview";
+    }
+
+    /**
+     * 面试官删除面试记录（改变消息状态，让面试官不可见）
+     *
+     * @param mid
+     * @return
+     */
+    @RequestMapping("/deleteMessage/{mid}")
+    public String deleteMessageByMid(@PathVariable("mid") Integer mid) {
+        Message message = new Message();
+        message.setMid(mid);
+        message.setMessageStatus(MessageStatusEnum.DELETE.key);
+        message.setUpdateTime(new Date());
+        messageService.update(message);
+        return "redirect:/interviewer/messageInterview";
+    }
+
+    /**
+     * 根据面试官ID，删除面试官的面试记录
+     *
+     * @param iid
+     * @return
+     */
+    @RequestMapping("/deleteMessageAll/{iid}")
+    public String deleteMessageAll(@PathVariable("iid") Integer iid) {
+        messageService.updateByUid(iid, UserEnum.INTERVIEWER.key);
+        return "redirect:/interviewer/messageInterview";
     }
 }

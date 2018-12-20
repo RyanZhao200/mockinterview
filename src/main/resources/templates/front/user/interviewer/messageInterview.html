@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>面试记录</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="..static/front/layui/css/layui.css" th:href="@{/front/layui/css/layui.css}">
+    <link rel="stylesheet" href="..static/front/css/global.css" th:href="@{/front/css/global.css}">
+    <link rel="stylesheet" href="..static/front/window/window.css" th:href="@{/front/window/window.css}">
+
+</head>
+<body>
+<!--前台公共头部-->
+<div th:replace="front/common/bar::topbar"></div>
+
+<div class="layui-container fly-marginTop fly-user-main">
+    <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="user">
+        <li class="layui-nav-item">
+            <a href="#">
+                <i class="layui-icon">&#xe609;</i> 我的主页
+            </a>
+        </li>
+        <li class="layui-nav-item">
+            <a href="#">
+                <i class="layui-icon">&#xe612;</i> 用户中心
+            </a>
+        </li>
+        <li class="layui-nav-item">
+            <a href="" th:href="@{/interviewer/toUpdate}">
+                <i class="layui-icon">&#xe620;</i> 基本设置
+            </a>
+        </li>
+        <li class="layui-nav-item layui-this">
+            <a href="" th:href="@{/interviewer/messageInterview}">
+                <i class="layui-icon">&#xe66c;</i> 邀约面试
+            </a>
+        </li>
+    </ul>
+
+
+    <div class="fly-panel fly-panel-user" pad20>
+        <div class="layui-tab layui-tab-brief" id="LAY_msg" style="margin-top: 15px;">
+            <button class="layui-btn layui-btn-danger" onclick="deleteByUid()">清空全部记录</button>
+            <a id="deleteByUid" th:href="@{/interviewer/deleteMessageAll/}+${interviewer.iid}"></a>
+            <div id="LAY_minemsg" style="margin-top: 10px;">
+                <div class="fly-none" th:if="${#lists.isEmpty(messages)}">还未有求职者邀约您面试，请再等等看！</div>
+                <ul class="mine-msg" th:if="${not #lists.isEmpty(messages)}">
+                    <li data-id="123" th:each="message:${messages}">
+                        <blockquote class="layui-elem-quote">
+                            <a href="" th:href="${message.messageUrl}" target="_blank">
+                                <span th:utext="${message.content}"></span>
+                                <cite th:if="${message.statusType}=='2'">待面试</cite>
+                                <cite th:if="${message.statusType}=='5'">面试结束</cite>
+                            </a>
+                            <span style="position: absolute;right: 20px;bottom: 20px;">
+                                <button onclick="deleteByMid()"
+                                        class="layui-btn layui-btn-small layui-btn-danger fly-delete">删除</button>
+                                <a id="deleteByMid" th:href="@{/interviewer/deleteMessage/}+${message.mid}"></a>
+                            </span>
+                        </blockquote>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--公共底部-->
+<div th:replace="front/common/bar::footerbar"></div>
+
+<script src="..static/front/layui/layui.js" th:src="@{/front/layui/layui.js}"></script>
+<script src="..static/admin/js/jquery.min.js" th:src="@{/admin/js/jquery.min.js}"></script>
+<script src="..static/front/window/window.js" th:src="@{/front/window/window.js}"></script>
+
+<script>
+    layui.use('element', function () {
+        var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+        element.init();
+    });
+
+    function deleteByMid() {
+        win.confirm('温馨提示', '确定删除该条面试记录吗？', function (r) {
+            if (r) {
+                var href = document.getElementById("deleteByMid");
+                window.open(href, name = "_self");  // 在当前窗口打开链接
+            }
+        });
+    }
+
+    //删除所有记录
+    function deleteByUid() {
+        win.confirm('温馨提示', '确定清空全部面试记录吗？', function (r) {
+            if (r) {
+                var href = document.getElementById("deleteByUid");
+                window.open(href, name = "_self");  // 在当前窗口打开链接
+            }
+        });
+    }
+</script>
+
+</body>
+</html>
