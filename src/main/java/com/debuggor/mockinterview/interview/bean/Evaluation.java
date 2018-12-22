@@ -13,6 +13,8 @@ public class Evaluation {
     private Integer iid;
     // 评价者ID
     private Integer fid;
+    //评价者Finder
+    private Finder finder;
     // 订单ID
     private Integer oid;
     // 创建时间
@@ -29,6 +31,14 @@ public class Evaluation {
                 ", oid=" + oid +
                 ", createTime=" + createTime +
                 '}';
+    }
+
+    public Finder getFinder() {
+        return finder;
+    }
+
+    public void setFinder(Finder finder) {
+        this.finder = finder;
     }
 
     public Integer getOid() {

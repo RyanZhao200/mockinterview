@@ -96,9 +96,14 @@ public class InterviewController {
      * @return
      */
     @RequestMapping("/interviewer/{iid}")
-    public String interview(@PathVariable("iid") Integer iid, Model model) {
+    public String interview(@PathVariable("iid") Integer iid,
+                            @RequestParam(required = false, defaultValue = "1", value = "pn") Integer pn,
+                            Model model) {
         Interviewer interviewer = interviewService.getInterviewerById(iid);
         model.addAttribute("interviewer", interviewer);
+        PageInfo pageInfo = evaluationService.getEvaluationByIid(iid, pn);
+        model.addAttribute("pageInfo", pageInfo);
+        model.addAttribute("iid",iid);
         return "/front/interview/detail";
     }
 

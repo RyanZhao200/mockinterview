@@ -5,11 +5,28 @@
 
 <mapper namespace="com.debuggor.mockinterview.interview.dao.EvaluationDao">
 
+    <resultMap id="evaluationMap" type="com.debuggor.mockinterview.interview.bean.Evaluation">
+        <id column="eid" property="eid"/>
+        <result column="comment" property="comment"/>
+        <result column="grade" property="grade"/>
+        <result column="iid" property="iid"/>
+        <result column="fid" property="fid"/>
+        <result column="create_time" property="createTime"/>
+        <association property="finder" javaType="com.debuggor.mockinterview.interview.bean.Finder">
+            <result column="username" property="username"/>
+            <result column="head_url" property="headUrl"/>
+        </association>
+    </resultMap>
+
     <insert id="insert" parameterType="com.debuggor.mockinterview.interview.bean.Evaluation"
             useGeneratedKeys="true" keyProperty="eid">
         INSERT into j_evaluation(comment,grade,iid,fid,oid,create_time)
         VALUES(#{comment},#{grade},#{iid},#{fid},#{oid},#{createTime})
     </insert>
 
+    <select id="getEvaluationByIid" resultMap="evaluationMap" parameterType="java.lang.Integer">
+        SELECT e.eid,e.comment,e.grade,e.iid,e.fid,e.create_time,f.username,f.head_url
+        from j_evaluation e LEFT JOIN j_finder f on e.fid=f.fid WHERE e.iid = #{iid}
+    </select>
 
 </mapper>

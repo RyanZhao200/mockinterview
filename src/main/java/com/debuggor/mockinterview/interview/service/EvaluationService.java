@@ -1,9 +1,14 @@
 package com.debuggor.mockinterview.interview.service;
 
+import com.debuggor.mockinterview.common.constant.PageConstant;
 import com.debuggor.mockinterview.interview.bean.Evaluation;
 import com.debuggor.mockinterview.interview.dao.EvaluationDao;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 /**
  * 求职者对面试官 评价service层
@@ -29,5 +34,22 @@ public class EvaluationService {
             eid = evaluationDao.insert(evaluation);
         }
         return eid;
+    }
+
+    /**
+     * 根据面试官的ID，获取面试官的评论
+     *
+     * @param iid
+     * @param pn
+     * @return
+     */
+    public PageInfo getEvaluationByIid(Integer iid, Integer pn) {
+        if (iid == null) {
+            return null;
+        }
+        PageHelper.startPage(pn, PageConstant.Page_Sizes);
+        List<Evaluation> evaluations = evaluationDao.getEvaluationByIid(iid);
+        PageInfo pageInfo = new PageInfo<>(evaluations, PageConstant.Navigate_Pages);
+        return pageInfo;
     }
 }
