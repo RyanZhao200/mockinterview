@@ -29,4 +29,11 @@
         from j_evaluation e LEFT JOIN j_finder f on e.fid=f.fid WHERE e.iid = #{iid}
     </select>
 
+    <select id="getEvaluationNumByIid" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT COUNT(*) from j_evaluation WHERE iid=#{iid}
+    </select>
+
+    <select id="getEvaluationGradeByIid" parameterType="java.lang.Integer" resultType="java.lang.Float">
+        SELECT AVG(grade) from j_evaluation WHERE iid=#{iid}
+    </select>
 </mapper>

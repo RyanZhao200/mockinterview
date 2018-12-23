@@ -52,6 +52,16 @@ public class Interviewer {
     private Integer tid;
     // 首页展示时的面试官类别
     private String typeName;
+    //帮助人的数量
+    private Integer helpPeopleNum;
+
+    public Integer getHelpPeopleNum() {
+        return helpPeopleNum;
+    }
+
+    public void setHelpPeopleNum(Integer helpPeopleNum) {
+        this.helpPeopleNum = helpPeopleNum;
+    }
 
     public Integer getTid() {
         return tid;

@@ -16,49 +16,66 @@
 <!--主体部分-->
 <div style="background-color: #F2F2F2;">
     <div class="layui-row layui-col-space15">
-        <div class="layui-col-md12" style="padding: 20px 100px 20px 100px;">
-            <div class="layui-card" style="background-color: white">
-                <div class="layui-col-md3">
-                    <img style="width: 200px;height: 200px;border-radius: 100px;"
-                         th:src="${interviewer.headUrl}">
-                    <div><span>关注</span></div>
+        <div class="layui-col-md12" style="background-color: white;padding: 50px 150px 20px 150px;">
+            <div class="layui-col-md3">
+                <img style="width: 200px;height: 200px;border-radius: 100px;"
+                     th:src="${interviewer.headUrl}">
+                <div style="margin:20px 70px;">
+                    <span class="layui-btn">关注</span>
                 </div>
-                <div class="layui-col-md9" style="line-height: 25px;">
-                    <div>
+            </div>
+            <div class="layui-col-md9" style="line-height: 25px;">
+                <div>
+                    <span style="font-size: 30px;">
+                        [[${interviewer.username}]]
+                    </span>
+                    <span th:if="${interviewer.isCertification}==1" style="padding-left: 10px;">
+                        <i class="iconfont icon-renzheng layui-hide-xs" style="font-size: 20px;" title="认证"></i>
+                    </span>
+                    <span style="float: right">
+                        <button class="layui-btn layui-btn-xs">
+                            <i class="layui-icon">&#xe641;</i> 分享
+                        </button>
+                    </span>
+                </div>
+                <div style="background-color: #f2f2f2;margin-top: 10px;padding: 10px;">
+                    <div style="">
+                        性别：
+                        <span th:if="${not #lists.isEmpty(interviewer.sex)}"
+                              th:text="${interviewer.sex}==1?'女':'男'"></span>
+                    </div>
+                    <div style="margin-top: 5px;">
+                        <span th:if="${not #lists.isEmpty(interviewer.workYear)}">
+                            工作年限：[[${interviewer.workYear}]]年
+                        </span>
+                    </div>
+                    <div style="margin-top: 5px;" th:if="${not #lists.isEmpty(interviewer.types)}">
+                        擅长领域：
+                        <span th:each="type:${interviewer.types}" th:text="${type}" style="padding-right: 10px;">
+                        </span>
+                    </div>
+                    <div style="margin-top: 5px;">
+                        <span>薪资：[[${interviewer.cost}]] 元/次</span>
+                    </div>
+                </div>
+                <div style="margin-top: 10px;">
+                    <span>已有[[${interviewer.helpPeopleNum}]]人咨询</span>
+                </div>
+                <div style="margin-top: 5px;">
                         <span>
-                            [[${interviewer.username}]]
+                            <a th:href="@{/pay/order/}+${interviewer.iid}"
+                               class="layui-btn layui-btn-danger layui-btn-lg">立即预约</a>
                         </span>
-                        <span>分享</span>
-                    </div>
-                    <div>
-                        <span>工作年限：4年</span>
-                    </div>
-                    <div>
-                        <span th:each="type:${interviewer.types}" th:text="${type}"
-                              style="border:1px solid #a1a1a1;border-radius: 5px;margin: 30px 5px;padding: 5px;">
-                        </span>
-                    </div>
-                    <div>
-                        <span>薪资：200 元/次</span>
-                    </div>
-                    <div>
-                        <span>已有12人咨询</span>
-                    </div>
-                    <div>
-                        <span>
-                            <a th:href="@{/pay/order/}+${interviewer.iid}" class="layui-btn">预约</a>
-                        </span>
-                    </div>
-
                 </div>
             </div>
         </div>
 
-        <div style="padding: 100px;">
+        <div style="padding: 80px;">
             <div class="layui-col-md9">
-                <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief" style="background-color: white">
+                <div class="layui-tab layui-tab-brief"
+                     style="background-color: white;margin-top: 50px;">
                     <ul class="layui-tab-title">
-                        <li class="layui-this">个人介绍</li>
+                        <li class="layui-this">面试官介绍</li>
                         <li>用户评价</li>
                     </ul>
                     <div class="layui-tab-content" style="padding: 10px;">
@@ -68,6 +85,16 @@
 
                         <div class="layui-tab-item">
                             <div class="fly-panel" style="margin-bottom: 0;">
+                                <div style="margin: 40px;" th:if="${grade}!='0.0'">
+                                    <span style="color: #ea9c00;font-size: 40px;float:left;">[[${grade}]]</span>
+                                    <div style="margin-left: 70px;">
+                                        <div class="star" th:attr="data-num=${grade}/2"></div>
+                                        <div>共[[${evaluationNum}]]条评论</div>
+                                    </div>
+                                </div>
+                                <div style="margin: 40px;" th:if="${grade}=='0.0'">
+                                    <span style="font-size: 30px;">还未有人评价~</span>
+                                </div>
                                 <ul class="">
                                     <li th:each="evaluation:${pageInfo.list}" style="margin: 20px;">
                                         <div style="float: left;">
@@ -82,12 +109,14 @@
                                             </span>
                                             <span>
                                                 <span class="star" th:attr="data-num=${evaluation.grade}/2"></span>
-                                                <span class="vote-number">[[${evaluation.grade}]]</span>
                                             </span>
                                             <div style="margin:5px 10px;">
-                                                <span style="font-size: 15px;line-height: 150%">[[${evaluation.comment}]]</span>
-                                                <p></p>
-                                                <span style="font-family: 仿宋;">发表于[[${#dates.format(evaluation.createTime, 'yyyy-MM-dd')}]]</span>
+                                                <div style="font-size: 15px;line-height: 120%;margin-top: 8px;font-family: sans-serif">
+                                                    [[${evaluation.comment}]]
+                                                </div>
+                                                <div style="font-family: Arial;margin-top: 8px;">
+                                                    发表于[[${#dates.format(evaluation.createTime, 'yyyy年MM月dd日')}]]
+                                                </div>
                                             </div>
                                         </div>
                                     </li>
@@ -99,21 +128,28 @@
                 </div>
             </div>
 
-            <div class="layui-col-md3">
-                <div style="background-color: white">
-                    东北大学软件学院张爽老师的《软件工程》慕课在我个人看来是非常值得学习的课程，
-                    以下是我对这门课程的详细评价： 一、课程方面
-                    张爽老师的《软件工程》涵盖了面向对象软件工程的近乎全部内容
-                    ，对主干知识都进行了深入讲解。而且张爽老师授课的方式非常易懂
-                    ，无论是具有计算机知识基础还是从没接触过计算机相关知识，都能很容易的学懂这门课。
-                    而且课程知识的应用方面不仅是软件行业，还适用于生活中非常多的事情。
-                    这门课最终学到的不光是软件工程的知识和思想，也使得分析事情的能力得到增强。
+            <div style="float:right;width: 20%;background-color: white;margin-top: 50px;padding: 20px;">
+                <div class="layui-elem-quote">
+                    热门面试官
+                </div>
+                <div>
+                    <div th:each="interviewer:${interviewers}" style="margin: 35px 5px;">
+                        <a th:href="@{/interviewer/}+${interviewer.iid}">
+                            <div style="float: left">
+                                <img th:src="${interviewer.headUrl}"
+                                     style="width: 50px;height: 50px;border-radius: 25px;">
+                            </div>
+                            <div style="padding-left:70px;padding-top: 5px;">
+                                <div>[[${interviewer.username}]]</div>
+                                <div>工作年限：[[${interviewer.workYear}]]年</div>
+                            </div>
+                        </a>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
-
 
 <!--公共底部-->
 <div th:replace="front/common/bar::footerbar"></div>
@@ -122,11 +158,13 @@
 <script src="..static/admin/js/jquery.min.js" th:src="@{/admin/js/jquery.min.js}"></script>
 <script src="..static/front/raty/jquery.raty.js" th:src="@{/front/raty/jquery.raty.js}"></script>
 
+
 <script th:inline="javascript" type="text/javascript">
     layui.use(['element'], function () {
         var element = layui.element;
     });
     // raty星星评分插件
+
     $(function () {
         $(".star").raty({
             score: function () {

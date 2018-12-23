@@ -5,6 +5,7 @@ import com.debuggor.mockinterview.common.constant.PageConstant;
 import com.debuggor.mockinterview.common.dao.InterviewTypeDao;
 import com.debuggor.mockinterview.interview.bean.Interviewer;
 import com.debuggor.mockinterview.interview.bean.Type;
+import com.debuggor.mockinterview.interview.dao.FlowDao;
 import com.debuggor.mockinterview.interview.dao.InterviewDao;
 import com.debuggor.mockinterview.interview.dao.InterviewerDao;
 import com.github.pagehelper.PageHelper;
@@ -29,6 +30,8 @@ public class InterviewService {
     private InterviewTypeDao interviewTypeDao;
     @Autowired
     private InterviewerDao interviewerDao;
+    @Autowired
+    private FlowDao flowDao;
 
     /**
      * 面试官列表
@@ -46,10 +49,8 @@ public class InterviewService {
         for (Interviewer iv : interviewerList) {
             List<String> interviewTypes = interviewDao.getInterviewTypes(iv.getIid());
             iv.setTypes(interviewTypes);
-            String description = iv.getDescription();
-            if (description != null && description.length() > 20) {
-                iv.setDescription(description.substring(0, 20) + "...");
-            }
+            Integer helpPeopleNum = flowDao.getFlowNumByIid(iv.getIid());
+            iv.setHelpPeopleNum(helpPeopleNum);
             interviewers.add(iv);
         }
         pageInfo.setList(interviewers);
@@ -63,12 +64,11 @@ public class InterviewService {
      */
     public List<InterviewerVo> getInterviewerIndexList() {
         List<InterviewerVo> interviewerVoList = new ArrayList<>();
-        // 推荐面试官
-
         // 每个类别展示四位面试官
         List<Type> parentTypes = interviewTypeDao.getTypeByParentId(0);
         for (Type type : parentTypes) {
             InterviewerVo interviewerVo = new InterviewerVo();
+            interviewerVo.setTid(type.getTid());
             interviewerVo.setTypeName(type.getTypeName());
             List<Interviewer> interviewers = interviewDao.getInterviewerListIndexByTid(type.getTid());
             interviewerVo.setInterviewers(interviewers);
@@ -86,11 +86,29 @@ public class InterviewService {
      */
     public Interviewer getInterviewerById(Integer iid) {
         Interviewer interviewer = interviewerDao.getInterviewerById(iid);
-        List<String> interviewTypes = null;
         if (interviewer != null) {
-            interviewTypes = interviewDao.getInterviewTypes(interviewer.getIid());
+            List<String> interviewTypes = interviewDao.getInterviewTypes(interviewer.getIid());
+            Integer helpPeopleNum = flowDao.getFlowNumByIid(interviewer.getIid());
+            interviewer.setTypes(interviewTypes);
+            interviewer.setHelpPeopleNum(helpPeopleNum);
         }
-        interviewer.setTypes(interviewTypes);
         return interviewer;
+    }
+
+    /**
+     * 热门面试官（ 在面试官详情页右侧展示 8位面试官）
+     */
+    public List<Interviewer> getInterviewerHot(Integer num) {
+        List<Interviewer> interviewers = new ArrayList<>();
+        List<Interviewer> list = interviewerDao.getInterviewerHot(num);
+        for (Interviewer interviewer : list) {
+            List<String> interviewTypes = null;
+            if (interviewer != null) {
+                interviewTypes = interviewDao.getInterviewTypes(interviewer.getIid());
+            }
+            interviewer.setTypes(interviewTypes);
+            interviewers.add(interviewer);
+        }
+        return interviewers;
     }
 }

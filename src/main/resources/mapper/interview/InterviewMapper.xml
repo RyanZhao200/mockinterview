@@ -37,7 +37,7 @@
 
     <select id="getInterviewerListIndexByTid" resultType="com.debuggor.mockinterview.interview.bean.Interviewer"
             parameterType="java.lang.Integer">
-        SELECT i.username,i.email,i.head_url,i.sex,i.description,i.create_time,i.work_year,
+        SELECT i.iid,i.username,i.email,i.head_url,i.sex,i.description,i.create_time,i.work_year,
         i.is_certification,i.grade,i.cost,i.qq,i.weixin,i.phone,i.blog_url,t.type_name
         from j_interviewer i
         INNER JOIN j_interviewer_type it on i.iid=it.iid

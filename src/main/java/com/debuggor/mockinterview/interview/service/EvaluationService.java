@@ -8,6 +8,7 @@ import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.text.DecimalFormat;
 import java.util.List;
 
 /**
@@ -51,5 +52,37 @@ public class EvaluationService {
         List<Evaluation> evaluations = evaluationDao.getEvaluationByIid(iid);
         PageInfo pageInfo = new PageInfo<>(evaluations, PageConstant.Navigate_Pages);
         return pageInfo;
+    }
+
+    /**
+     * 根据面试官ID，获取面试官被评论条数
+     *
+     * @param iid
+     * @return
+     */
+    public Integer getEvaluationNumByIid(Integer iid) {
+        if (iid == null) {
+            return 0;
+        }
+        Integer num = evaluationDao.getEvaluationNumByIid(iid);
+        return num;
+    }
+
+    /**
+     * 根据面试官ID，获取面试官的平均评分(小数)
+     *
+     * @param iid
+     * @return
+     */
+    public Float getEvaluationGradeByIid(Integer iid) {
+        if (iid == null) {
+            return null;
+        }
+        Float grade = evaluationDao.getEvaluationGradeByIid(iid);
+        if (grade == null) {
+            return 0.0f;
+        }
+        DecimalFormat df = new DecimalFormat("0.0");
+        return Float.valueOf(df.format(grade));
     }
 }

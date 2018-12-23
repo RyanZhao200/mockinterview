@@ -8,7 +8,7 @@ public class Evaluation {
     // 内容
     private String comment;
     // 评星
-    private Integer grade;
+    private Float grade;
     // 面试官ID
     private Integer iid;
     // 评价者ID
@@ -65,11 +65,11 @@ public class Evaluation {
         this.comment = comment;
     }
 
-    public Integer getGrade() {
+    public Float getGrade() {
         return grade;
     }
 
-    public void setGrade(Integer grade) {
+    public void setGrade(Float grade) {
         this.grade = grade;
     }
 

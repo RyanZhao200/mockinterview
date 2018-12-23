@@ -9,6 +9,7 @@
     <title>IT模拟面试平台</title>
     <link rel="stylesheet" href="..static/front/layui/css/layui.css" th:href="@{/front/layui/css/layui.css}">
     <link rel="stylesheet" href="..static/front/css/global.css" th:href="@{/front/css/global.css}">
+    <link rel="stylesheet" href="..static/front/raty/jquery.raty.css" th:href="@{/front/raty/jquery.raty.css}">
 
 </head>
 <body>
@@ -21,7 +22,7 @@
         <ul class="layui-nav"
             style="background-color: #f2f2f2;height: 80px;padding-top: 15px;padding-left: 100px;">
             <li class="layui-nav-item">
-                <a th:href="@{/interviewer}">全部</a>
+                <a style="color: #000;" th:href="@{/interviewer}">全部</a>
             </li>
             <li class="layui-nav-item" th:each="parent:${parentList}">
                 <a href="javascript:;" style="color: #000;">[[${parent.typeName}]]</a>
@@ -40,7 +41,12 @@
 <!-- 面试官列表-->
 <div class="layui-container">
     <div style="margin: 20px;">
-        <span style="border:1px solid #a1a1a1;border-radius: 5px;padding: 5px;background-color: #4cae4c">java</span>
+        <span th:if="${not #lists.isEmpty(type)}" style="width: 50px;background-color: #08bf91;padding: 10px;">
+            [[${type.typeName}]]
+            <a th:href="@{/interviewer}">
+                <i class="layui-icon" style="margin-left: 5px;">&#x1006;</i>
+            </a>
+        </span>
     </div>
 
     <div class="layui-row layui-col-space20">
@@ -61,49 +67,65 @@
                     </span>
                 </div>
 
-                <ul class="fly-list">
+                <ul class="">
                     <li th:each="interview:${pageInfo.list}"
-                        style="height: auto;width: 100%;padding: 30px  20px 50px 20px;">
-                        <span style="display:inline-block;">
+                        style="height: auto;width: 100%;padding:20px;">
+                        <div style="float:left;">
                             <a href="#" th:href="@{/interviewer/}+${interview.iid}">
                                 <img style="width: 140px;height: 140px;border-radius: 70px;"
                                      th:src="${interview.headUrl}">
                             </a>
-                        </span>
-                        <span style="display:inline-block;margin: 0px 50px;">
-                            <div style="line-height:25px;">
-                                <h1>
-                                    <a th:href="@{/interviewer/}+${interview.iid}">
-                                        <span th:text="${interview.username}"></span>
-                                    </a>
-                                </h1>
-                                <span th:utext="${interview.description}"></span>
-                            </div>
+                        </div>
+                        <div style="margin: 15px 20px 20px 40px;padding-left: 120px;">
                             <div>
-                                <span style="position: absolute;right: 200px;">4.9分</span>
-                                <span style="position: absolute;right: 60px;">
-                                    <span style="font-size: 30px;color: #ff6600">80</span>元</span>
-                            </div>
-                            <div style="position: absolute;bottom: 50px;line-height:25px;">
-                                <div>3年工作经验 帮助过8123人次</div>
-                                <span th:each="type:${interview.types}" th:text="${type}"
-                                      style="border:1px solid #a1a1a1;border-radius: 5px;margin: 30px 5px;padding: 5px;"></span>
-                                <span style="position: absolute;right: -350px;border:1px solid #a1a1a1;border-radius: 5px;padding: 5px;">
+                                <span>
                                     <a th:href="@{/interviewer/}+${interview.iid}">
-                                        <i class="iconfont icon-jiaoliu" style="color: #4cae4c"></i> 联系Ta
+                                        <span th:text="${interview.username}" style="font-size: 30px;"></span>
                                     </a>
                                 </span>
+                                <span th:if="${interview.isCertification}==1" style="padding-left: 10px;">
+                                    <i class="iconfont icon-renzheng layui-hide-xs" style="font-size: 20px;"
+                                       title="认证"></i>
+                                </span>
+                            </div>
+                            <div style="padding-left: 60%">
+                                <span th:if="${not #lists.isEmpty(interview.grade)}" class="star"
+                                      th:attr="data-num=${interview.grade}/2"></span>
+                                <span style="padding-left: 10px;">[[${interview.grade}]]分</span>
+                                <span>
+                                    <span style="padding-left:20px;font-size: 30px;color: #ff6600">[[${interview.cost}]]</span>元
+                                </span>
+                            </div>
+                            <div style="margin-top: -10px;">
+                                性别：
+                                <span th:if="${not #lists.isEmpty(interview.sex)}"
+                                      th:text="${interview.sex}==1?'女':'男'"></span>
+                            </div>
+                            <div>
+                                <span th:if="${not #lists.isEmpty(interview.workYear)}">[[${interview.workYear}]]年工作经验 </span>
+                                <span> 帮助过[[${interview.helpPeopleNum}]]人次</span>
+                            </div>
+                            <div style="margin-top: 5px;"
+                                 th:if="${not #lists.isEmpty(interview.types)}">
+                                擅长领域：
+                                <span th:each="type:${interview.types}" th:text="${type}"
+                                      style="padding-right: 10px;">
+                                    </span>
+                            </div>
+                            <div style="padding-left: 70%;">
+                                <a th:href="@{/interviewer/}+${interview.iid}">
+                                    <i class="iconfont icon-jiaoliu"
+                                       style="color: #4cae4c"></i> 联系Ta
+                                </a>
+                            </div>
                         </div>
-                        </span>
-
-                        <div class="fly-list-badge" style="width: 100%"></div>
+                        <div style="position:absolute;left:10px;width: 100%;height: 2px;background-color: #f2f2f2;"></div>
                     </li>
                 </ul>
 
                 <div style="text-align: center">
-                    <nav>
+                    <nav style="padding-bottom: 20px;">
                         <ul class="pagination">
-                            <li><a th:href="@{/interviewer(pn=1,tid=${tid})}">首页</a></li>
                             <!--上一页-->
                             <li th:if="${pageInfo.hasPreviousPage}">
                                 <a th:href="@{/interviewer(pn=${pageInfo.pageNum-1},tid=${tid})}"
@@ -124,7 +146,6 @@
                                     <span aria-hidden="true">»</span>
                                 </a>
                             </li>
-                            <li><a th:href="@{/interviewer(pn=${pageInfo.pages},tid=${tid})}">尾页</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -175,10 +196,27 @@
 
 <script src="..static/front/layui/layui.js" th:src="@{/front/layui/layui.js}"></script>
 <script src="..static/admin/js/jquery.min.js" th:src="@{/admin/js/jquery.min.js}"></script>
+<script src="..static/front/raty/jquery.raty.js" th:src="@{/front/raty/jquery.raty.js}"></script>
+
 <script>
     layui.use(['carousel', 'form', 'element'], function () {
         var carousel = layui.carousel, form = layui.form;
         var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+    });
+
+    // raty星星评分插件
+    $(function () {
+        $(".star").raty({
+            score: function () {
+                return $(this).attr("data-num");
+            },
+            starOn: '/front/raty/images/star-on.png',
+            starOff: '/front/raty/images/star-off.png',
+            starHalf: '/front/raty/images/star-half.png',
+            readOnly: true,
+            halfShow: true,
+            size: 40,
+        })
     });
 </script>
 </body>

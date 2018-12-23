@@ -57,7 +57,7 @@ public class InterviewerService {
         return interviewer;
     }
 
-    public Interviewer getInterviewerById(Integer iid){
+    public Interviewer getInterviewerById(Integer iid) {
         Interviewer interviewer = null;
         if (iid != null) {
             interviewer = interviewerDao.getInterviewerById(iid);
@@ -119,5 +119,15 @@ public class InterviewerService {
         if (interviewer != null) {
             interviewerDao.update(interviewer);
         }
+    }
+
+    /**
+     * 获取面试官数量
+     *
+     * @return
+     */
+    public Integer getInterviewerNum() {
+        Integer num = interviewerDao.getInterviewerNum();
+        return num;
     }
 }

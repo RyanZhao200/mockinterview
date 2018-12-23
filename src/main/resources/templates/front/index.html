@@ -11,97 +11,35 @@
     <link rel="stylesheet" href="..static/front/css/global.css" th:href="@{/front/css/global.css}">
 
     <style>
-        .main-body {
-            width: 100%;
-            height: auto;
-        }
-
-        .carousel-image {
-            width: 90%;
-            position: relative;
-            left: 5%;
-        }
-
-        .layui-carousel > div > div > img {
-            width: 100%;
-            height: 100%;
-        }
-
-        .body-content {
-            margin: 30px 5% 10px 5%;
-            height: auto;
-        }
-
         .tutor-card {
             position: relative;
             left: 2.5%;
             width: 95%;
-            height: 500px;
+            height: auto;
             background-color: #ffffff;
         }
 
         .tutor-card > .tutor-img {
             width: 100%;
-            height: 250px;
+            height: 200px;
         }
-
-        /* 星星评分开始 */
-        .vote-star {
-            display: inline-block; /*内联元素转换成块元素，并不换行*/
-            margin-right: 6px;
-            width: 75px; /*5个星星的宽度*/
-            height: 15px; /*1个星星的高度*/
-            overflow: hidden;
-            vertical-align: middle;
-            background: url(front/images/starsblack.png) repeat-x;
-        }
-
-        .vote-star i {
-            display: inline-block; /*内联元素转换成块元素，并不换行*/
-            height: 15px; /*1个星星的高度*/
-            background: url(front/images/starsyellow.png) repeat-x 00;
-        }
-
-        .vote-number {
-            vertical-align: middle;
-            font-family: 微软雅黑, Verdana, Geneva, sans-serif;
-            font-size: 12px;
-        }
-        /* 星星评分结束*/
     </style>
 </head>
 <body>
 
 <!--前台公共头部-->
 <div th:replace="front/common/bar::topbar"></div>
-<!--头部-->
-<div class="" style="padding: 0px 5% 0px 5%;">
-    <div class="">
-        <ul class="layui-nav"
-            style="background-color: #f2f2f2;height: 80px;padding-top: 15px;padding-left: 100px;">
-            <li class="layui-nav-item">
-                <a th:href="@{/interviewer}">全部</a>
-            </li>
-            <li class="layui-nav-item" th:each="parent:${parentList}">
-                <a href="javascript:;" style="color: #000;">[[${parent.typeName}]]</a>
-                <dl class="layui-nav-child" th:if="${not #lists.isEmpty(parent.childTypes)}">
-                    <dd th:each="type:${parent.childTypes}"><a href="" th:href="@{/interviewer(tid=${type.tid})}">[[${type.typeName}]]</a>
-                    </dd>
-                </dl>
-            </li>
-        </ul>
-    </div>
-</div>
 
 <!--主体内容-->
-<div class="layui-container main-body">
+<div class="layui-container" style="width: 100%;height: auto">
     <!-- 图片轮播-->
-    <div class="layui-row carousel-image">
+    <div class="layui-row" style="width: 90%; position: relative; left: 5%;margin-top: 20px;">
         <div class="layui-col-md12">
             <div class="layui-carousel" id="carouselImage">
                 <div carousel-item="">
                     <div>
-                        <img src="https://img.bjsxt.com/uploadfile/2018/12/java-%E5%88%97%E8%A1%A8.jpg">
+                        <img src="https://img.bjsxt.com/uploadfile/2018/12/java-%E5%88%97%E8%A1%A8.jpg"
+                             style="height: 100%;width:100%;">
                     </div>
                     <div>
                         <img src="https://www.lgstatic.com/i/image2/M01/B5/A8/CgoB5lwKJEWASlBDAAcqLN1b6zw676.PNG">
@@ -111,120 +49,91 @@
         </div>
     </div>
     <!--推荐部分-->
-    <div class="layui-row body-content">
-        <div class="layui-col-md12">
-            <h2 style="font-size: 40px">热门推荐</h2>
-        </div>
-        <div class="layui-col-md3">
-            <div class="tutor-card">
-                <img class="tutor-img"
-                     src="http://static.careerfrog.com.cn/cf-visitor/images/tutor/tutors/picEvian.b74795c3.jpg"/>
-                <div class="tutor-info">
-                    <h2>Michael</h2>
-                    <div class="tutor-type">
-                        <span>咨询</span>
-                        <span>通用</span>
-                    </div>
-                    <div>
-                        是需要求职者花时间做出调研PPT，然后和面试官进行展示，在这一轮我做了很多准备，
-                        找了职业蛙的导师做了一对一辅导，因为他是咨询公司出身的专业人士，所以给了我很多咨询行业的知识，
-                        特别是针对意略明公司，他给了我很全面的背景知识、商业信息的指导，包括说以往咨询行业面试会出现的很多案例和
-                    </div>
-                </div>
+    <div>
+        <div class="layui-row" style="margin: 30px 5% 10px 5%;">
+            <div class="layui-col-md12" style="padding: 20px;">
+                <span style="font-size: 20px">热门推荐</span>
             </div>
-        </div>
-        <div class="layui-col-md3">
-            <div class="tutor-card">
-                <img class="tutor-img"
-                     src="http://static.careerfrog.com.cn/cf-visitor/images/tutor/tutors/picEvian.b74795c3.jpg"/>
-                <div class="tutor-info">
-                    <h2>Michael</h2>
-                    <div class="tutor-type">
-                        <span>咨询</span>
-                        <span>通用</span>
+            <div class="layui-col-md3" th:each="interviewer:${interviewerHot}">
+                <div class="tutor-card">
+                    <div style="padding: 20px 20%;">
+                        <img th:src="${interviewer.headUrl}" style="width: 160px;height: 160px;border-radius: 80px;"/>
                     </div>
-                    <div>
-                        上海交通大学学士学位，INSEAD MBA candidate
-                        曾任罗兰贝格咨询顾问，负责尽职调查及战略项目，涉及TMT、消费品、汽车、医疗等多个行业
-                        擅长：咨询行业技能提升及面试辅导
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="layui-col-md3">
-            <div class="tutor-card">
-                <img class="tutor-img"
-                     src="http://static.careerfrog.com.cn/cf-visitor/images/tutor/tutors/picEvian.b74795c3.jpg"/>
-                <div class="tutor-info">
-                    <h2>Michael</h2>
-                    <div class="tutor-type">
-                        <span>咨询</span>
-                        <span>通用</span>
-                    </div>
-                    <div>
-                        上海交通大学学士学位，INSEAD MBA candidate
-                        曾任罗兰贝格咨询顾问，负责尽职调查及战略项目，涉及TMT、消费品、汽车、医疗等多个行业
-                        擅长：咨询行业技能提升及面试辅导
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="layui-col-md3">
-            <div class="tutor-card">
-                <img class="tutor-img"
-                     src="http://static.careerfrog.com.cn/cf-visitor/images/tutor/tutors/picEvian.b74795c3.jpg"/>
-                <div class="tutor-info">
-                    <h2>Michael</h2>
-                    <div class="tutor-type">
-                        <span>咨询</span>
-                        <span>通用</span>
-                    </div>
-                    <div>
-                        上海交通大学学士学位，INSEAD MBA candidate
-                        曾任罗兰贝格咨询顾问，负责尽职调查及战略项目，涉及TMT、消费品、汽车、医疗等多个行业
-                        擅长：咨询行业技能提升及面试辅导
-                    </div>
-                </div>
-            </div>
-        </div>
-
-    </div>
-
-    <!--中间内容部分-->
-    <ul>
-        <li th:each="vo:${voList}">
-            <div class="layui-row body-content">
-                <div class="layui-col-md12">
-                    <h2 style="font-size: 40px">[[${vo.typeName}]]</h2>
-                </div>
-                <div class="layui-col-md3" th:each="interview:${vo.interviewers}">
-                    <div class="tutor-card">
-                        <img class="tutor-img"
-                             src="http://static.careerfrog.com.cn/cf-visitor/images/tutor/tutors/picEvian.b74795c3.jpg"/>
-                        <div class="tutor-info">
-                            <h2>[[${interview.username}]]</h2>
-                            <div class="tutor-type">
-                                <span>[[${interview.typeName}]]</span>
-                                <span class="star">
-                                    <span class="vote-star">
-                                        <i th:style="'width:'+@{(${interview.grade}*75/10)}+'px'"></i>
-                                    </span>
-                                    <span class="vote-number">[[${interview.grade}]]</span>
-                                </span>
-                            </div>
-                            <div>
-                                [[${interview.description}]]
-                            </div>
+                    <div class="tutor-info">
+                        <div style="font-size: 20px;text-align: center">
+                            <span>[[${interviewer.username}]]</span>
+                            <span th:if="${interviewer.isCertification}==1" style="padding-left: 10px;">
+                                <i class="iconfont icon-renzheng layui-hide-xs" style="font-size: 20px;" title="认证"></i>
+                            </span>
+                        </div>
+                        <div class="tutor-type" style="text-align: center;padding-top: 10px;">
+                            <span th:if="${not #lists.isEmpty(interviewer.grade)}">
+                                    <span class="star" th:attr="data-num=${interviewer.grade}/2"></span>
+                                    <span style="padding-left: 15px;">[[${interviewer.grade}]]</span>
+                            </span>
+                        </div>
+                        <div style="text-align: center;padding-top: 10px;">
+                            擅长领域：
+                            <span th:each="type:${interviewer.types}" th:text="${type}"></span>
+                        </div>
+                        <div style="text-align: center;padding-top: 20px;padding-bottom: 20px;">
+                            <span class="layui-btn layui-btn-danger layui-btn-lg">
+                               <a th:href="@{/interviewer/}+${interviewer.iid}">联系Ta</a>
+                            </span>
                         </div>
                     </div>
                 </div>
             </div>
+        </div>
+    </div>
 
-        </li>
-    </ul>
+    <!--中间内容部分-->
+    <div th:each="vo:${voList}">
+        <div class="layui-row" style="margin: 30px 5% 10px 5%;">
+            <div class="layui-col-md12" style="padding: 20px;">
+                <span style="font-size: 20px">[[${vo.typeName}]]</span>
+                <span style="float: right;">
+                    <a th:href="@{/interviewer(tid=${vo.tid})}">查看全部>></a>
+                </span>
+            </div>
+            <div class="layui-col-md3" th:each="interviewer:${vo.interviewers}">
+                <div class="tutor-card">
+                    <div style="padding: 20px 20%;">
+                        <img th:src="${interviewer.headUrl}" style="width: 160px;height: 160px;border-radius: 80px;"/>
+                    </div>
+                    <div class="tutor-info">
+                        <div style="font-size: 20px;text-align: center">
+                            <span>[[${interviewer.username}]]</span>
+                            <span th:if="${interviewer.isCertification}==1" style="padding-left: 10px;">
+                                <i class="iconfont icon-renzheng layui-hide-xs" style="font-size: 20px;" title="认证"></i>
+                            </span>
+                        </div>
+                        <div class="tutor-type" style="text-align: center;padding-top: 10px;">
+                            <span th:if="${not #lists.isEmpty(interviewer.grade)}">
+                                    <span class="star" th:attr="data-num=${interviewer.grade}/2"></span>
+                                    <span style="padding-left: 15px;">[[${interviewer.grade}]]</span>
+                            </span>
+                        </div>
+                        <div style="text-align: center;padding-top: 10px;">
+                            <span>擅长领域：[[${interviewer.typeName}]]</span>
+                        </div>
+                        <div style="text-align: center;padding-top: 20px;padding-bottom: 20px;">
+                            <span class="layui-btn layui-btn-danger layui-btn-lg">
+                               <a th:href="@{/interviewer/}+${interviewer.iid}">联系Ta</a>
+                            </span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 
-    <div>
-        查看所有面试官信息 全部共 608 位面试官
+    <div style="padding-left: 35%;">
+        <span style="text-align: center;">
+            <a th:href="@{/interviewer}" style="font-size: 20px;color: #ff5722">
+                查看所有面试官信息&nbsp;&nbsp;  共 [[${interviewerNum}]] 位面试官
+            </a>
+        </span>
     </div>
 </div>
 
@@ -233,6 +142,8 @@
 
 <script src="..static/front/layui/layui.js" th:src="@{/front/layui/layui.js}"></script>
 <script src="..static/admin/js/jquery.min.js" th:src="@{/admin/js/jquery.min.js}"></script>
+<script src="..static/front/raty/jquery.raty.js" th:src="@{/front/raty/jquery.raty.js}"></script>
+
 <script>
     layui.use(['carousel', 'form', 'element'], function () {
         var carousel = layui.carousel, form = layui.form;
@@ -241,9 +152,24 @@
         carousel.render({
             elem: '#carouselImage'
             , width: '100%'
-            , height: '600px'
+            , height: '400px'
             , interval: 5000
         });
+    });
+
+    // raty星星评分插件
+    $(function () {
+        $(".star").raty({
+            score: function () {
+                return $(this).attr("data-num");
+            },
+            starOn: '/front/raty/images/star-on.png',
+            starOff: '/front/raty/images/star-off.png',
+            starHalf: '/front/raty/images/star-half.png',
+            readOnly: true,
+            halfShow: true,
+            size: 40,
+        })
     });
 </script>
 </body>

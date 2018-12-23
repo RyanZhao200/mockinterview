@@ -10,5 +10,8 @@
         VALUES(#{flowNum},#{orderNum},#{paidAmount},#{finderId},#{interviewerId},#{createTime})
     </insert>
 
+    <select id="getFlowNumByIid" resultType="java.lang.Integer" parameterType="java.lang.Integer">
+        SELECT count(1) from j_flow WHERE interviewer_id = #{iid}
+    </select>
 
 </mapper>

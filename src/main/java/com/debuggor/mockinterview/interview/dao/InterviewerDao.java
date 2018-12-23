@@ -3,6 +3,8 @@ package com.debuggor.mockinterview.interview.dao;
 import com.debuggor.mockinterview.interview.bean.Interviewer;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * 面试官dao层
  */
@@ -45,4 +47,19 @@ public interface InterviewerDao {
      * @param interviewer
      */
     void update(Interviewer interviewer);
+
+    /**
+     * 获取num位热门的面试官信息
+     *
+     * @param num
+     * @return
+     */
+    List<Interviewer> getInterviewerHot(Integer num);
+
+    /**
+     * 获取面试官数量
+     *
+     * @return
+     */
+    Integer getInterviewerNum();
 }

@@ -62,6 +62,12 @@ public class InterviewController {
         // 获取首页展示的面试官
         List<InterviewerVo> interviewerVoList = interviewService.getInterviewerIndexList();
         model.addAttribute("voList", interviewerVoList);
+        // 推荐的面试官
+        List<Interviewer> interviewerHot = interviewService.getInterviewerHot(4);
+        model.addAttribute("interviewerHot", interviewerHot);
+        // 获取面试官的数量
+        Integer interviewerNum = interviewerService.getInterviewerNum();
+        model.addAttribute("interviewerNum", interviewerNum);
         return "front/index";
     }
 
@@ -82,6 +88,8 @@ public class InterviewController {
         if (tid != null) {
             interviewer.setTid(tid);
             model.addAttribute("tid", tid);
+            Type type = interviewTypeService.getTypeById(tid);
+            model.addAttribute("type", type);
         }
         PageInfo interviewerList = interviewService.getInterviewerList(interviewer, pn);
         logger.info("总共" + String.valueOf(interviewerList.getTotal()) + "条记录");
@@ -91,7 +99,7 @@ public class InterviewController {
 
 
     /**
-     * 面试官详情页
+     * 面试官详情页（个人介绍、用户评价、热门面试官）
      *
      * @return
      */
@@ -101,9 +109,15 @@ public class InterviewController {
                             Model model) {
         Interviewer interviewer = interviewService.getInterviewerById(iid);
         model.addAttribute("interviewer", interviewer);
+        List<Interviewer> interviewers = interviewService.getInterviewerHot(5);
+        model.addAttribute("interviewers", interviewers);
         PageInfo pageInfo = evaluationService.getEvaluationByIid(iid, pn);
         model.addAttribute("pageInfo", pageInfo);
-        model.addAttribute("iid",iid);
+        Integer evaluationNum = evaluationService.getEvaluationNumByIid(iid);
+        model.addAttribute("evaluationNum", evaluationNum);
+        Float grade = evaluationService.getEvaluationGradeByIid(iid);
+        model.addAttribute("grade", grade);
+        model.addAttribute("iid", iid);
         return "/front/interview/detail";
     }
 

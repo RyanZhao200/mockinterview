@@ -25,4 +25,20 @@ public interface EvaluationDao {
      * @return
      */
     List<Evaluation> getEvaluationByIid(Integer iid);
+
+    /**
+     * 根据面试官ID，获取面试官被评论条数
+     *
+     * @param iid
+     * @return
+     */
+    Integer getEvaluationNumByIid(Integer iid);
+
+    /**
+     * 根据面试官ID，获取面试官的平均评分
+     *
+     * @param iid
+     * @return
+     */
+    Float getEvaluationGradeByIid(Integer iid);
 }

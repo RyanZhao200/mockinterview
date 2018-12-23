@@ -14,4 +14,12 @@ public interface FlowDao {
      * @param flow
      */
     void insert(Flow flow);
+
+    /**
+     * 根据面试官的ID，获取面试官面试的数量
+     *
+     * @param iid
+     * @return
+     */
+    Integer getFlowNumByIid(Integer iid);
 }

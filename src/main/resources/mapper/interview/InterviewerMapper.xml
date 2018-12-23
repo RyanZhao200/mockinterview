@@ -41,4 +41,15 @@
         </set>
         WHERE iid = #{iid}
     </update>
+
+    <select id="getInterviewerHot" parameterType="java.lang.Integer"
+            resultType="com.debuggor.mockinterview.interview.bean.Interviewer">
+        SELECT iid,username,head_url,work_year,grade from j_interviewer
+        ORDER BY grade desc
+        LIMIT 0,#{num}
+    </select>
+
+    <select id="getInterviewerNum" parameterType="java.lang.Integer" resultType="java.lang.Integer">
+        SELECT count(1) from j_interviewer
+    </select>
 </mapper>
