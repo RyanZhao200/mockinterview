@@ -67,7 +67,7 @@ public class AlipayController {
         model.addAttribute("interviewer", interviewer);
         Finder finder = (Finder) session.getAttribute("finder");
         model.addAttribute("finder", finder);
-        return "/front/interview/order";
+        return "front/interview/order";
     }
 
     /**
@@ -130,7 +130,7 @@ public class AlipayController {
         model.addAttribute("finder", finder);
         model.addAttribute("interviewer", interviewer);
         model.addAttribute("order", order);
-        return "/front/interview/toPay";
+        return "front/interview/toPay";
     }
 
     /**

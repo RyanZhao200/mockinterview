@@ -118,7 +118,7 @@ public class InterviewController {
         Float grade = evaluationService.getEvaluationGradeByIid(iid);
         model.addAttribute("grade", grade);
         model.addAttribute("iid", iid);
-        return "/front/interview/detail";
+        return "front/interview/detail";
     }
 
     /**
@@ -136,7 +136,7 @@ public class InterviewController {
         String roomToken = qiniuService.getRoomToken(interviewer.getIid(), fid, UserConstant.Interviewer_Type);
         model.addAttribute("roomToken", roomToken);
         logger.info("面试官：" + interviewer.getUsername() + "发起了面试");
-        return "/front/interview/room";
+        return "front/interview/room";
     }
 
     /**
@@ -154,7 +154,7 @@ public class InterviewController {
         String roomToken = qiniuService.getRoomToken(iid, finder.getFid(), UserConstant.Finder_Type);
         model.addAttribute("roomToken", roomToken);
         logger.info("求职者：" + finder.getUsername() + "发起了面试");
-        return "/front/interview/room";
+        return "front/interview/room";
     }
 
     /**
@@ -174,7 +174,7 @@ public class InterviewController {
         Interviewer interviewer = interviewerService.getInterviewerById(order.getInterviewerId());
         model.addAttribute("interviewer", interviewer);
         model.addAttribute("order", order);
-        return "/front/interview/interview";
+        return "front/interview/interview";
     }
 
     /**
@@ -230,7 +230,7 @@ public class InterviewController {
         Interviewer interviewer = interviewerService.getInterviewerById(order.getInterviewerId());
         model.addAttribute("order", order);
         model.addAttribute("interviewer", interviewer);
-        return "/front/interview/evaluation";
+        return "front/interview/evaluation";
     }
 
     /**
@@ -262,7 +262,7 @@ public class InterviewController {
         message.setMessageStatus(MessageStatusEnum.NOT_READ.key);
         message.setMessageUrl("/interviewer/" + evaluation.getIid());
         messageService.update(message);
-        return "/front/interview/tips";
+        return "front/interview/tips";
     }
 
     /**
@@ -279,7 +279,7 @@ public class InterviewController {
             finder = finderService.getFinderById(order.getFinderId());
         }
         model.addAttribute("finder", finder);
-        return "/front/interview/interviewToFinder";
+        return "front/interview/interviewToFinder";
     }
 
     @RequestMapping("/interview/orderEnd")

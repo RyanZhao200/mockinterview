@@ -254,7 +254,7 @@ public class FinderController {
         List<Message> messages = messageService.getMessageByUid(finder.getFid(), UserEnum.FINDER.key);
 
         model.addAttribute("messages", messages);
-        return "/front/user/finder/messageInterview";
+        return "front/user/finder/messageInterview";
     }
 
     /**

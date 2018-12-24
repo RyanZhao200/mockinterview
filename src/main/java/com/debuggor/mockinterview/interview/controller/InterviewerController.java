@@ -137,12 +137,12 @@ public class InterviewerController {
         boolean allowed = Arrays.asList(allowedType).contains(headUrl.getContentType());
         if (!allowed) {
             model.addAttribute("msg", "error|不支持的类型");
-            return "/front/user/interviewer/set";
+            return "front/user/interviewer/set";
         }
         // 图片大小限制
         if (headUrl.getSize() > 3 * 1024 * 1024) {
             model.addAttribute("msg", "error|图片大小不能超过3M");
-            return "/front/user/interviewer/set";
+            return "front/user/interviewer/set";
         }
         // 包含原始文件名的字符串
         String fi = headUrl.getOriginalFilename();
@@ -218,7 +218,7 @@ public class InterviewerController {
 
         List<Message> messages = messageService.getMessageByUid(interviewer.getIid(), UserEnum.INTERVIEWER.key);
         model.addAttribute("messages", messages);
-        return "/front/user/interviewer/messageInterview";
+        return "front/user/interviewer/messageInterview";
     }
 
     /**
