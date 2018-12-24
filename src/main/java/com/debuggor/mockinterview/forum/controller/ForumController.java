@@ -1,5 +1,6 @@
 package com.debuggor.mockinterview.forum.controller;
 
+import com.debuggor.mockinterview.common.enumerate.UserEnum;
 import com.debuggor.mockinterview.forum.bean.Comment;
 import com.debuggor.mockinterview.forum.bean.Forum;
 import com.debuggor.mockinterview.forum.bean.Type;
@@ -7,6 +8,7 @@ import com.debuggor.mockinterview.forum.service.CommentService;
 import com.debuggor.mockinterview.forum.service.ForumService;
 import com.debuggor.mockinterview.forum.service.ForumTypeService;
 import com.debuggor.mockinterview.interview.bean.Finder;
+import com.debuggor.mockinterview.interview.bean.Interviewer;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -66,12 +68,11 @@ public class ForumController {
      * @return
      */
     @RequestMapping("/{pid}")
-    public String detailPost(@PathVariable("pid") Integer pid, Model model, HttpSession session) {
+    public String detailPost(@PathVariable("pid") Integer pid, Model model) {
         Forum forum = forumService.getForumById(pid);
         List<Comment> comments = commentService.getCommentListByPid(pid);
         model.addAttribute("forum", forum);
         model.addAttribute("comments", comments);
-        session.setAttribute("pid", pid);
         return "front/forum/detail";
     }
 
@@ -98,14 +99,20 @@ public class ForumController {
     @RequestMapping("/action")
     public String addForum(Forum forum, HttpSession session) {
 
-        Finder user = (Finder) session.getAttribute("user");
-        if (user != null) {
-            forum.setUid(user.getFid());
+        Finder finder = (Finder) session.getAttribute("finder");
+        if (finder != null) {
+            forum.setUserType(UserEnum.FINDER.key);
+            forum.setUid(finder.getFid());
+        }
+        Interviewer interviewer = (Interviewer) session.getAttribute("interviewer");
+        if (interviewer != null) {
+            forum.setUserType(UserEnum.INTERVIEWER.key);
+            forum.setUid(interviewer.getIid());
         }
         forumService.insertForum(forum);
         // 获得帖子ID
         Integer pid = forum.getPid();
-        logger.info(user.getUsername() + "插入数据pid=" + pid);
+        logger.info("插入数据pid=" + pid);
         return "redirect:" + pid;
     }
 }

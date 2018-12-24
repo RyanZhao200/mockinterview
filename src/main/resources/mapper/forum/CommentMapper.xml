@@ -14,9 +14,12 @@
 
     <select id="getCommentListByPid" resultType="com.debuggor.mockinterview.forum.bean.Comment"
             parameterType="java.lang.Integer">
-        SELECT c.cid,c.comment,c.uid,f.username,c.pid,c.comment_time,c.parent_id
-        from f_comment c
-        LEFT JOIN j_finder f ON f.fid=c.uid
-        WHERE c.pid = #{pid}
+        SELECT c.cid,c.comment,c.uid,user_type,c.pid,c.comment_time,c.parent_id
+        from f_comment c  WHERE c.pid = #{pid}
     </select>
+
+    <insert id="insert" parameterType="com.debuggor.mockinterview.forum.bean.Comment">
+        insert into f_comment (comment,pid,uid,user_type,comment_time,parent_id)
+        values (#{comment},#{pid},#{uid},#{userType},#{commentTime},#{parentId});
+    </insert>
 </mapper>

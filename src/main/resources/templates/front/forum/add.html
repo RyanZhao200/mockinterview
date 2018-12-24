@@ -2,10 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <title>发表问题 编辑问题 公用</title>
+    <title>发表问题</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
-    <meta name="keywords" content="">
-    <meta name="description" content="">
 
     <link rel="stylesheet" href="..static/front/layui/css/layui.css" th:href="@{/front/layui/css/layui.css}">
     <link rel="stylesheet" href="..static/front/css/global.css" th:href="@{/front/css/global.css}">
@@ -22,7 +20,7 @@
         <div class="layui-form layui-form-pane">
             <div class="layui-tab layui-tab-brief" lay-filter="user">
                 <ul class="layui-tab-title">
-                    <li class="layui-this">发表新帖<!-- 编辑帖子 --></li>
+                    <li class="layui-this">发表新帖</li>
                 </ul>
                 <div class="layui-form layui-tab-content" id="LAY_ucm" style="padding: 20px 0;">
                     <div class="layui-tab-item layui-show">
@@ -50,7 +48,7 @@
                             <div class="layui-form-item layui-form-text">
                                 <div class="layui-input-block">
                                     <textarea id="L_content" name="content" required lay-verify="required"
-                                              class="layui-textarea fly-editor" style="height: 300px;"></textarea>
+                                              style="height: 300px;"></textarea>
                                 </div>
                             </div>
                             <div class="layui-form-item">
@@ -111,7 +109,7 @@
                 draw(show_num);
             }
         })
-    })
+    });
 
     <!--添加下面语句 select下拉框显示出来-->
     layui.use('form', function () {

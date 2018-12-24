@@ -12,12 +12,46 @@ public class Comment {
     private Integer pid;
     // 用户ID
     private Integer uid;
+    // 用户类别（1、求职者，2、面试官）
+    private String userType;
     // 评论人姓名
     private String username;
+    //
+    private String headUrl;
     // 评论时间
     private Date commentTime;
     // 父ID
     private Integer parentId;
+
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "cid=" + cid +
+                ", comment='" + comment + '\'' +
+                ", pid=" + pid +
+                ", uid=" + uid +
+                ", userType='" + userType + '\'' +
+                ", username='" + username + '\'' +
+                ", commentTime=" + commentTime +
+                ", parentId=" + parentId +
+                '}';
+    }
+
+    public String getHeadUrl() {
+        return headUrl;
+    }
+
+    public void setHeadUrl(String headUrl) {
+        this.headUrl = headUrl;
+    }
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
 
     public String getUsername() {
         return username;

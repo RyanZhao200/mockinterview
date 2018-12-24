@@ -13,11 +13,9 @@
 
     <select id="getPostList" resultType="com.debuggor.mockinterview.forum.bean.Forum"
             parameterType="com.debuggor.mockinterview.forum.bean.Forum">
-        SELECT f.pid,f.title,f.content,
-        t.tid,t.type_name,j.fid,j.username,j.head_url,
-        f.scan_count,f.comment_count,f.create_time,f.update_time,f.reply_time
+        SELECT f.pid,f.title,f.content,f.scan_count,f.comment_count,f.create_time,f.uid,f.user_type,
+        f.update_time,f.reply_time,t.tid,t.type_name
         from f_forum f
-        LEFT JOIN j_finder j ON f.uid=j.fid
         LEFT JOIN f_type t on f.tid=t.tid
         <where>
             <include refid="query_post_where"></include>
@@ -26,18 +24,16 @@
 
     <select id="getForumById" resultType="com.debuggor.mockinterview.forum.bean.Forum"
             parameterType="java.lang.Integer">
-        SELECT f.pid,f.title,f.content,
-        t.tid,t.type_name,j.fid,j.username,j.head_url,
-        f.scan_count,f.comment_count,f.create_time,f.update_time,f.reply_time
+        SELECT f.pid,f.title,f.content,f.scan_count,f.comment_count,f.uid,f.user_type,
+        f.create_time,f.update_time,f.reply_time,t.tid,t.type_name
         from f_forum f
-        LEFT JOIN j_finder j ON f.uid=j.fid
         LEFT JOIN f_type t on f.tid=t.tid
         WHERE f.pid=#{pid}
     </select>
 
     <insert id="insertForum" parameterType="com.debuggor.mockinterview.forum.bean.Forum" useGeneratedKeys="true"
             keyProperty="pid">
-        INSERT INTO f_forum(title,content,tid,uid,scan_count,comment_count,create_time,update_time,reply_time)
-        VALUES (#{title},#{content},#{tid},#{uid},#{scanCount},#{commentCount},#{createTime},#{updateTime},#{replyTime})
+        INSERT INTO f_forum(title,content,tid,uid,user_type,scan_count,comment_count,create_time,update_time,reply_time)
+        VALUES (#{title},#{content},#{tid},#{uid},#{userType},#{scanCount},#{commentCount},#{createTime},#{updateTime},#{replyTime})
     </insert>
 </mapper>

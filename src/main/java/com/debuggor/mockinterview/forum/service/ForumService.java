@@ -1,15 +1,19 @@
 package com.debuggor.mockinterview.forum.service;
 
 import com.debuggor.mockinterview.common.constant.PageConstant;
+import com.debuggor.mockinterview.common.enumerate.UserEnum;
 import com.debuggor.mockinterview.forum.bean.Forum;
 import com.debuggor.mockinterview.forum.dao.ForumDao;
 import com.debuggor.mockinterview.interview.bean.Finder;
+import com.debuggor.mockinterview.interview.bean.Interviewer;
 import com.debuggor.mockinterview.interview.dao.FinderDao;
+import com.debuggor.mockinterview.interview.dao.InterviewerDao;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -19,6 +23,8 @@ public class ForumService {
     private ForumDao forumDao;
     @Autowired
     private FinderDao finderDao;
+    @Autowired
+    private InterviewerDao interviewerDao;
 
     /**
      * 帖子列表
@@ -38,8 +44,25 @@ public class ForumService {
         }
         PageHelper.startPage(pn, PageConstant.Page_Sizes);
         List<Forum> posts = forumDao.getPostList(forum);
-        PageInfo pageInfo = new PageInfo<>(posts, PageConstant.Navigate_Pages);
-        return pageInfo;
+        PageInfo<Forum> pageInfo = new PageInfo<>(posts, PageConstant.Navigate_Pages);
+        // 用户的信息：之前在sql语句实现，后加面试官进去，sql语句不好写，故在service层实现
+        PageInfo pageInfoNew = pageInfo;
+        List<Forum> forums = new ArrayList<>();
+        for (Forum post : pageInfo.getList()) {
+            if (post.getUserType().equals(UserEnum.FINDER.key)) {
+                Finder finder = finderDao.getFinderById(post.getUid());
+                post.setUsername(finder.getUsername());
+                post.setHeadUrl(finder.getHeadUrl());
+            }
+            if (post.getUserType().equals(UserEnum.INTERVIEWER.key)) {
+                Interviewer interviewer = interviewerDao.getInterviewerById(post.getUid());
+                post.setUsername(interviewer.getUsername());
+                post.setHeadUrl(interviewer.getHeadUrl());
+            }
+            forums.add(post);
+        }
+        pageInfoNew.setList(forums);
+        return pageInfoNew;
     }
 
     /**
@@ -49,11 +72,21 @@ public class ForumService {
      * @return
      */
     public Forum getForumById(Integer pid) {
-        Forum forum = null;
-        if (pid != null) {
-            forum = forumDao.getForumById(pid);
+        if (pid == null) {
+            return null;
         }
-        return forum;
+        Forum post = forumDao.getForumById(pid);
+        if (post.getUserType().equals(UserEnum.FINDER.key)) {
+            Finder finder = finderDao.getFinderById(post.getUid());
+            post.setUsername(finder.getUsername());
+            post.setHeadUrl(finder.getHeadUrl());
+        }
+        if (post.getUserType().equals(UserEnum.INTERVIEWER.key)) {
+            Interviewer interviewer = interviewerDao.getInterviewerById(post.getUid());
+            post.setUsername(interviewer.getUsername());
+            post.setHeadUrl(interviewer.getHeadUrl());
+        }
+        return post;
     }
 
     /**
@@ -63,12 +96,17 @@ public class ForumService {
      * @return
      */
     public Integer insertForum(Forum forum) {
-        forum.setCommentCount(0); //评论数量0
-        forum.setScanCount(0); // 浏览数量0
-        Date date = new Date(); //
-        forum.setCreateTime(date); //创建时间
-        forum.setUpdateTime(date); //更新时间
-        forum.setReplyTime(date); //最近回复时间
+        //评论数量0
+        forum.setCommentCount(0);
+        // 浏览数量0
+        forum.setScanCount(0);
+        Date date = new Date();
+        //创建时间
+        forum.setCreateTime(date);
+        //更新时间
+        forum.setUpdateTime(date);
+        //最近回复时间
+        forum.setReplyTime(date);
         Integer pid = forumDao.insertForum(forum);
         return pid;
     }

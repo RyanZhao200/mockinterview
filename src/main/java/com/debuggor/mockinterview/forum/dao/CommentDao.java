@@ -15,4 +15,11 @@ public interface CommentDao {
      * @return
      */
     List<Comment> getCommentListByPid(Integer pid);
+
+    /**
+     * 插入一条评论
+     *
+     * @param comment
+     */
+    void insert(Comment comment);
 }

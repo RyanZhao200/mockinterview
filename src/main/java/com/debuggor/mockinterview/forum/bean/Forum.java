@@ -16,6 +16,8 @@ public class Forum {
     private String typeName;
     // 创建人ID
     private Integer uid;
+    // 用户类别（1、求职者，2、面试官）
+    private String userType;
     // 创建人姓名
     private String username;
     // 创建人头像
@@ -34,6 +36,14 @@ public class Forum {
     private Date startTime;
     // 查询 结束时间
     private Date endTime;
+
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
+    }
 
     public String getHeadUrl() {
         return headUrl;

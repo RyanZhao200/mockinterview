@@ -56,7 +56,7 @@
             </div>
             <div class="layui-col-md3" th:each="interviewer:${interviewerHot}">
                 <div class="tutor-card">
-                    <div style="padding: 20px 20%;">
+                    <div style="padding: 20px 20px;text-align: center;">
                         <img th:src="${interviewer.headUrl}" style="width: 160px;height: 160px;border-radius: 80px;"/>
                     </div>
                     <div class="tutor-info">
@@ -98,7 +98,7 @@
             </div>
             <div class="layui-col-md3" th:each="interviewer:${vo.interviewers}">
                 <div class="tutor-card">
-                    <div style="padding: 20px 20%;">
+                    <div style="padding: 20px 20px;text-align: center;">
                         <img th:src="${interviewer.headUrl}" style="width: 160px;height: 160px;border-radius: 80px;"/>
                     </div>
                     <div class="tutor-info">
@@ -128,7 +128,7 @@
         </div>
     </div>
 
-    <div style="padding-left: 35%;">
+    <div style="padding-left: 35%;padding-top: 30px;">
         <span style="text-align: center;">
             <a th:href="@{/interviewer}" style="font-size: 20px;color: #ff5722">
                 查看所有面试官信息&nbsp;&nbsp;  共 [[${interviewerNum}]] 位面试官
