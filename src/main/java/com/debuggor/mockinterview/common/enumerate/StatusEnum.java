@@ -7,7 +7,11 @@ public enum StatusEnum {
     // 是
     YES("1", "是"),
     // 否
-    NO("2", "否");
+    NO("2", "否"),
+    // 正常
+    NORMAL("1", "正常"),
+    // 删除
+    DELETE("2", "删除");
 
     public final String key;
     public final String value;

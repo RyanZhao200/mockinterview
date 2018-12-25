@@ -49,10 +49,12 @@
                 </a>
                 <dl class="layui-nav-child">
                     <dd>
-                        <a href="#" th:href="@{/finder/toUpdate}"><i class="layui-icon">&#xe620;</i>基本设置</a>
+                        <a href="#"><i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息</a>
                     </dd>
                     <dd>
-                        <a href="#"><i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息</a>
+                        <a th:href="@{/finder/posts}">
+                            <i class="layui-icon">&#xe60e;</i> 我的帖子
+                        </a>
                     </dd>
                     <dd>
                         <a href="#" th:href="@{/finder/messageInterview}"><i class="layui-icon">&#xe66c;</i> 面试记录</a>
@@ -61,6 +63,9 @@
                         <a href="#">
                             <i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页
                         </a>
+                    </dd>
+                    <dd>
+                        <a href="#" th:href="@{/finder/toUpdate}"><i class="layui-icon">&#xe620;</i>基本设置</a>
                     </dd>
                     <hr style="margin: 5px 0;">
                     <dd><a th:href="@{/finder/logout}" href="" style="text-align: center;">退出</a></dd>
@@ -79,15 +84,20 @@
                 </a>
                 <dl class="layui-nav-child">
                     <dd>
-                        <a href="#" th:href="@{/interviewer/toUpdate}"><i class="layui-icon">&#xe620;</i>基本设置</a>
+                        <a href="#"><i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息</a>
                     </dd>
                     <dd>
-                        <a href="#"><i class="iconfont icon-tongzhi" style="top: 4px;"></i>我的消息</a>
+                        <a th:href="@{/interviewer/posts}">
+                            <i class="layui-icon">&#xe60e;</i> 我的帖子
+                        </a>
                     </dd>
                     <dd>
                         <a href="#">
                             <i class="layui-icon" style="margin-left: 2px; font-size: 22px;">&#xe68e;</i>我的主页
                         </a>
+                    </dd>
+                    <dd>
+                        <a href="#" th:href="@{/interviewer/toUpdate}"><i class="layui-icon">&#xe620;</i>基本设置</a>
                     </dd>
                     <hr style="margin: 5px 0;">
                     <dd><a th:href="@{/interviewer/logout}" href="" style="text-align: center;">退出</a></dd>

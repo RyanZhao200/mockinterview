@@ -1,6 +1,7 @@
 package com.debuggor.mockinterview.forum.dao;
 
 import com.debuggor.mockinterview.forum.bean.Forum;
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -31,4 +32,20 @@ public interface ForumDao {
      * @return
      */
     Integer insertForum(Forum forum);
+
+    /**
+     * 根据用户的ID，获取其发表的帖子
+     *
+     * @param uid
+     * @param userType
+     * @return
+     */
+    List<Forum> getForumsByUId(@Param("uid") Integer uid, @Param("userType") String userType);
+
+    /**
+     * 更新帖子
+     *
+     * @param forum
+     */
+    void update(Forum forum);
 }

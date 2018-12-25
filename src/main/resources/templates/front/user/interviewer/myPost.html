@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>我的帖子</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" href="..static/front/layui/css/layui.css" th:href="@{/front/layui/css/layui.css}">
+    <link rel="stylesheet" href="..static/front/css/global.css" th:href="@{/front/css/global.css}">
+    <link rel="stylesheet" href="..static/front/window/window.css" th:href="@{/front/window/window.css}">
+
+</head>
+<body>
+<!--前台公共头部-->
+<div th:replace="front/common/bar::topbar"></div>
+
+<div class="layui-container fly-marginTop fly-user-main">
+    <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="user">
+        <li class="layui-nav-item">
+            <a href="#">
+                <i class="layui-icon">&#xe609;</i> 我的主页
+            </a>
+        </li>
+        <li class="layui-nav-item">
+            <a href="#">
+                <i class="layui-icon">&#xe667;</i> 我的消息
+            </a>
+        </li>
+        <li class="layui-nav-item layui-this">
+            <a th:href="@{/interviewer/posts}">
+                <i class="layui-icon">&#xe60e;</i> 我的帖子
+            </a>
+        </li>
+        <li class="layui-nav-item ">
+            <a href="" th:href="@{/interviewer/messageInterview}">
+                <i class="layui-icon">&#xe66c;</i> 邀约面试
+            </a>
+        </li>
+        <li class="layui-nav-item">
+            <a href="" th:href="@{/interviewer/toUpdate}">
+                <i class="layui-icon">&#xe620;</i> 基本设置
+            </a>
+        </li>
+    </ul>
+
+    <div class="fly-panel fly-panel-user" pad20>
+        <div class="layui-tab layui-tab-brief">
+            <ul class="layui-tab-title" id="LAY_mine">
+                <li data-type="mine-jie" lay-id="post" class="layui-this">
+                    我发布的帖子（<span>[[${forumPageInfo.total}]]</span>）
+                </li>
+                <li data-type="comment" lay-id="comment">
+                    我回复的帖子（<span>[[${commentPageInfo.total}]]</span>）
+                </li>
+            </ul>
+            <div class="layui-tab-content" style="padding: 20px 0;">
+                <div class="layui-tab-item layui-show">
+                    <ul class="mine-view jie-row">
+                        <li th:each="forum:${forumPageInfo.list}">
+                            <a class="jie-title" href="" th:href="@{/forum/}+${forum.pid}" target="_blank">
+                                [[${forum.title}]]
+                            </a>
+                            <i>[[${#dates.format(forum.createTime, 'yyyy年MM月dd日 HH:mm')}]]</i>
+                            <span style="float: right;margin-right: 12%;background-color: white;">
+                                <a class="layui-btn layui-btn-xs" style="padding: 2px 10px;"
+                                   th:href="@{/forum/updatePost/}+${forum.pid}">编辑</a>
+                                <button class="layui-btn layui-btn-danger layui-btn-xs" style="padding: 2px 10px;"
+                                        th:onclick="'deletePostByPid('+${forum.pid}+')'">删除</button>
+                            </span>
+                            <em>[[${forum.scanCount}]]阅/[[${forum.commentCount}]]答</em>
+                        </li>
+                        <a id="deletePostByPid" th:href="@{/interviewer/deletePost/}"></a>
+                    </ul>
+                </div>
+                <div class="layui-tab-item">
+                    <ul>
+                        <li th:each="comment:${commentPageInfo.list}" style="padding:5px 10px;">
+                            <div>
+                                <a th:href="@{/forum/}+${comment.forum.pid}" style="font-size: 13px;" target="_blank">
+                                    [[${comment.forum.title}]]
+                                </a>
+                            </div>
+                            <div style="margin-top: 5px;">
+                                <span>
+                                    <a th:href="@{/forum/}+${comment.forum.pid}" style="color: #aeaeae;font-size: 12px;"
+                                       target="_blank">
+                                     <span th:utext="${comment.comment}"></span>
+                                    </a>
+                                </span>
+                                <span style="float: right;font-size: 10px;">
+                                    <i style="color: #aeaeae;">
+                                        发表于[[${#dates.format(comment.commentTime, 'yyyy-MM-dd HH:mm')}]]
+                                    </i>
+                                </span>
+                            </div>
+                            <div style="width: 100%;background-color: #f2f2f2;height: 1px;margin-top: 10px;"></div>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!--公共底部-->
+<div th:replace="front/common/bar::footerbar"></div>
+
+<script src="..static/front/layui/layui.js" th:src="@{/front/layui/layui.js}"></script>
+<script src="..static/admin/js/jquery.min.js" th:src="@{/admin/js/jquery.min.js}"></script>
+<script src="..static/front/window/window.js" th:src="@{/front/window/window.js}"></script>
+<script>
+    layui.use('element', function () {
+        var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+        element.init();
+    });
+
+    // 删除帖子
+    function deletePostByPid(pid) {
+        win.confirm('温馨提示', '确定删除帖子吗？', function (r) {
+            if (r) {
+                var href = document.getElementById("deletePostByPid");
+                href = href + pid;
+                window.open(href, name = "_self");  // 在当前窗口打开链接
+            }
+        });
+    }
+</script>
+
+</body>
+</html>

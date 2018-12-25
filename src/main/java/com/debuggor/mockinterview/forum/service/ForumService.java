@@ -110,4 +110,26 @@ public class ForumService {
         Integer pid = forumDao.insertForum(forum);
         return pid;
     }
+
+    /**
+     * 根据用户的ID，获取其发表的帖子
+     *
+     * @param pn       分页页数
+     * @param uid      用户ID
+     * @param userType 用户类别
+     */
+    public PageInfo<Forum> getForumsByUid(Integer pn, Integer uid, String userType) {
+        PageHelper.startPage(pn, PageConstant.Page_Sizes_Small);
+        List<Forum> forums = forumDao.getForumsByUId(uid, userType);
+        PageInfo<Forum> pageInfo = new PageInfo<>(forums, PageConstant.Navigate_Pages);
+        return pageInfo;
+    }
+
+    /**
+     * 更新帖子
+     */
+    public void update(Forum forum) {
+        forum.setUpdateTime(new Date());
+        forumDao.update(forum);
+    }
 }

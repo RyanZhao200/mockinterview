@@ -17,23 +17,28 @@
 <div class="layui-container fly-marginTop fly-user-main">
     <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="user">
         <li class="layui-nav-item">
-            <a href="" th:href="@{/interviewer/}+${interviewer.iid}">
+            <a href="#">
                 <i class="layui-icon">&#xe609;</i> 我的主页
             </a>
         </li>
         <li class="layui-nav-item">
             <a href="#">
-                <i class="layui-icon">&#xe612;</i> 用户中心
-            </a>
-        </li>
-        <li class="layui-nav-item layui-this">
-            <a href="" th:href="@{/interviewer/toUpdate}">
-                <i class="layui-icon">&#xe620;</i> 基本设置
+                <i class="layui-icon">&#xe667;</i> 我的消息
             </a>
         </li>
         <li class="layui-nav-item">
+            <a th:href="@{/interviewer/posts}">
+                <i class="layui-icon">&#xe60e;</i> 我的帖子
+            </a>
+        </li>
+        <li class="layui-nav-item ">
             <a href="" th:href="@{/interviewer/messageInterview}">
                 <i class="layui-icon">&#xe66c;</i> 邀约面试
+            </a>
+        </li>
+        <li class="layui-nav-item  layui-this">
+            <a href="" th:href="@{/interviewer/toUpdate}">
+                <i class="layui-icon">&#xe620;</i> 基本设置
             </a>
         </li>
     </ul>
@@ -207,7 +212,7 @@
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <button class="layui-btn" key="set-mine"  onclick="save()">确认修改</button>
+                            <button class="layui-btn" key="set-mine" onclick="save()">确认修改</button>
                         </div>
                     </form>
                 </div>
@@ -290,15 +295,15 @@
     }
 
     //判断旧密码是否正确
-    function judgeOldPwd(pwd){
+    function judgeOldPwd(pwd) {
         $.ajax({
-            url : '/interviewer/judgeOldPwd?oldPwd='+pwd,
-            data : "",
-            async : false,
-            dataType : "html",
-            success : function(data){
-                if(data === 'no'){
-                    layer.msg('旧密码不正确！', function(){
+            url: '/interviewer/judgeOldPwd?oldPwd=' + pwd,
+            data: "",
+            async: false,
+            dataType: "html",
+            success: function (data) {
+                if (data === 'no') {
+                    layer.msg('旧密码不正确！', function () {
                         $('#L_nowpass').val('');
                     });
                 }
@@ -306,41 +311,41 @@
         });
     }
 
-    function save(){
-        if(!$('#L_nowpass').val()){
-            layer.msg('当前密码不能为空！', function(){
+    function save() {
+        if (!$('#L_nowpass').val()) {
+            layer.msg('当前密码不能为空！', function () {
                 $('#L_nowpass').focus();
             });
             return false;
-        }else if (!$('#L_pass').val()){
-            layer.msg('新密码不能为空！', function(){
+        } else if (!$('#L_pass').val()) {
+            layer.msg('新密码不能为空！', function () {
                 $('#L_pass').focus();
             });
             return false;
         }
-        else if(!$('#L_repass').val()){
-            layer.msg('确认密码不能为空！', function(){
+        else if (!$('#L_repass').val()) {
+            layer.msg('确认密码不能为空！', function () {
                 $('#L_repass').focus();
             });
             return false;
         }
-        else if($("#L_pass").val() != $("#L_repass").val()){
-            layer.msg('新密码和确认密码不一致！', function(){
+        else if ($("#L_pass").val() != $("#L_repass").val()) {
+            layer.msg('新密码和确认密码不一致！', function () {
             });
             return false;
         }
         $.ajax({
-            url : '/interviewer/updatePassword?pwd=' + $('#L_pass').val(),
-            data : "",
-            async : false,
-            dataType : "html",
-            success : function(data) {
-                if(data == 'success'){
+            url: '/interviewer/updatePassword?pwd=' + $('#L_pass').val(),
+            data: "",
+            async: false,
+            dataType: "html",
+            success: function (data) {
+                if (data == 'success') {
                     layer.msg('密码修改成功！', {icon: 1});
                     $('#L_nowpass').val('');
                     $('#L_pass').val('');
                     $('#L_repass').val('');
-                }else{
+                } else {
                     layer.msg('密码修改失败，请重试！', {icon: 5});
                 }
             }

@@ -5,6 +5,7 @@
 <mapper namespace="com.debuggor.mockinterview.forum.dao.ForumDao">
 
     <sql id="query_post_where">
+        <if test="forumStatus != null and forumStatus !='' ">and f.forum_status=#{forumStatus}</if>
         <if test="uid != null and uid !='' ">and f.uid=#{uid}</if>
         <if test="tid != null and tid !='' ">and f.tid=#{tid}</if>
         <if test="startTime != null and startTime !='' ">and f.create_time <![CDATA[ >= ]]> #{startTime}</if>
@@ -31,9 +32,32 @@
         WHERE f.pid=#{pid}
     </select>
 
+    <select id="getForumsByUId" resultType="com.debuggor.mockinterview.forum.bean.Forum">
+        SELECT f.pid,f.title,f.content,f.scan_count,f.comment_count,f.uid,f.user_type,
+        f.create_time,f.update_time,f.reply_time,t.tid,t.type_name
+        from f_forum f
+        LEFT JOIN f_type t on f.tid=t.tid
+        WHERE f.uid=#{uid} and f.user_type=#{userType} and f.forum_status=1
+    </select>
+
     <insert id="insertForum" parameterType="com.debuggor.mockinterview.forum.bean.Forum" useGeneratedKeys="true"
             keyProperty="pid">
         INSERT INTO f_forum(title,content,tid,uid,user_type,scan_count,comment_count,create_time,update_time,reply_time)
         VALUES (#{title},#{content},#{tid},#{uid},#{userType},#{scanCount},#{commentCount},#{createTime},#{updateTime},#{replyTime})
     </insert>
+
+    <update id="update" parameterType="com.debuggor.mockinterview.forum.bean.Forum">
+        update f_forum
+        <set>
+            <if test="title != null">title=#{title},</if>
+            <if test="content != null">content=#{content},</if>
+            <if test="tid != null">tid=#{tid},</if>
+            <if test="forumStatus != null">forum_status=#{forumStatus},</if>
+            <if test="scanCount != null">scan_count=#{scanCount},</if>
+            <if test="commentCount != null">comment_count=#{commentCount},</if>
+            <if test="updateTime != null">update_time=#{updateTime},</if>
+            <if test="replyTime != null">reply_time=#{replyTime},</if>
+        </set>
+        WHERE pid = #{pid}
+    </update>
 </mapper>

@@ -1,5 +1,6 @@
 package com.debuggor.mockinterview.forum.controller;
 
+import com.debuggor.mockinterview.common.enumerate.StatusEnum;
 import com.debuggor.mockinterview.common.enumerate.UserEnum;
 import com.debuggor.mockinterview.forum.bean.Comment;
 import com.debuggor.mockinterview.forum.bean.Forum;
@@ -51,6 +52,7 @@ public class ForumController {
         if (tid != null) {
             forum.setTid(tid);
         }
+        forum.setForumStatus(StatusEnum.NORMAL.key);
         PageInfo pageInfo = forumService.getPostList(forum, pn);
         List<Type> types = forumTypeService.getForumTypeList();
         model.addAttribute("pageInfo", pageInfo);
@@ -109,10 +111,58 @@ public class ForumController {
             forum.setUserType(UserEnum.INTERVIEWER.key);
             forum.setUid(interviewer.getIid());
         }
+        forum.setForumStatus(StatusEnum.NORMAL.key);
         forumService.insertForum(forum);
         // 获得帖子ID
         Integer pid = forum.getPid();
         logger.info("插入数据pid=" + pid);
-        return "redirect:" + pid;
+        return "redirect:/forum/" + pid;
+    }
+
+    /**
+     * 跳转到编辑帖子页面
+     *
+     * @param pid
+     * @param session
+     * @param model
+     * @return
+     */
+    @RequestMapping("/updatePost/{pid}")
+    public String updatePage(@PathVariable("pid") Integer pid, HttpSession session, Model model) {
+        List<Type> types = forumTypeService.getForumTypeList();
+        model.addAttribute("types", types);
+
+        Forum forum = forumService.getForumById(pid);
+        if (forum == null) {
+            return "redirect:/forum";
+        }
+        // 判断是否是他自己的帖子 如果不是他的帖子，跳转到帖子列表
+        Finder finder = (Finder) session.getAttribute("finder");
+        if (finder != null) {
+            if (forum.getUid().equals(finder.getFid()) && forum.getUserType().equals(UserEnum.FINDER.key)) {
+                model.addAttribute("forum", forum);
+                return "front/forum/update";
+            }
+        }
+        Interviewer interviewer = (Interviewer) session.getAttribute("interviewer");
+        if (interviewer != null) {
+            if (forum.getUid().equals(interviewer.getIid()) && forum.getUserType().equals(UserEnum.INTERVIEWER.key)) {
+                model.addAttribute("forum", forum);
+                return "front/forum/update";
+            }
+        }
+        return "redirect:/forum";
+    }
+
+    /**
+     * 更新帖子
+     *
+     * @param forum
+     * @return
+     */
+    @RequestMapping("/update")
+    public String update(Forum forum) {
+        forumService.update(forum);
+        return "redirect:/forum/" + forum.getPid();
     }
 }

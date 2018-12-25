@@ -4,13 +4,19 @@ import com.debuggor.mockinterview.common.bean.Message;
 import com.debuggor.mockinterview.common.constant.MockConstant;
 import com.debuggor.mockinterview.common.constant.QiniuConstant;
 import com.debuggor.mockinterview.common.enumerate.MessageStatusEnum;
+import com.debuggor.mockinterview.common.enumerate.StatusEnum;
 import com.debuggor.mockinterview.common.enumerate.UserEnum;
 import com.debuggor.mockinterview.common.service.MessageService;
 import com.debuggor.mockinterview.common.service.QiniuService;
 import com.debuggor.mockinterview.common.util.Md5Util;
+import com.debuggor.mockinterview.forum.bean.Comment;
+import com.debuggor.mockinterview.forum.bean.Forum;
+import com.debuggor.mockinterview.forum.service.CommentService;
+import com.debuggor.mockinterview.forum.service.ForumService;
 import com.debuggor.mockinterview.interview.bean.Finder;
 import com.debuggor.mockinterview.interview.bean.Interviewer;
 import com.debuggor.mockinterview.interview.service.InterviewerService;
+import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +48,10 @@ public class InterviewerController {
     private QiniuService qiniuService;
     @Autowired
     private MessageService messageService;
+    @Autowired
+    private CommentService commentService;
+    @Autowired
+    private ForumService forumService;
 
     @RequestMapping("/login")
     public String tologin() {
@@ -247,5 +257,36 @@ public class InterviewerController {
     public String deleteMessageAll(@PathVariable("iid") Integer iid) {
         messageService.updateByUid(iid, UserEnum.INTERVIEWER.key);
         return "redirect:/interviewer/messageInterview";
+    }
+
+    /**
+     * 求职者的 帖子页面、评论
+     */
+    @RequestMapping("/posts")
+    public String postPage(@RequestParam(required = false, defaultValue = "1", value = "pn") Integer pn,
+                           Model model, HttpSession session) {
+        Interviewer interviewer = (Interviewer) session.getAttribute("interviewer");
+        model.addAttribute("interviewer", interviewer);
+
+        PageInfo<Comment> commentPageInfo = commentService.getCommentListByUid(pn, interviewer.getIid(), UserEnum.INTERVIEWER.key);
+        PageInfo<Forum> forumPageInfo = forumService.getForumsByUid(pn, interviewer.getIid(), UserEnum.INTERVIEWER.key);
+        model.addAttribute("commentPageInfo", commentPageInfo);
+        model.addAttribute("forumPageInfo", forumPageInfo);
+        return "front/user/interviewer/myPost";
+    }
+
+    /**
+     * 删除帖子（逻辑上删除，改变帖子状态，让用户不可见）
+     *
+     * @return
+     */
+    @RequestMapping("/deletePost/{pid}")
+    public String deletePost(@PathVariable("pid") Integer pid) {
+        logger.info(String.valueOf(pid) + "被删除");
+        Forum forum = new Forum();
+        forum.setPid(pid);
+        forum.setForumStatus(StatusEnum.DELETE.key);
+        forumService.update(forum);
+        return "redirect:/interviewer/posts";
     }
 }

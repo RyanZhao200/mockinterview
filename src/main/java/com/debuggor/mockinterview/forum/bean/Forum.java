@@ -22,6 +22,8 @@ public class Forum {
     private String username;
     // 创建人头像
     private String headUrl;
+    //帖子状态 1、正常 ， 2、删除
+    private String forumStatus;
     // 浏览量
     private Integer scanCount;
     // 评论数量
@@ -36,6 +38,14 @@ public class Forum {
     private Date startTime;
     // 查询 结束时间
     private Date endTime;
+
+    public String getForumStatus() {
+        return forumStatus;
+    }
+
+    public void setForumStatus(String forumStatus) {
+        this.forumStatus = forumStatus;
+    }
 
     public String getUserType() {
         return userType;

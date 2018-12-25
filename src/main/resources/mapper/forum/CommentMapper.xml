@@ -4,6 +4,16 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.debuggor.mockinterview.forum.dao.CommentDao">
 
+    <resultMap id="commentMap" type="com.debuggor.mockinterview.forum.bean.Comment">
+        <id column="cid" property="cid"/>
+        <result column="comment" property="comment"/>
+        <result column="comment_time" property="commentTime"/>
+        <association property="forum" javaType="com.debuggor.mockinterview.forum.bean.Forum">
+            <id column="pid" property="pid"/>
+            <result column="title" property="title"/>
+        </association>
+    </resultMap>
+
     <sql id="query_comment_where">
         <if test="uid != null and uid !='' ">and f.uid=#{uid}</if>
         <if test="tid != null and tid !='' ">and f.tid=#{tid}</if>
@@ -14,12 +24,19 @@
 
     <select id="getCommentListByPid" resultType="com.debuggor.mockinterview.forum.bean.Comment"
             parameterType="java.lang.Integer">
-        SELECT c.cid,c.comment,c.uid,user_type,c.pid,c.comment_time,c.parent_id
-        from f_comment c  WHERE c.pid = #{pid}
+        SELECT c.cid,c.comment,c.uid,c.user_type,c.pid,c.comment_time,c.parent_id
+        from f_comment c  WHERE c.pid = #{pid} and c.comment_status=1
     </select>
 
     <insert id="insert" parameterType="com.debuggor.mockinterview.forum.bean.Comment">
         insert into f_comment (comment,pid,uid,user_type,comment_time,parent_id)
         values (#{comment},#{pid},#{uid},#{userType},#{commentTime},#{parentId});
     </insert>
+
+    <select id="getCommentListByUid" resultMap="commentMap">
+        SELECT f.pid,f.title,c.cid,c.comment,c.comment_time
+        from f_comment c
+        LEFT JOIN f_forum f on c.pid=f.pid
+        where c.uid=#{uid} and c.user_type=#{userType} and c.comment_status=1
+    </select>
 </mapper>

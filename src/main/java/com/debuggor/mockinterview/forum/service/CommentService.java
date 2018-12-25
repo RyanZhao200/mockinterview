@@ -81,4 +81,18 @@ public class CommentService {
         }
         commentDao.insert(comment);
     }
+
+    /**
+     * 根据用户的ID，获取其发表过的评论
+     *
+     * @param uid
+     * @param userType
+     * @return
+     */
+    public PageInfo<Comment> getCommentListByUid(Integer pn, Integer uid, String userType) {
+        PageHelper.startPage(pn, PageConstant.Page_Sizes_Small);
+        List<Comment> comments = commentDao.getCommentListByUid(uid, userType);
+        PageInfo<Comment> pageInfo = new PageInfo<>(comments, PageConstant.Navigate_Pages);
+        return pageInfo;
+    }
 }
