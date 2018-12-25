@@ -16,7 +16,7 @@
 <div class="layui-container fly-marginTop fly-user-main">
     <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="user">
         <li class="layui-nav-item">
-            <a href="#">
+            <a href="#" th:href="@{/finder/home/}+${finder.fid}">
                 <i class="layui-icon">&#xe609;</i> 我的主页
             </a>
         </li>
@@ -83,10 +83,10 @@
                                 <span>
                                     <a th:href="@{/forum/}+${comment.forum.pid}" style="color: #aeaeae;font-size: 12px;"
                                        target="_blank">
-                                     [[${comment.comment}]]
+                                        <span th:utext="${comment.comment}"></span>
                                     </a>
                                 </span>
-                                <span style="float: right;font-size: 10px;">
+                                <span style="float: right;font-size: 10px;margin-top: -10px;">
                                     <i style="color: #aeaeae;">
                                         发表于[[${#dates.format(comment.commentTime, 'yyyy-MM-dd HH:mm')}]]
                                     </i>

@@ -322,4 +322,27 @@ public class FinderController {
         forumService.update(forum);
         return "redirect:/finder/posts";
     }
+
+    /**
+     * 到求职者的主页（帖子、评论，求职者的基本信息）
+     *
+     * @return
+     */
+    @RequestMapping("/home/{fid}")
+    public String toFinderHome(@RequestParam(required = false, defaultValue = "1", value = "pn") Integer pn,
+                               @PathVariable("fid") Integer fid, Model model) {
+        if (fid == null) {
+            return "redirect:/";
+        }
+        Finder finder = finderService.getFinderById(fid);
+        if (finder == null) {
+            return "redirect:/";
+        }
+        PageInfo<Forum> forumPageInfo = forumService.getForumsByUid(pn, fid, UserEnum.FINDER.key);
+        PageInfo<Comment> commentPageInfo = commentService.getCommentListByUid(pn, fid, UserEnum.FINDER.key);
+        model.addAttribute("finder", finder);
+        model.addAttribute("forumPageInfo", forumPageInfo);
+        model.addAttribute("commentPageInfo", commentPageInfo);
+        return "front/user/finder/home";
+    }
 }

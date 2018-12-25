@@ -72,6 +72,13 @@ public class ForumController {
     @RequestMapping("/{pid}")
     public String detailPost(@PathVariable("pid") Integer pid, Model model) {
         Forum forum = forumService.getForumById(pid);
+        // 更新浏览次数
+        Forum f = new Forum();
+        f.setPid(forum.getPid());
+        f.setScanCount(forum.getScanCount() + 1);
+        forumService.update(f);
+
+        forum = forumService.getForumById(pid);
         List<Comment> comments = commentService.getCommentListByPid(pid);
         model.addAttribute("forum", forum);
         model.addAttribute("comments", comments);

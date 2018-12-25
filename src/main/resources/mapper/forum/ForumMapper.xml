@@ -42,8 +42,8 @@
 
     <insert id="insertForum" parameterType="com.debuggor.mockinterview.forum.bean.Forum" useGeneratedKeys="true"
             keyProperty="pid">
-        INSERT INTO f_forum(title,content,tid,uid,user_type,scan_count,comment_count,create_time,update_time,reply_time)
-        VALUES (#{title},#{content},#{tid},#{uid},#{userType},#{scanCount},#{commentCount},#{createTime},#{updateTime},#{replyTime})
+        INSERT INTO f_forum(title,content,tid,uid,user_type,forum_status,scan_count,comment_count,create_time,update_time,reply_time)
+        VALUES (#{title},#{content},#{tid},#{uid},#{userType},#{forumStatus},#{scanCount},#{commentCount},#{createTime},#{updateTime},#{replyTime})
     </insert>
 
     <update id="update" parameterType="com.debuggor.mockinterview.forum.bean.Forum">

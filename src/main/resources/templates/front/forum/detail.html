@@ -29,19 +29,24 @@
             <div class="fly-panel detail-box">
                 <h1>[[${forum.title}]]</h1>
                 <div class="fly-detail-info"></div>
-                <div class="detail-about">
-                    <a class="fly-avatar" href="#">
-                        <img src="" th:src="${forum.headUrl}">
-                    </a>
-                    <div class="fly-detail-user">
-                        <a href="#" class="fly-link">
-                            <cite>[[${forum.username}]]</cite>
-                            <i class="iconfont icon-renzheng" title="认证信息"></i>
+                <div style="background-color: #f2f2f2;margin: 10px;height: 50px;padding-left: 10px;padding-top: 10px;">
+                    <div>
+                        <a href="#" style="float: left;">
+                            <img th:src="${forum.headUrl}" style="width: 40px;height: 40px;">
                         </a>
+                    </div>
+                    <div style="margin-top: 10px;">
+                        <span style="padding: 10px;font-size: 16px;">
+                            <a href="#">
+                                <cite>[[${forum.username}]]</cite>
+                            </a>
+                        </span>
                         <span>[[${#dates.format(forum.createTime, 'yyyy-MM-dd')}]] </span>
-                        <span class="fly-list-nums">
-                            <a href="#comment"><i class="iconfont" title="回答">&#xe60c;</i> [[${forum.commentCount}]]</a>
-                            <i class="iconfont" title="浏览">&#xe60b;</i>[[${forum.scanCount}]]
+                        <span style="float:right;margin-right: 10px;">
+                            <a href="#comment"><i class="iconfont" title="回答">&#xe60c;</i>
+                                [[${forum.commentCount}]]
+                            </a>
+                            <i class="iconfont" title="浏览" style="padding-left: 10px;">&#xe60b;</i>[[${forum.scanCount}]]
                         </span>
                     </div>
                 </div>
@@ -93,9 +98,9 @@
                     <form th:action="@{/forum/insertComment}" method="post">
                         <input type="hidden" name="pid" th:value="${forum.pid}">
                         <div class="layui-form-item layui-form-text">
-                            <div class="layui-input-block">
+                            <div class="layui-input-block" id="comment">
                                     <textarea id="L_content" name="comment" required lay-verify="required"
-                                      style="height: 260px;" placeholder="评论最少10个字">
+                                              style="height: 260px;" placeholder="评论最少10个字">
                                     </textarea>
                             </div>
                         </div>

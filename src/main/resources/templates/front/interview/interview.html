@@ -48,9 +48,9 @@
                         <label>面试官：</label>
                         <span>[[${interviewer.username}]]</span>
                     </div>
-                    <div>
+                    <div th:if="${not #lists.isEmpty(interviewer.sex)}">
                         <label>性别：</label>
-                        <span>[[${interviewer.sex}]]</span>
+                        <span th:text="${interviewer.sex}==1?'女':'男'"></span>
                     </div>
                     <div>
                         <label>联系方式：</label>

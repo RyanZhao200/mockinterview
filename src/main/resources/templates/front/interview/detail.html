@@ -21,7 +21,13 @@
                 <img style="width: 200px;height: 200px;border-radius: 100px;"
                      th:src="${interviewer.headUrl}">
                 <div style="margin:20px 70px;">
-                    <span class="layui-btn">关注</span>
+                    <button class="layui-btn" title="关注">
+                        <i class="layui-icon">&#xe654;</i>关注Ta
+                    </button>
+
+                    <button class="layui-btn layui-btn-primary" title="取消关注">
+                        <i class="layui-icon">&#xe605;</i>已关注
+                    </button>
                 </div>
             </div>
             <div class="layui-col-md9" style="line-height: 25px;">
