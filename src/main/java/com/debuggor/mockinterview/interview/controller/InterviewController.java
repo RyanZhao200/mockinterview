@@ -3,10 +3,7 @@ package com.debuggor.mockinterview.interview.controller;
 import com.debuggor.mockinterview.common.bean.Message;
 import com.debuggor.mockinterview.common.bean.vo.InterviewerVo;
 import com.debuggor.mockinterview.common.constant.UserConstant;
-import com.debuggor.mockinterview.common.enumerate.MessageStatusEnum;
-import com.debuggor.mockinterview.common.enumerate.StatusEnum;
-import com.debuggor.mockinterview.common.enumerate.StatusTypeEnum;
-import com.debuggor.mockinterview.common.enumerate.UserEnum;
+import com.debuggor.mockinterview.common.enumerate.*;
 import com.debuggor.mockinterview.common.service.InterviewTypeService;
 import com.debuggor.mockinterview.common.service.MessageService;
 import com.debuggor.mockinterview.common.service.QiniuService;
@@ -47,6 +44,8 @@ public class InterviewController {
     private MessageService messageService;
     @Autowired
     private FinderService finderService;
+    @Autowired
+    private FollowerService followerService;
 
     /**
      * 首页
@@ -106,7 +105,7 @@ public class InterviewController {
     @RequestMapping("/interviewer/{iid}")
     public String interview(@PathVariable("iid") Integer iid,
                             @RequestParam(required = false, defaultValue = "1", value = "pn") Integer pn,
-                            Model model) {
+                            HttpSession session, Model model) {
         Interviewer interviewer = interviewService.getInterviewerById(iid);
         model.addAttribute("interviewer", interviewer);
         List<Interviewer> interviewers = interviewService.getInterviewerHot(5);
@@ -118,6 +117,22 @@ public class InterviewController {
         Float grade = evaluationService.getEvaluationGradeByIid(iid);
         model.addAttribute("grade", grade);
         model.addAttribute("iid", iid);
+        // 是否关注
+        Follower follower = new Follower();
+        follower.setFollowersUid(iid);
+        follower.setFollowersType(UserEnum.INTERVIEWER.key);
+        Finder finder = (Finder) session.getAttribute("finder");
+        if (finder != null) {
+            follower.setFollowingUid(finder.getFid());
+            follower.setFollowingType(UserEnum.FINDER.key);
+        }
+        Interviewer iv = (Interviewer) session.getAttribute("interviewer");
+        if (iv != null) {
+            follower.setFollowingUid(iv.getIid());
+            follower.setFollowingType(UserEnum.INTERVIEWER.key);
+        }
+        Boolean followed = followerService.isFollowed(follower);
+        model.addAttribute("followed",followed);
         return "front/interview/detail";
     }
 

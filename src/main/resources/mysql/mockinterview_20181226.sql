@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50638
 File Encoding         : 65001
 
-Date: 2018-12-25 13:25:06
+Date: 2018-12-26 23:56:11
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -43,6 +43,22 @@ CREATE TABLE `c_article` (
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COMMENT='文章内容';
 
 -- ----------------------------
+-- Table structure for c_follower
+-- ----------------------------
+DROP TABLE IF EXISTS `c_follower`;
+CREATE TABLE `c_follower` (
+  `fid` int(11) NOT NULL AUTO_INCREMENT COMMENT 'ID',
+  `followers_uid` int(11) DEFAULT NULL COMMENT '被关注者ID',
+  `followers_type` varchar(4) DEFAULT NULL COMMENT '被关注者（1、求职者，2、面试官）',
+  `following_uid` int(11) DEFAULT NULL COMMENT '关注者ID',
+  `following_type` varchar(4) DEFAULT NULL COMMENT '关注者（1、求职者，2、面试官）',
+  `follow_status` varchar(4) DEFAULT NULL COMMENT '关注的状态（1、关注，2、取消关注，3、拉黑）',
+  `follow_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '关注时间',
+  `unfollow_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '取消关注时间',
+  PRIMARY KEY (`fid`)
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='关注表';
+
+-- ----------------------------
 -- Table structure for c_message
 -- ----------------------------
 DROP TABLE IF EXISTS `c_message`;
@@ -59,7 +75,7 @@ CREATE TABLE `c_message` (
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   `update_time` datetime DEFAULT NULL COMMENT '最近更新时间',
   PRIMARY KEY (`mid`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8 COMMENT='消息表（论坛、面试）';
+) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8 COMMENT='消息表（论坛、面试）';
 
 -- ----------------------------
 -- Table structure for c_url
@@ -85,7 +101,7 @@ CREATE TABLE `f_comment` (
   `comment_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '评论时间',
   `parent_id` int(20) DEFAULT NULL COMMENT '父ID',
   PRIMARY KEY (`cid`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8 COMMENT='帖子评论';
+) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8 COMMENT='帖子评论';
 
 -- ----------------------------
 -- Table structure for f_forum
@@ -105,7 +121,7 @@ CREATE TABLE `f_forum` (
   `update_time` datetime DEFAULT NULL COMMENT '跟新时间',
   `reply_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '最近回复时间',
   PRIMARY KEY (`pid`)
-) ENGINE=InnoDB AUTO_INCREMENT=90 DEFAULT CHARSET=utf8 COMMENT='帖子';
+) ENGINE=InnoDB AUTO_INCREMENT=92 DEFAULT CHARSET=utf8 COMMENT='帖子';
 
 -- ----------------------------
 -- Table structure for f_type
@@ -131,7 +147,7 @@ CREATE TABLE `j_evaluation` (
   `oid` int(11) DEFAULT NULL COMMENT '订单ID',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`eid`)
-) ENGINE=InnoDB AUTO_INCREMENT=23 DEFAULT CHARSET=utf8 COMMENT='求职者对面试官评价';
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8 COMMENT='求职者对面试官评价';
 
 -- ----------------------------
 -- Table structure for j_finder
@@ -168,7 +184,7 @@ CREATE TABLE `j_flow` (
   `interviewer_id` int(11) DEFAULT NULL COMMENT '面试官ID（准收款人ID）',
   `create_time` datetime DEFAULT NULL COMMENT '创建时间',
   PRIMARY KEY (`fid`)
-) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8 COMMENT='流水表';
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8 COMMENT='流水表';
 
 -- ----------------------------
 -- Table structure for j_interviewer
@@ -230,7 +246,7 @@ CREATE TABLE `j_order` (
   `paid_time` datetime DEFAULT NULL COMMENT '支付时间',
   `ordered_time` datetime DEFAULT NULL COMMENT '结单时间',
   PRIMARY KEY (`oid`)
-) ENGINE=InnoDB AUTO_INCREMENT=39 DEFAULT CHARSET=utf8 COMMENT='订单表';
+) ENGINE=InnoDB AUTO_INCREMENT=40 DEFAULT CHARSET=utf8 COMMENT='订单表';
 
 -- ----------------------------
 -- Table structure for j_type

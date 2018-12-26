@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.debuggor.mockinterview.interview.dao.FollowerDao">
+
+    <insert id="insert" parameterType="com.debuggor.mockinterview.interview.bean.Follower">
+        insert into c_follower (followers_uid,followers_type,following_uid,following_type,follow_status,follow_time)
+        values (#{followersUid},#{followersType},#{followingUid},#{followingType},#{followStatus},#{followTime})
+    </insert>
+
+    <update id="update" parameterType="com.debuggor.mockinterview.interview.bean.Follower">
+        update c_follower
+        <set>
+            <if test="followStatus != null">follow_status=#{followStatus},</if>
+            <if test="unfollowTime != null">unfollow_time=#{unfollowTime},</if>
+        </set>
+        WHERE followers_uid = #{followersUid} AND followers_type = #{followersType}
+        AND following_uid = #{followingUid} AND following_type = #{followingType}
+        AND follow_status = '1'
+    </update>
+    <!-- 获取我关注的人 -->
+    <select id="getFollowersByUid" resultType="com.debuggor.mockinterview.interview.bean.Follower">
+        select * from c_follower
+        WHERE follow_status = '1' and following_uid = #{uid} and following_type = #{userType}
+    </select>
+    <!-- 获取关注我的人 -->
+    <select id="getFollowingByUid" resultType="com.debuggor.mockinterview.interview.bean.Follower">
+        select * from c_follower
+        WHERE follow_status = '1' and followers_uid = #{uid} and followers_type = #{userType}
+    </select>
+
+    <select id="isFollowedByUUid" parameterType="com.debuggor.mockinterview.interview.bean.Follower"
+            resultType="com.debuggor.mockinterview.interview.bean.Follower">
+        select * from c_follower WHERE follow_status = '1'
+        and following_uid = #{followingUid} and following_type = #{followingType}
+        and followers_uid = #{followersUid} and followers_type = #{followersType}
+    </select>
+</mapper>
