@@ -20,12 +20,37 @@
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md6 fly-home-jie">
             <div class="fly-panel">
-                <h3 class="fly-panel-title">关注[[${finder.username}]]的求职者</h3>
-                <ul th:if="${not #lists.isEmpty(followersFinder)}">
-                    <li th:each="follower:${followersFinder}"  style="padding:5px 10px;">
-                        <div>
-                            <span th:text="${follower.followersUid}"></span>
+                <div style="padding: 10px;">
+                    <span style="font-size: 15px;">关注[[${finder.username}]]的求职者</span>
+                    <span style="float: right;margin-right: 20px;">
+                        <a th:href="@{/finder/home/}+${finder.fid}" style="color: #009688;">回到[[${finder.username}]]的主页>></a>
+                    </span>
+                </div>
+                <div style="background-color: #f2f2f2;height: 2px;width: 100%;"></div>
+                <ul th:if="${not #lists.isEmpty(followersFinder)}" style="padding:5px 10px;margin: 10px;">
+                    <li th:each="follower:${followersFinder}" style="padding:5px 10px;margin: 10px;">
+                        <div style="float: left;">
+                            <a th:href="@{/finder/home/}+${follower.followingUid}">
+                                <img th:src="${follower.followingHeadUrl}"
+                                     style="width: 40px;height: 40px;border-radius: 20px;">
+                            </a>
                         </div>
+                        <div style="height: auto;padding-left: 60px;margin-bottom: 5px;">
+                            <p>
+                                <a th:href="@{/finder/home/}+${follower.followingUid}" style="color: #32c32e">
+                                    <span th:text="${follower.followingUsername}"></span>
+                                </a>
+                                <span style="float:right;padding-right: 30px;">
+                                    关注于 [[${#dates.format(follower.followTime, 'yyyy-MM-dd HH:mm')}]]
+                                </span>
+                            </p>
+                            <p style="margin: 10px 0px;">
+                                <span style="font-size: 12px;font-family: sans-serif;margin: 10px 0px;">
+                                    [[${follower.followersSignature}]]
+                                </span>
+                            </p>
+                        </div>
+                        <div style="height: 1px;width:100%;background-color: #f2f2f2;"></div>
                     </li>
                 </ul>
                 <div class="fly-none" style="min-height: 50px; padding:30px 0; height:auto;"
@@ -37,12 +62,32 @@
 
         <div class="layui-col-md6 fly-home-da">
             <div class="fly-panel">
-                <h3 class="fly-panel-title">关注[[${finder.username}]]的面试官</h3>
+                <div style="padding: 10px;">
+                    <span style="font-size: 15px;">关注[[${finder.username}]]的面试官</span>
+                </div>
+                <div style="background-color: #f2f2f2;height: 2px;width: 100%;"></div>
                 <ul th:if="${not #lists.isEmpty(followersInterviewer)}">
-                    <li th:each="follower:${followersInterviewer}" style="padding:5px 10px;">
-                        <div>
-                            <span th:text="${follower.followersUid}"></span>
+                    <li th:each="follower:${followersInterviewer}" style="padding:5px 10px;margin: 10px;">
+                        <div style="float: left;">
+                            <a th:href="@{/interviewer/}+${follower.followingUid}">
+                                <img th:src="${follower.followingHeadUrl}"
+                                     style="width: 40px;height: 40px;border-radius: 20px;">
+                            </a>
                         </div>
+                        <div style="height: auto;padding-left: 60px;margin-bottom: 5px;">
+                            <p>
+                                <a th:href="@{/interviewer/}+${follower.followingUid}">
+                                    <span th:text="${follower.followingUsername}"></span>
+                                </a>
+                                <span style="float:right;padding-right: 30px;">关注于 [[${#dates.format(follower.followTime, 'yyyy-MM-dd HH:mm')}]]</span>
+                            </p>
+                            <p style="margin: 10px 0;" th:if="${not #lists.isEmpty(follower.followingWorkYear)}">
+                                <span style="font-size: 12px;font-family: sans-serif;margin: 10px 0;">
+                                     工作年限：[[${follower.followingWorkYear}]]年
+                                </span>
+                            </p>
+                        </div>
+                        <div style="height: 1px;width:100%;background-color: #f2f2f2;"></div>
                     </li>
                 </ul>
                 <div class="fly-none" style="min-height: 50px; padding:30px 0; height:auto;"

@@ -1,11 +1,17 @@
 package com.debuggor.mockinterview.interview.service;
 
 import com.debuggor.mockinterview.common.enumerate.FollowStatusEnum;
+import com.debuggor.mockinterview.common.enumerate.UserEnum;
+import com.debuggor.mockinterview.interview.bean.Finder;
 import com.debuggor.mockinterview.interview.bean.Follower;
+import com.debuggor.mockinterview.interview.bean.Interviewer;
+import com.debuggor.mockinterview.interview.dao.FinderDao;
 import com.debuggor.mockinterview.interview.dao.FollowerDao;
+import com.debuggor.mockinterview.interview.dao.InterviewerDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -16,6 +22,10 @@ import java.util.List;
 public class FollowerService {
     @Autowired
     private FollowerDao followerDao;
+    @Autowired
+    private FinderDao finderDao;
+    @Autowired
+    private InterviewerDao interviewerDao;
 
     /**
      * 插入一条关注记录
@@ -48,7 +58,35 @@ public class FollowerService {
     public List<Follower> getFollowByUser(Follower follower) {
         follower.setFollowStatus(FollowStatusEnum.FOLLOW.key);
         List<Follower> followers = followerDao.getFollowByUser(follower);
-        return followers;
+        List<Follower> list = new ArrayList<>();
+        for (Follower f : followers) {
+            // 被关注者的信息
+            if (UserEnum.FINDER.key.equals(f.getFollowersType())) {
+                Finder finder = finderDao.getFinderById(f.getFollowersUid());
+                f.setFollowersUsername(finder.getUsername());
+                f.setFollowersHeadUrl(finder.getHeadUrl());
+                f.setFollowersSignature(finder.getSignature());
+            } else if (UserEnum.INTERVIEWER.key.equals(f.getFollowersType())) {
+                Interviewer interviewer = interviewerDao.getInterviewerById(f.getFollowersUid());
+                f.setFollowersUsername(interviewer.getUsername());
+                f.setFollowersHeadUrl(interviewer.getHeadUrl());
+                f.setFollowersWorkYear(interviewer.getWorkYear());
+            }
+            // 关注者的信息
+            if (UserEnum.FINDER.key.equals(f.getFollowingType())) {
+                Finder finder = finderDao.getFinderById(f.getFollowingUid());
+                f.setFollowingUsername(finder.getUsername());
+                f.setFollowingHeadUrl(finder.getHeadUrl());
+                f.setFollowingSignature(finder.getSignature());
+            } else if (UserEnum.INTERVIEWER.key.equals(f.getFollowingType())) {
+                Interviewer interviewer = interviewerDao.getInterviewerById(f.getFollowingUid());
+                f.setFollowingUsername(interviewer.getUsername());
+                f.setFollowingHeadUrl(interviewer.getHeadUrl());
+                f.setFollowingWorkYear(interviewer.getWorkYear());
+            }
+            list.add(f);
+        }
+        return list;
     }
 
     /**

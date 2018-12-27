@@ -12,11 +12,14 @@ public class Follower {
     private Integer fid;
     /**
      * 被关注者id,姓名，头像，类别（1、求职者，2、面试官）
+     * 求职者签名、面试官工作年限
      */
     private Integer followersUid;
     private String followersUsername;
     private String followersHeadUrl;
     private String followersType;
+    private String followersSignature;
+    private Integer followersWorkYear;
     /**
      * 关注者id，姓名，头像，类别（1、求职者，2、面试官）
      */
@@ -24,6 +27,8 @@ public class Follower {
     private String followingUsername;
     private String followingHeadUrl;
     private String followingType;
+    private String followingSignature;
+    private Integer followingWorkYear;
     /**
      * 关注的状态（1、关注，2、取消关注，3、拉黑）
      */
@@ -53,6 +58,38 @@ public class Follower {
                 ", followTime=" + followTime +
                 ", unfollowTime=" + unfollowTime +
                 '}';
+    }
+
+    public String getFollowersSignature() {
+        return followersSignature;
+    }
+
+    public void setFollowersSignature(String followersSignature) {
+        this.followersSignature = followersSignature;
+    }
+
+    public Integer getFollowersWorkYear() {
+        return followersWorkYear;
+    }
+
+    public void setFollowersWorkYear(Integer followersWorkYear) {
+        this.followersWorkYear = followersWorkYear;
+    }
+
+    public String getFollowingSignature() {
+        return followingSignature;
+    }
+
+    public void setFollowingSignature(String followingSignature) {
+        this.followingSignature = followingSignature;
+    }
+
+    public Integer getFollowingWorkYear() {
+        return followingWorkYear;
+    }
+
+    public void setFollowingWorkYear(Integer followingWorkYear) {
+        this.followingWorkYear = followingWorkYear;
     }
 
     public Integer getFid() {
