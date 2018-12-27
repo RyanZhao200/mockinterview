@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+<!-- 求职者公共部分 -->
+
+<!--求职者信息-->
+<div class="fly-home fly-panel" style="background-image: url();" th:fragment="infobar">
+    <img src="" th:src="${finder.headUrl}">
+    <h1>
+        <span th:text="${finder.username}"></span>
+        <span th:if="${finder.sex}==0">
+            <i class="iconfont icon-nan"></i>
+        </span>
+        <span th:if="${finder.sex}==1">
+            <i class="iconfont icon-nv"></i>
+        </span>
+        <!--
+        <span style="color:#c00;">（管理员）</span>
+        <span style="color:#5FB878;">（社区之光）</span>
+        <span>（该号已被封）</span>
+        -->
+    </h1>
+    <p class="fly-home-info" th:if="${not #lists.isEmpty(finder.signature)}" th:utext="${finder.signature}"></p>
+    <p class="fly-home-info" th:if="${#lists.isEmpty(finder.signature)}">什么都没留下~</p>
+    <p class="fly-home-info">
+        <i class="layui-icon">&#xe612;</i>
+        <span>关注了 <a th:href="@{/finder/}+${finder.fid}+@{/following}" th:text="${finder.followingNum}"></a> |
+            关注者 <a th:href="@{/finder/}+${finder.fid}+@{/followers}" th:text="${finder.followersNum}"></a>
+        </span>
+    </p>
+    <p class="fly-home-info">
+        <i class="iconfont icon-shijian"></i>
+        <span>[[${#dates.format(finder.createTime, 'yyyy-MM-dd')}]]加入</span>
+    </p>
+    <div class="fly-sns">
+        <input type="hidden" id="finderId" th:value="${finder.fid}">
+        <button class="layui-btn" title="关注" onclick="follow()" th:if="${not followed}">
+            <i class="layui-icon">&#xe654;</i>关注Ta
+        </button>
+
+        <button class="layui-btn layui-btn-primary" title="取消关注" onclick="unfollow()" th:if="${followed}">
+            <i class="layui-icon">&#xe605;</i>已关注
+        </button>
+        <button class="layui-btn layui-btn-normal">发起会话</button>
+    </div>
+</div>
+
+<!---->
+</body>
+</html>

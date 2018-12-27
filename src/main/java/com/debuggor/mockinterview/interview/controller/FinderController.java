@@ -14,10 +14,11 @@ import com.debuggor.mockinterview.forum.bean.Forum;
 import com.debuggor.mockinterview.forum.service.CommentService;
 import com.debuggor.mockinterview.forum.service.ForumService;
 import com.debuggor.mockinterview.interview.bean.Finder;
-import com.debuggor.mockinterview.interview.bean.Order;
+import com.debuggor.mockinterview.interview.bean.Follower;
+import com.debuggor.mockinterview.interview.bean.Interviewer;
 import com.debuggor.mockinterview.interview.service.FinderService;
+import com.debuggor.mockinterview.interview.service.FollowerService;
 import com.debuggor.mockinterview.interview.service.InterviewerService;
-import com.debuggor.mockinterview.interview.service.OrdersService;
 import com.github.pagehelper.PageInfo;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -55,6 +56,8 @@ public class FinderController {
     private MessageService messageService;
     @Autowired
     private CommentService commentService;
+    @Autowired
+    private FollowerService followerService;
 
     /**
      * 求职者登录页面
@@ -330,7 +333,8 @@ public class FinderController {
      */
     @RequestMapping("/home/{fid}")
     public String toFinderHome(@RequestParam(required = false, defaultValue = "1", value = "pn") Integer pn,
-                               @PathVariable("fid") Integer fid, Model model) {
+                               @PathVariable("fid") Integer fid,
+                               HttpSession session, Model model) {
         if (fid == null) {
             return "redirect:/";
         }
@@ -343,6 +347,110 @@ public class FinderController {
         model.addAttribute("finder", finder);
         model.addAttribute("forumPageInfo", forumPageInfo);
         model.addAttribute("commentPageInfo", commentPageInfo);
+        // 是否关注
+        Follower follower = new Follower();
+        follower.setFollowersUid(fid);
+        follower.setFollowersType(UserEnum.FINDER.key);
+        Finder f = (Finder) session.getAttribute("finder");
+        if (f != null) {
+            follower.setFollowingUid(f.getFid());
+            follower.setFollowingType(UserEnum.FINDER.key);
+        }
+        Interviewer iv = (Interviewer) session.getAttribute("interviewer");
+        if (iv != null) {
+            follower.setFollowingUid(iv.getIid());
+            follower.setFollowingType(UserEnum.INTERVIEWER.key);
+        }
+        Boolean followed = followerService.isFollowed(follower);
+        model.addAttribute("followed", followed);
         return "front/user/finder/home";
+    }
+
+    /**
+     * 关注我的人(求职者、面试官)
+     *
+     * @return
+     */
+    @RequestMapping("/{fid}/followers")
+    public String followers(@PathVariable("fid") Integer fid,
+                            HttpSession session, Model model) {
+        if (fid == null) {
+            return "redirect:/";
+        }
+        Finder finder = finderService.getFinderById(fid);
+        if (finder == null) {
+            return "redirect:/";
+        }
+        Follower follower = new Follower();
+        follower.setFollowersUid(fid);
+        follower.setFollowersType(UserEnum.FINDER.key);
+        follower.setFollowingType(UserEnum.FINDER.key);
+        List<Follower> followersFinder = followerService.getFollowByUser(follower);
+        follower.setFollowingType(UserEnum.INTERVIEWER.key);
+        List<Follower> followersInterviewer = followerService.getFollowByUser(follower);
+        model.addAttribute("finder", finder);
+        model.addAttribute("followersFinder", followersFinder);
+        model.addAttribute("followersInterviewer", followersInterviewer);
+        // 是否关注
+        follower = new Follower();
+        follower.setFollowersUid(fid);
+        follower.setFollowersType(UserEnum.FINDER.key);
+        Finder f = (Finder) session.getAttribute("finder");
+        if (f != null) {
+            follower.setFollowingUid(f.getFid());
+            follower.setFollowingType(UserEnum.FINDER.key);
+        }
+        Interviewer iv = (Interviewer) session.getAttribute("interviewer");
+        if (iv != null) {
+            follower.setFollowingUid(iv.getIid());
+            follower.setFollowingType(UserEnum.INTERVIEWER.key);
+        }
+        Boolean followed = followerService.isFollowed(follower);
+        model.addAttribute("followed", followed);
+        return "front/user/finder/followers";
+    }
+
+    /**
+     * 我关注的人
+     *
+     * @return
+     */
+    @RequestMapping("/{fid}/following")
+    public String following(@PathVariable("fid") Integer fid,
+                            HttpSession session, Model model) {
+        if (fid == null) {
+            return "redirect:/";
+        }
+        Finder finder = finderService.getFinderById(fid);
+        if (finder == null) {
+            return "redirect:/";
+        }
+        Follower follower = new Follower();
+        follower.setFollowingUid(fid);
+        follower.setFollowingType(UserEnum.FINDER.key);
+        follower.setFollowersType(UserEnum.FINDER.key);
+        List<Follower> followingFinder = followerService.getFollowByUser(follower);
+        follower.setFollowersType(UserEnum.INTERVIEWER.key);
+        List<Follower> followingInterviewer = followerService.getFollowByUser(follower);
+        model.addAttribute("finder", finder);
+        model.addAttribute("followingFinder", followingFinder);
+        model.addAttribute("followingInterviewer", followingInterviewer);
+        // 是否关注
+        follower = new Follower();
+        follower.setFollowersUid(fid);
+        follower.setFollowersType(UserEnum.FINDER.key);
+        Finder f = (Finder) session.getAttribute("finder");
+        if (f != null) {
+            follower.setFollowingUid(f.getFid());
+            follower.setFollowingType(UserEnum.FINDER.key);
+        }
+        Interviewer iv = (Interviewer) session.getAttribute("interviewer");
+        if (iv != null) {
+            follower.setFollowingUid(iv.getIid());
+            follower.setFollowingType(UserEnum.INTERVIEWER.key);
+        }
+        Boolean followed = followerService.isFollowed(follower);
+        model.addAttribute("followed", followed);
+        return "front/user/finder/following";
     }
 }

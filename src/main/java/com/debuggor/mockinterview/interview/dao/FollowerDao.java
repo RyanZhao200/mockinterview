@@ -20,22 +20,11 @@ public interface FollowerDao {
     void insert(Follower follower);
 
     /**
-     * 根据用户的ID，获取我关注的人
+     * 根据用户ID，获取关注我的人、我关注的人
      *
-     * @param uid
-     * @param userType
      * @return
      */
-    List<Follower> getFollowersByUid(@Param("uid") Integer uid, @Param("userType") String userType);
-
-    /**
-     * 根据用户ID，获取关注我的人
-     *
-     * @param uid
-     * @param userType
-     * @return
-     */
-    List<Follower> getFollowingByUid(@Param("uid") Integer uid, @Param("userType") String userType);
+    List<Follower> getFollowByUser(Follower follower);
 
     /**
      * 更新关注记录（取消关注、拉黑）

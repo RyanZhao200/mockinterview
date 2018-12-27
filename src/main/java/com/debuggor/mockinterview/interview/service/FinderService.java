@@ -4,12 +4,17 @@ import com.debuggor.mockinterview.common.async.MailTask;
 import com.debuggor.mockinterview.common.constant.MailConstant;
 import com.debuggor.mockinterview.common.constant.MockConstant;
 import com.debuggor.mockinterview.common.constant.PageConstant;
+import com.debuggor.mockinterview.common.enumerate.FollowStatusEnum;
+import com.debuggor.mockinterview.common.enumerate.UserEnum;
 import com.debuggor.mockinterview.common.util.ActivateCodeUtil;
 import com.debuggor.mockinterview.common.util.Md5Util;
 import com.debuggor.mockinterview.interview.bean.Finder;
+import com.debuggor.mockinterview.interview.bean.Follower;
 import com.debuggor.mockinterview.interview.dao.FinderDao;
+import com.debuggor.mockinterview.interview.dao.FollowerDao;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.task.TaskExecutor;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -30,6 +35,8 @@ public class FinderService {
     private JavaMailSender javaMailSender;
     @Autowired
     private TaskExecutor taskExecutor;
+    @Autowired
+    private FollowerDao followerDao;
 
     /**
      * 查询所有求职者
@@ -135,6 +142,21 @@ public class FinderService {
         if (fid != null) {
             finder = finderDao.getFinderById(fid);
         }
+        // 关注我的人
+        Follower follower = new Follower();
+        follower.setFollowersUid(fid);
+        follower.setFollowersType(UserEnum.FINDER.key);
+        follower.setFollowStatus(FollowStatusEnum.FOLLOW.key);
+        follower.setFollowStatus(FollowStatusEnum.FOLLOW.key);
+        List<Follower> followers = followerDao.getFollowByUser(follower);
+        finder.setFollowersNum(followers.size());
+        // 我关注的人
+        follower = new Follower();
+        follower.setFollowingUid(fid);
+        follower.setFollowingType(UserEnum.FINDER.key);
+        follower.setFollowStatus(FollowStatusEnum.FOLLOW.key);
+        List<Follower> followings = followerDao.getFollowByUser(follower);
+        finder.setFollowingNum(followings.size());
         return finder;
     }
 }

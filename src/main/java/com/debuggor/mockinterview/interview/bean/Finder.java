@@ -31,6 +31,10 @@ public class Finder {
     private String weixin;
     // 电话
     private String phone;
+    // 我关注的人的数量（不区分求职者和面试官）
+    private Integer followingNum;
+    //关注我的人的数量
+    private Integer followersNum;
 
     @Override
     public String toString() {
@@ -50,6 +54,22 @@ public class Finder {
                 ", weixin='" + weixin + '\'' +
                 ", phone='" + phone + '\'' +
                 '}';
+    }
+
+    public Integer getFollowingNum() {
+        return followingNum;
+    }
+
+    public void setFollowingNum(Integer followingNum) {
+        this.followingNum = followingNum;
+    }
+
+    public Integer getFollowersNum() {
+        return followersNum;
+    }
+
+    public void setFollowersNum(Integer followersNum) {
+        this.followersNum = followersNum;
     }
 
     public Integer getFid() {

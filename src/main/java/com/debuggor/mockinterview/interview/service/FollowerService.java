@@ -43,30 +43,11 @@ public class FollowerService {
     }
 
     /**
-     * 根据用户的ID，获取关注我的人
-     *
-     * @param uid
-     * @param userType
+     * 根据用户ID，获取我关注的人、关注我的人
      */
-    public List<Follower> getFollowersByUid(Integer uid, String userType) {
-        if (uid == null || userType == null) {
-            return null;
-        }
-        List<Follower> followers = followerDao.getFollowersByUid(uid, userType);
-        return followers;
-    }
-
-    /**
-     * 根据用户ID，获取我关注的人
-     *
-     * @param uid
-     * @param userType
-     */
-    public List<Follower> getFollowingByUid(Integer uid, String userType) {
-        if (uid == null || userType == null) {
-            return null;
-        }
-        List<Follower> followers = followerDao.getFollowingByUid(uid, userType);
+    public List<Follower> getFollowByUser(Follower follower) {
+        follower.setFollowStatus(FollowStatusEnum.FOLLOW.key);
+        List<Follower> followers = followerDao.getFollowByUser(follower);
         return followers;
     }
 

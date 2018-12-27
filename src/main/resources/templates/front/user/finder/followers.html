@@ -20,53 +20,34 @@
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md6 fly-home-jie">
             <div class="fly-panel">
-                <h3 class="fly-panel-title">[[${finder.username}]] 最近发表的帖子</h3>
-                <ul class="jie-row" th:if="${not #lists.isEmpty(forumPageInfo.list)}">
-                    <li th:each="forum:${forumPageInfo.list}">
-                        <a class="jie-title" href="" th:href="@{/forum/}+${forum.pid}" target="_blank">
-                            [[${forum.title}]]
-                        </a>
-                        <i>[[${#dates.format(forum.createTime, 'yyyy年MM月dd日 HH:mm')}]]</i>
-                        <em>[[${forum.scanCount}]]阅/[[${forum.commentCount}]]答</em>
+                <h3 class="fly-panel-title">关注[[${finder.username}]]的求职者</h3>
+                <ul th:if="${not #lists.isEmpty(followersFinder)}">
+                    <li th:each="follower:${followersFinder}"  style="padding:5px 10px;">
+                        <div>
+                            <span th:text="${follower.followersUid}"></span>
+                        </div>
                     </li>
                 </ul>
                 <div class="fly-none" style="min-height: 50px; padding:30px 0; height:auto;"
-                     th:if="${#lists.isEmpty(forumPageInfo.list)}">
-                    <i style="font-size:14px;"> 没有发表任何求解</i>
+                     th:if="${#lists.isEmpty(followersFinder)}">
+                    <i style="font-size:14px;"> 没有求职者关注</i>
                 </div>
-
             </div>
         </div>
 
         <div class="layui-col-md6 fly-home-da">
             <div class="fly-panel">
-                <h3 class="fly-panel-title">[[${finder.username}]] 最近的回答</h3>
-                <ul th:if="${not #lists.isEmpty(commentPageInfo.list)}">
-                    <li th:each="comment:${commentPageInfo.list}" style="padding:5px 10px;">
+                <h3 class="fly-panel-title">关注[[${finder.username}]]的面试官</h3>
+                <ul th:if="${not #lists.isEmpty(followersInterviewer)}">
+                    <li th:each="follower:${followersInterviewer}" style="padding:5px 10px;">
                         <div>
-                            <a th:href="@{/forum/}+${comment.forum.pid}" style="font-size: 13px;" target="_blank">
-                                [[${comment.forum.title}]]
-                            </a>
+                            <span th:text="${follower.followersUid}"></span>
                         </div>
-                        <div style="margin-top: 5px;">
-                                <span>
-                                    <a th:href="@{/forum/}+${comment.forum.pid}" style="color: #aeaeae;font-size: 12px;"
-                                       target="_blank">
-                                        <span th:utext="${comment.comment}"></span>
-                                    </a>
-                                </span>
-                            <span style="float: right;font-size: 10px;margin-top: -10px;">
-                                    <i style="color: #aeaeae;">
-                                        发表于[[${#dates.format(comment.commentTime, 'yyyy-MM-dd HH:mm')}]]
-                                    </i>
-                                </span>
-                        </div>
-                        <div style="width: 100%;background-color: #f2f2f2;height: 1px;margin-top: 10px;"></div>
                     </li>
                 </ul>
                 <div class="fly-none" style="min-height: 50px; padding:30px 0; height:auto;"
-                     th:if="${#lists.isEmpty(commentPageInfo.list)}">
-                    <span>没有回答任何问题</span>
+                     th:if="${#lists.isEmpty(followersInterviewer)}">
+                    <span>没有面试官关注</span>
                 </div>
             </div>
         </div>
