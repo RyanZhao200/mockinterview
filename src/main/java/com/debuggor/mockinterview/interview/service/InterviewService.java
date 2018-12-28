@@ -3,9 +3,13 @@ package com.debuggor.mockinterview.interview.service;
 import com.debuggor.mockinterview.common.bean.vo.InterviewerVo;
 import com.debuggor.mockinterview.common.constant.PageConstant;
 import com.debuggor.mockinterview.common.dao.InterviewTypeDao;
+import com.debuggor.mockinterview.common.enumerate.FollowStatusEnum;
+import com.debuggor.mockinterview.common.enumerate.UserEnum;
+import com.debuggor.mockinterview.interview.bean.Follower;
 import com.debuggor.mockinterview.interview.bean.Interviewer;
 import com.debuggor.mockinterview.interview.bean.Type;
 import com.debuggor.mockinterview.interview.dao.FlowDao;
+import com.debuggor.mockinterview.interview.dao.FollowerDao;
 import com.debuggor.mockinterview.interview.dao.InterviewDao;
 import com.debuggor.mockinterview.interview.dao.InterviewerDao;
 import com.github.pagehelper.PageHelper;
@@ -30,6 +34,8 @@ public class InterviewService {
     private InterviewerDao interviewerDao;
     @Autowired
     private FlowDao flowDao;
+    @Autowired
+    private FollowerDao followerDao;
 
     /**
      * 面试官列表
@@ -89,6 +95,21 @@ public class InterviewService {
             Integer helpPeopleNum = flowDao.getFlowNumByIid(interviewer.getIid());
             interviewer.setTypes(interviewTypes);
             interviewer.setHelpPeopleNum(helpPeopleNum);
+
+            // 关注我的人
+            Follower follower = new Follower();
+            follower.setFollowersUid(iid);
+            follower.setFollowersType(UserEnum.INTERVIEWER.key);
+            follower.setFollowStatus(FollowStatusEnum.FOLLOW.key);
+            List<Follower> followers = followerDao.getFollowByUser(follower);
+            interviewer.setFollowersNum(followers.size());
+            // 我关注的人
+            follower = new Follower();
+            follower.setFollowingUid(iid);
+            follower.setFollowingType(UserEnum.INTERVIEWER.key);
+            follower.setFollowStatus(FollowStatusEnum.FOLLOW.key);
+            List<Follower> followings = followerDao.getFollowByUser(follower);
+            interviewer.setFollowingNum(followings.size());
         }
         return interviewer;
     }

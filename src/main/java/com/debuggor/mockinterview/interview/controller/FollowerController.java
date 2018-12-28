@@ -1,6 +1,5 @@
 package com.debuggor.mockinterview.interview.controller;
 
-import com.alibaba.fastjson.JSONObject;
 import com.debuggor.mockinterview.common.enumerate.FollowStatusEnum;
 import com.debuggor.mockinterview.common.enumerate.UserEnum;
 import com.debuggor.mockinterview.interview.bean.Finder;
@@ -101,7 +100,6 @@ public class FollowerController {
         follower.setFollowingType(UserEnum.INTERVIEWER.key);
         follower.setFollowStatus(FollowStatusEnum.FOLLOW.key);
         follower.setFollowersType(UserEnum.INTERVIEWER.key);
-        follower.setFollowStatus(FollowStatusEnum.FOLLOW.key);
 
         PageInfo<Follower> followInterviewer = followerService.getFollowByUserToPages(pn, follower);
         follower.setFollowersType(UserEnum.FINDER.key);
@@ -120,8 +118,9 @@ public class FollowerController {
      * @return
      */
     @RequestMapping("/ivFollowing")
-    public String toInterviewerFollowing(@RequestParam(value = "iid") Integer iid) {
-        return "";
+    public String toInterviewerFollowing(@RequestParam(value = "iid") Integer iid, Model model) {
+        model.addAttribute("iid", iid);
+        return "front/user/interviewer/following";
     }
 
     /**
@@ -129,9 +128,20 @@ public class FollowerController {
      */
     @RequestMapping("/interviewerFollowing")
     public @ResponseBody
-    String interviewerFollowing(@RequestParam(value = "iid") Integer iid) {
+    Map<String, Object> interviewerFollowing(@RequestParam(required = false, defaultValue = "1", value = "pn") Integer pn, Integer iid) {
         Follower follower = new Follower();
-        JSONObject jo = new JSONObject();
-        return "";
+        follower.setFollowersUid(iid);
+        follower.setFollowersType(UserEnum.INTERVIEWER.key);
+        follower.setFollowStatus(FollowStatusEnum.FOLLOW.key);
+        follower.setFollowingType(UserEnum.INTERVIEWER.key);
+
+        PageInfo<Follower> followInterviewer = followerService.getFollowByUserToPages(pn, follower);
+        follower.setFollowingType(UserEnum.FINDER.key);
+        PageInfo<Follower> followFinder = followerService.getFollowByUserToPages(pn, follower);
+
+        Map<String, Object> returnMap = new HashMap<>();
+        returnMap.put("fip", followInterviewer);
+        returnMap.put("ffp", followFinder);
+        return returnMap;
     }
 }

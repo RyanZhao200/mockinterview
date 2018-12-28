@@ -348,20 +348,7 @@ public class FinderController {
         model.addAttribute("forumPageInfo", forumPageInfo);
         model.addAttribute("commentPageInfo", commentPageInfo);
         // 是否关注
-        Follower follower = new Follower();
-        follower.setFollowersUid(fid);
-        follower.setFollowersType(UserEnum.FINDER.key);
-        Finder f = (Finder) session.getAttribute("finder");
-        if (f != null) {
-            follower.setFollowingUid(f.getFid());
-            follower.setFollowingType(UserEnum.FINDER.key);
-        }
-        Interviewer iv = (Interviewer) session.getAttribute("interviewer");
-        if (iv != null) {
-            follower.setFollowingUid(iv.getIid());
-            follower.setFollowingType(UserEnum.INTERVIEWER.key);
-        }
-        Boolean followed = followerService.isFollowed(follower);
+        Boolean followed = isFollowed(fid, session);
         model.addAttribute("followed", followed);
         return "front/user/finder/home";
     }
@@ -392,20 +379,7 @@ public class FinderController {
         model.addAttribute("followersFinder", followersFinder);
         model.addAttribute("followersInterviewer", followersInterviewer);
         // 是否关注
-        follower = new Follower();
-        follower.setFollowersUid(fid);
-        follower.setFollowersType(UserEnum.FINDER.key);
-        Finder f = (Finder) session.getAttribute("finder");
-        if (f != null) {
-            follower.setFollowingUid(f.getFid());
-            follower.setFollowingType(UserEnum.FINDER.key);
-        }
-        Interviewer iv = (Interviewer) session.getAttribute("interviewer");
-        if (iv != null) {
-            follower.setFollowingUid(iv.getIid());
-            follower.setFollowingType(UserEnum.INTERVIEWER.key);
-        }
-        Boolean followed = followerService.isFollowed(follower);
+        Boolean followed = isFollowed(fid, session);
         model.addAttribute("followed", followed);
         return "front/user/finder/followers";
     }
@@ -436,7 +410,20 @@ public class FinderController {
         model.addAttribute("followingFinder", followingFinder);
         model.addAttribute("followingInterviewer", followingInterviewer);
         // 是否关注
-        follower = new Follower();
+        Boolean followed = isFollowed(fid, session);
+        model.addAttribute("followed", followed);
+        return "front/user/finder/following";
+    }
+
+    /**
+     * 是否关注
+     *
+     * @param fid
+     * @param session
+     * @return
+     */
+    private Boolean isFollowed(Integer fid, HttpSession session) {
+        Follower follower = new Follower();
         follower.setFollowersUid(fid);
         follower.setFollowersType(UserEnum.FINDER.key);
         Finder f = (Finder) session.getAttribute("finder");
@@ -450,7 +437,6 @@ public class FinderController {
             follower.setFollowingType(UserEnum.INTERVIEWER.key);
         }
         Boolean followed = followerService.isFollowed(follower);
-        model.addAttribute("followed", followed);
-        return "front/user/finder/following";
+        return followed;
     }
 }

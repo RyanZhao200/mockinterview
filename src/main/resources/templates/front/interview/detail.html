@@ -49,8 +49,8 @@
                 </div>
                 <div>
                     <span>
-                        <a href="javascript:void(0)" onclick="followers()">关注0人</a> |
-                        <a href="javascript:void(0)" onclick="following()">粉丝190人</a>
+                        <a href="javascript:void(0)" onclick="followers()">关注[[${interviewer.followingNum}]]人</a> |
+                        <a href="javascript:void(0)" onclick="following()">粉丝[[${interviewer.followersNum}]]人</a>
                     </span>
                 </div>
                 <div style="background-color: #f2f2f2;padding: 10px;">
@@ -183,7 +183,7 @@
 
     // 粉丝，关注我的人
     function following() {
-        win.open(900, 550, "", "");
+        win.open(900, 550, "", "/follower/ivFollowing?iid="+interviewerId);
     }
 
     //   关注

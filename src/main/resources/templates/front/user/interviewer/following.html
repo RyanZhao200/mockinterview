@@ -58,8 +58,8 @@
     <div class="layui-tab layui-tab-brief"
          style="background-color: white;position: absolute;top: 0;width: 100%;">
         <ul class="layui-tab-title">
-            <li class="layui-this">关注的面试官</li>
-            <li>关注的求职者</li>
+            <li class="layui-this">关注Ta的面试官</li>
+            <li>关注Ta的求职者</li>
         </ul>
         <div class="layui-tab-content" style="padding: 10px;" id="divscroll">
             <div class="layui-tab-item layui-show">
@@ -91,12 +91,10 @@
 
 <script th:inline="javascript" type="text/javascript">
     $(function () {
-        // 滚动的窗口
-        var divscroll = document.getElementById('divscroll');
         // 面试官ID
         var interviewerId = document.getElementById("interviewerId").value;
         //请求数据接口
-        var url = '/follower/interviewerFollowers';
+        var url = '/follower/interviewerFollowing';
         //渲染数据集合dom
         var listFinder = $("#listFinder");
         var listInterviewer = $("#listInterviewer");
@@ -141,10 +139,10 @@
             //循环数据
             for (; i < len; i++) {
                 var follower = follow1[i],
-                    uid = follower.followersUid,
-                    username = follower.followersUsername,
-                    headUrl = follower.followersHeadUrl,
-                    workYear = follower.followersWorkYear;
+                    uid = follower.followingUid,
+                    username = follower.followingUsername,
+                    headUrl = follower.followingHeadUrl,
+                    workYear = follower.followingWorkYear;
                 interviewer += '<li><div class="layui-col-md6">'
                     + '<a href="/interviewer/' + uid + '" target="_parent">'
                     + '<div class="imgdiv">' + '<img src="' + headUrl + '" class="headimg"></div>'
@@ -159,10 +157,10 @@
             //循环数据
             for (; i < len; i++) {
                 var follower = follow2[i],
-                    uid = follower.followersUid,
-                    username = follower.followersUsername,
-                    signature = follower.followersSignature,
-                    headUrl = follower.followersHeadUrl;
+                    uid = follower.followingUid,
+                    username = follower.followingUsername,
+                    signature = follower.followingSignature,
+                    headUrl = follower.followingHeadUrl;
                 finder += '<li><div class="layui-col-md6">'
                     + '<a href="/finder/home/' + uid + '" target="_parent">'
                     + '<div class="imgdiv">' + '<img src="' + headUrl + '" class="headimg"></div>'

@@ -91,7 +91,7 @@ public class InterviewController {
             model.addAttribute("type", type);
         }
         PageInfo interviewerList = interviewService.getInterviewerList(interviewer, pn);
-        logger.info("总页数："+String.valueOf(interviewerList.getPages()));
+        logger.info("总页数：" + String.valueOf(interviewerList.getPages()));
         model.addAttribute("pageInfo", interviewerList);
         return "front/interview/list";
     }
@@ -118,6 +118,19 @@ public class InterviewController {
         model.addAttribute("grade", grade);
         model.addAttribute("iid", iid);
         // 是否关注
+        Boolean followed = isFollowed(iid, session);
+        model.addAttribute("followed", followed);
+        return "front/interview/detail";
+    }
+
+    /**
+     * 是否关注
+     *
+     * @param iid
+     * @param session
+     * @return
+     */
+    private Boolean isFollowed(Integer iid, HttpSession session) {
         Follower follower = new Follower();
         follower.setFollowersUid(iid);
         follower.setFollowersType(UserEnum.INTERVIEWER.key);
@@ -132,8 +145,7 @@ public class InterviewController {
             follower.setFollowingType(UserEnum.INTERVIEWER.key);
         }
         Boolean followed = followerService.isFollowed(follower);
-        model.addAttribute("followed",followed);
-        return "front/interview/detail";
+        return followed;
     }
 
     /**
