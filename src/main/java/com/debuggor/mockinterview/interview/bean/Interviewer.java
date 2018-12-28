@@ -54,6 +54,26 @@ public class Interviewer {
     private String typeName;
     //帮助人的数量
     private Integer helpPeopleNum;
+    // 我关注的人的数量（不区分求职者和面试官）
+    private Integer followingNum;
+    //关注我的人的数量
+    private Integer followersNum;
+
+    public Integer getFollowingNum() {
+        return followingNum;
+    }
+
+    public void setFollowingNum(Integer followingNum) {
+        this.followingNum = followingNum;
+    }
+
+    public Integer getFollowersNum() {
+        return followersNum;
+    }
+
+    public void setFollowersNum(Integer followersNum) {
+        this.followersNum = followersNum;
+    }
 
     public Integer getHelpPeopleNum() {
         return helpPeopleNum;

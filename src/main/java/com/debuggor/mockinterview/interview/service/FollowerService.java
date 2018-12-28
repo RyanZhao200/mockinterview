@@ -1,5 +1,6 @@
 package com.debuggor.mockinterview.interview.service;
 
+import com.debuggor.mockinterview.common.constant.PageConstant;
 import com.debuggor.mockinterview.common.enumerate.FollowStatusEnum;
 import com.debuggor.mockinterview.common.enumerate.UserEnum;
 import com.debuggor.mockinterview.interview.bean.Finder;
@@ -8,6 +9,8 @@ import com.debuggor.mockinterview.interview.bean.Interviewer;
 import com.debuggor.mockinterview.interview.dao.FinderDao;
 import com.debuggor.mockinterview.interview.dao.FollowerDao;
 import com.debuggor.mockinterview.interview.dao.InterviewerDao;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -54,10 +57,39 @@ public class FollowerService {
 
     /**
      * 根据用户ID，获取我关注的人、关注我的人
+     * 不分页
      */
     public List<Follower> getFollowByUser(Follower follower) {
         follower.setFollowStatus(FollowStatusEnum.FOLLOW.key);
         List<Follower> followers = followerDao.getFollowByUser(follower);
+        List<Follower> list = followersUtils(followers);
+        return list;
+    }
+
+    /**
+     * 获取关注；分页
+     *
+     * @param follower
+     */
+    public PageInfo<Follower> getFollowByUserToPages(Integer pn, Follower follower) {
+        PageHelper.startPage(pn, PageConstant.Page_Sizes);
+        List<Follower> followers = followerDao.getFollowByUser(follower);
+        PageInfo<Follower> pageInfo = new PageInfo<>(followers, PageConstant.Navigate_Pages);
+        List<Follower> list = followersUtils(pageInfo.getList());
+        pageInfo.setList(list);
+        return pageInfo;
+    }
+
+    /**
+     * followers工具，添加额外的信息
+     *
+     * @param followers
+     * @return
+     */
+    private List<Follower> followersUtils(List<Follower> followers) {
+        if (followers == null) {
+            return null;
+        }
         List<Follower> list = new ArrayList<>();
         for (Follower f : followers) {
             // 被关注者的信息

@@ -6,6 +6,8 @@
     <link rel="stylesheet" href="..static/front/layui/css/layui.css" th:href="@{/front/layui/css/layui.css}">
     <link rel="stylesheet" href="..static/front/css/global.css" th:href="@{/front/css/global.css}">
     <link rel="stylesheet" href="..static/front/raty/jquery.raty.css" th:href="@{/front/raty/jquery.raty.css}">
+    <link rel="stylesheet" href="..static/front/window/window.css" th:href="@{/front/window/window.css}">
+
     <style>
     </style>
 </head>
@@ -20,13 +22,13 @@
             <div class="layui-col-md3">
                 <img style="width: 200px;height: 200px;border-radius: 100px;"
                      th:src="${interviewer.headUrl}">
-                <div style="margin:20px 50px;">
+                <div style="margin:20px 65px;">
                     <input type="hidden" id="interviewerId" th:value="${interviewer.iid}">
-                    <button class="layui-btn" title="关注" onclick="follow()"  th:if="${not followed}">
+                    <button class="layui-btn layui-btn-sm" title="关注" onclick="follow()" th:if="${not followed}">
                         <i class="layui-icon">&#xe654;</i>关注Ta
                     </button>
-
-                    <button class="layui-btn layui-btn-primary" title="取消关注" onclick="unfollow()" th:if="${followed}">
+                    <button class="layui-btn layui-btn-primary layui-btn-sm" title="取消关注" onclick="unfollow()"
+                            th:if="${followed}">
                         <i class="layui-icon">&#xe605;</i>已关注
                     </button>
                 </div>
@@ -45,7 +47,13 @@
                         </button>
                     </span>
                 </div>
-                <div style="background-color: #f2f2f2;margin-top: 10px;padding: 10px;">
+                <div>
+                    <span>
+                        <a href="javascript:void(0)" onclick="followers()">关注0人</a> |
+                        <a href="javascript:void(0)" onclick="following()">粉丝190人</a>
+                    </span>
+                </div>
+                <div style="background-color: #f2f2f2;padding: 10px;">
                     <div style="">
                         性别：
                         <span th:if="${not #lists.isEmpty(interviewer.sex)}"
@@ -164,9 +172,20 @@
 <script src="..static/front/layui/layui.js" th:src="@{/front/layui/layui.js}"></script>
 <script src="..static/admin/js/jquery.min.js" th:src="@{/admin/js/jquery.min.js}"></script>
 <script src="..static/front/raty/jquery.raty.js" th:src="@{/front/raty/jquery.raty.js}"></script>
-
+<script src="..static/front/window/window.js" th:src="@{/front/window/window.js}"></script>
 
 <script th:inline="javascript" type="text/javascript">
+    var interviewerId = document.getElementById("interviewerId").value;
+    // 我关注的人
+    function followers() {
+        win.open(900, 550, "", "/follower/ivFollowers?iid="+interviewerId);
+    }
+
+    // 粉丝，关注我的人
+    function following() {
+        win.open(900, 550, "", "");
+    }
+
     //   关注
     function follow() {
         var followersUid = document.getElementById("interviewerId").value;

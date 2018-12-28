@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="..static/front/layui/css/layui.css" th:href="@{/front/layui/css/layui.css}">
+    <link rel="stylesheet" href="..static/front/css/global.css" th:href="@{/front/css/global.css}">
+    <link rel="stylesheet" href="..static/front/window/window.css" th:href="@{/front/window/window.css}">
+    <style type="text/css">
+        * {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            font-size: 14px;
+        }
+
+        /*
+            加载更多
+        */
+        .loading {
+            height: 50px;
+            width: 765px;
+            line-height: 50px;
+            text-align: center;
+            cursor: pointer;
+            margin: 20px auto;
+        }
+
+        /* 写的css*/
+        .headimg {
+            width: 80px;
+            height: 80px;
+            border-radius: 40px;
+        }
+
+        .layui-col-md6 {
+            padding: 20px;
+        }
+
+        .nameStyle {
+            font-size: 16px;
+            margin-bottom: 5px;
+        }
+
+        .infoStyle {
+            padding-left: 100px;
+            padding-top: 25px;
+        }
+
+        .imgdiv {
+            float: left;
+        }
+    </style>
+
+</head>
+<body>
+<div>
+    <input type="hidden" id="interviewerId" th:value="${iid}">
+    <div class="layui-tab layui-tab-brief"
+         style="background-color: white;position: absolute;top: 0;width: 100%;">
+        <ul class="layui-tab-title" >
+            <li class="layui-this">关注的面试官</li>
+            <li>关注的求职者</li>
+        </ul>
+        <div class="layui-tab-content" style="padding: 10px;" id="divscroll">
+            <div class="layui-tab-item layui-show">
+                <div>
+                    <div>
+                        <ul id="listInterviewer">
+                        </ul>
+                    </div>
+                    <div class="loading">点击加载更多</div>
+                </div>
+            </div>
+
+            <div class="layui-tab-item">
+                <div>
+                    <div>
+                        <ul id="listFinder">
+                        </ul>
+                    </div>
+                    <div class="loading">点击加载更多</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="..static/front/layui/layui.js" th:src="@{/front/layui/layui.js}"></script>
+<script src="..static/admin/js/jquery.min.js" th:src="@{/admin/js/jquery.min.js}"></script>
+<script src="..static/front/window/window.js" th:src="@{/front/window/window.js}"></script>
+
+<script th:inline="javascript" type="text/javascript">
+    $(function () {
+        // 滚动的窗口
+        var divscroll = document.getElementById('divscroll');
+        // 面试官ID
+        var interviewerId = document.getElementById("interviewerId").value;
+        //请求数据接口
+        var url = '/follower/interviewerFollowers';
+        //渲染数据集合dom
+        var listFinder = $("#listFinder");
+        var listInterviewer = $("#listInterviewer");
+        //加载更多dom
+        var loadingBtn = $(".loading");
+        //是否需要加载
+        var isLoad1 = true;
+        var isLoad2 = true;
+        //当前查询第几页 1、求职者 2、面试官
+        var currentPage = 1;
+        //没有更多数据
+        var nomore_Text = '没有更多数据';
+
+        /*
+            请求数据接口
+        */
+        function loadData() {
+            //发送ajax
+            $.ajax({
+                //url
+                url: url,
+                //请求方式
+                type: 'POST',
+                //参数
+                data: {iid: interviewerId, pn: currentPage},
+                //成功回调
+                success: sucessCallback,
+                //失败回调
+                error: function (e, e2, e3) {
+                    //
+                    alert('请求失败，原因：' + e3);
+                }
+            });
+        }
+
+        /*
+            成功回调函数
+        */
+        function sucessCallback(data) {
+            //面试官
+            var interviewer = '', follow1 = data.fip.list, len = follow1.length, i = 0;
+            //循环数据
+            for (; i < len; i++) {
+                var follower = follow1[i],
+                    uid = follower.followersUid,
+                    username = follower.followersUsername,
+                    headUrl = follower.followersHeadUrl,
+                    workYear = follower.followersWorkYear;
+                interviewer += '<li><div class="layui-col-md6">'
+                    + '<a href="/interviewer/' + uid + '" target="_parent">'
+                    + '<div class="imgdiv">' + '<img src="' + headUrl + '" class="headimg"></div>'
+                    + '<div class="infoStyle">' + '<div class="nameStyle">' + username + '</div>'
+                    + '<div>工作年限：' + workYear + '</div>'
+                    + '</div></a></div></li>';
+            }
+            //渲染数据
+            listInterviewer.append(interviewer);
+            // 求职者
+            var finder = '', follow2 = data.ffp.list, len = follow2.length, i = 0;
+            //循环数据
+            for (; i < len; i++) {
+                var follower = follow2[i],
+                    uid = follower.followersUid,
+                    username = follower.followersUsername,
+                    signature = follower.followersSignature,
+                    headUrl = follower.followersHeadUrl;
+                finder += '<li><div class="layui-col-md6">'
+                    + '<a href="/finder/home/' + uid + '" target="_parent">'
+                    + '<div class="imgdiv">' + '<img src="' + headUrl + '" class="headimg"></div>'
+                    + '<div class="infoStyle">' + '<div class="nameStyle">' + username + '</div>'
+                    + '<div>' + signature + '</div>'
+                    + '</div></a></div></li>';
+            }
+
+            listFinder.append(finder);
+            //接口是否查询完毕
+            if (data.fip.pages == data.fip.pageNum || currentPage > data.fip.pages) {
+                //数据全部加载完毕
+                isLoad1 = false;
+                //
+                loadingBtn.html(+nomore_Text);
+            }
+            if (data.ffp.pages == data.ffp.pageNum || currentPage > data.fip.pages) {
+                //数据全部加载完毕
+                isLoad2 = false;
+                //
+                loadingBtn.html(nomore_Text);
+            }
+        }
+
+        /*
+            判断是否要加载接口
+        */
+        function isScrollLoad() {
+            //加载更多距离
+            var btn_top = loadingBtn.offset().top;
+            //窗体高度
+            var window_height = $(window).height();
+            //滚动距离
+            var scroll_Top = $(window).scrollTop();
+            //加载更多高度
+            var loading_height = loadingBtn.height();
+            //是否需要加载(底部距离是否小于窗口高度+滚动的距离)
+            return btn_top < scroll_Top + window_height - (loading_height - 5) ? true : false;
+        }
+
+        /*
+            滚动事件监听
+        */
+        $(window).scroll(function () {
+            //是否滚动到底部
+            var _needload = isScrollLoad();
+            //
+            if (_needload && (isLoad1 || isLoad2)) {
+                //当前页自增
+                currentPage++;
+                //加载数据
+                loadData();
+            }
+        });
+
+        /*
+            页面加载完毕执行一次查询
+        */
+        window.onload = function () {
+            //加载数据
+            loadData();
+        };
+
+        /*
+            点击加载更多
+        */
+        loadingBtn.click(function () {
+            //是否加载数据
+            if (isLoad1 && isLoad2)
+                loadData();
+        });
+    });
+    layui.use(['element'], function () {
+        var element = layui.element;
+    });
+</script>
+</body>
+</html>

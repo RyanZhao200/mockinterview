@@ -91,7 +91,7 @@ public class InterviewController {
             model.addAttribute("type", type);
         }
         PageInfo interviewerList = interviewService.getInterviewerList(interviewer, pn);
-        logger.info("总共" + String.valueOf(interviewerList.getTotal()) + "条记录");
+        logger.info("总页数："+String.valueOf(interviewerList.getPages()));
         model.addAttribute("pageInfo", interviewerList);
         return "front/interview/list";
     }
