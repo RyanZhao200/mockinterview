@@ -62,8 +62,6 @@
             </div>
             <div class="layui-form-item" style="margin-top: 10px;">
                 <button class="layui-btn" th:onclick="'enterRoom('+${finder.fid}+','+${interviewer.iid}+')'">发起面试</button>
-
-                <a th:href="@{/interview/publish(fid=${finder.fid})}" target="_blank"></a>
                 <a class="layui-btn" th:href="@{/interview/orderEnd(oid=${order.oid})}">面试结束</a>
             </div>
         </div>
@@ -89,7 +87,7 @@
                 + String(iid * 17 + 3) + '-' + String(iid * 19 + 4) + '-'
                 + Math.random().toString(20).substr(10);
             var href = '/interview/interviewer?code=' + code;
-            window.open(href, name = "_blank");  // 在新窗口打开链接
+            window.open(href, name = "_self");  // 在新窗口打开链接
         }
     }
 </script>

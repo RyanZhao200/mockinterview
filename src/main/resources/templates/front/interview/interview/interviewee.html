@@ -6,62 +6,36 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta charset="utf-8" name="viewport" content="width=device-width">
     <link rel="stylesheet" th:href="@{/front/layui/css/layui.css}">
-    <script th:src="@{/admin/js/jquery.min.js}"></script>
-    <script th:src="@{/front/layui/layui.js}"></script>
+    <link rel="stylesheet" th:href="@{/front/css/interviewScreen.css}">
+    <link rel="stylesheet" href="..static/front/window/window.css" th:href="@{/front/window/window.css}">
 
-    <style type="text/css">
-        html, body {
-            height: 100%;
-            margin: 0;
-            padding: 0;
-        }
-
-        .message {
-            width: 80%;
-            margin-left: 5%;
-            height: 30px;
-            border: 1px solid #999;
-            resize: none;
-            border-radius: 8px;
-        }
-
-        .li-content {
-            margin: 10px;
-            line-height: 22px;
-        }
-
-        .li-finder-style {
-            color: #29bdb9;
-        }
-
-        .li-interviewer-style {
-            color: #ff8a00;
-        }
-
-        .li-message-style {
-            color: #eeeeee;
-            margin: 0 5px;
-        }
-    </style>
 </head>
 <body style="overflow: hidden;">
 <!-- 头部 -->
 <ul class="layui-nav">
-    <li class="layui-nav-item">IT模拟面试</li>
+    <li class="layui-nav-item fly-logo">
+        <img th:src="@{/front/images/logo.png}">
+    </li>
     <span style="float: right;">
 	  <li class="layui-nav-item">
-		  	<span>求职者：[[${finder.username}]]	</span>
+		  	<span style="font-size: 18px;padding-right: 20px;">
+                <i class="layui-icon" style="padding-right: 3px;font-size: 20px;">&#xe612;</i>
+                求职者：[[${finder.username}]]
+            </span>
 	  </li>
 	  <li class="layui-nav-item">
-	  	<a href="" class="layui-btn layui-btn-danger">面试结束</a>
+	  	<button class="layui-btn layui-btn-danger" onclick="overInterview()">退出面试房间</button>
 	  </li>
   </span>
 </ul>
 
-<div style="background-color: #f6f6f6;height: 85%">
+<div style="background-color: #f2f2f2;height: 85%">
     <div class="layui-row layui-col-space5" style="height: 100%;">
         <div class="layui-col-md8" style="padding: 10px;height: 100%">
-            <div id="iframeInterview" style="background-color: #464e58;height:100%;">
+            <div style="background-color: #464e58;height:100%;">
+                <div id="closeVideo" class="closeVideo">
+                    <button onclick="closeVideo()" class="layui-btn">关闭</button>
+                </div>
                 <div id="planInterview" style="position:absolute;left:40%;top:30%;">
                     <img th:src="@{/front/images/interviewBg01.png}">
                     <button class="layui-btn" style="position: inherit;left: 18%;top: 50%;"
@@ -69,14 +43,17 @@
                         发起视频面试
                     </button>
                 </div>
+                <div id="iframeInterview" style="height: 100%;width: 100%;"></div>
             </div>
         </div>
         <div class="layui-col-md4" style="padding: 10px;height: 100%;">
-            <div style="background-color: #464e58;height: 30px;padding:10px;border-radius: 8px 8px 0 0;">
-                <div>面试官 - [[${interviewer.username}]]</div>
-                <div> [[${interviewer.phone}]] | [[${interviewer.email}]]</div>
+            <div class="infoUser">
+                <div style="color: #eeeeee;font-size: 18px;">面试官 - [[${interviewer.username}]]</div>
+                <div style="color: #eeeeee;font-size: 14px;">
+                    <i class="layui-icon">&#xe63b;</i>[[${interviewer.phone}]] | [[${interviewer.email}]]
+                </div>
             </div>
-            <div style="height: 75%;background-color: #3d444d">
+            <div style="height: 78%;background-color: #3d444d">
                 <ul style="overflow:auto;height: 100%;" id="message-container">
                     <li class="li-content" th:each="chat:${chats}">
                         <span class="li-message-style">
@@ -88,12 +65,10 @@
                     </li>
                 </ul>
             </div>
-            <div style="height: 60px;">
-                <div style="background-color: #181e22;height: 100%;border-radius: 0 0 8px 8px;">
+            <div style="height: 10%;">
+                <div class="messageTransport">
                     <textarea name="message" id="message" class="message" placeholder="请输入聊天内容"></textarea>
-                    <div>回车键发送</div>
-                    <div>
-                    </div>
+                    <div class="sendTips">回车键发送</div>
                 </div>
             </div>
         </div>
@@ -105,14 +80,35 @@
     </div>
 </div>
 
-<div>
-    底部@IT模拟面试
+<div class="buttonStyle">
+    IT模拟面试社区 2019 ©
 </div>
 
+<script th:src="@{/admin/js/jquery.min.js}"></script>
+<script th:src="@{/front/layui/layui.js}"></script>
+<script src="..static/front/window/window.js" th:src="@{/front/window/window.js}"></script>
 
 <script type="text/javascript">
+    // 提示是否退出
+    function overInterview() {
+        win.confirm('提示', '您确定要退出面试房间吗？', function (r) {
+            if (r) {
+                window.history.go(-1);
+            }
+        });
+    }
+
+    //关闭视频面试
+    function closeVideo() {
+        $("#closeVideo").css("display", "none");
+        $("#planInterview").css("display", "inline");
+        $("#iframeInterview").empty();
+    }
+
+    // 开始视频面试
     function startInterview(fid, iid) {
         $("#planInterview").css("display", "none");
+        $("#closeVideo").css("display", "inline");
         var href = '/interview/subscribe/' + fid + "/" + iid;
         var iframe = '<iframe src="' + href + '" width="100%" height="100%"></iframe>';
         $("#iframeInterview").append(iframe);

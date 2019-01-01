@@ -163,7 +163,7 @@ public class InterviewController {
         String roomToken = qiniuService.getRoomToken(iid, fid, UserConstant.Interviewer_Type);
         model.addAttribute("roomToken", roomToken);
         logger.info("面试官：" + iid + "发起了面试");
-        return "front/interview/room";
+        return "front/interview/interview/room";
     }
 
     /**
@@ -181,7 +181,7 @@ public class InterviewController {
         String roomToken = qiniuService.getRoomToken(iid, fid, UserConstant.Finder_Type);
         model.addAttribute("roomToken", roomToken);
         logger.info("求职者：" + fid + "发起了面试");
-        return "front/interview/room";
+        return "front/interview/interview/room";
     }
 
     /**

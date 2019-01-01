@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8"/>
     <title>room</title>
-    <script src="..static/front/js/pili-rtc-web.js" th:src="@{/front/js/pili-rtc-web.js}"></script>
+    <link rel="stylesheet" th:href="@{/front/layui/css/layui.css}">
     <style>
         /* css/room.css */
         * {
@@ -19,8 +19,8 @@
         }
 
         .fullscreen-player {
-            width: 100vw;
-            height: 100vh;
+            width: 100%;
+            height: 100%;
             position: absolute;
             top: 0;
             left: 0;
@@ -28,29 +28,30 @@
         }
 
         .mini-player {
-            width: 300px;
-            height: 200px;
+            width: 280px;
+            height: 210px;
             position: absolute;
             bottom: 10px;
             right: 10px;
             background: #000;
             z-index: 10;
         }
+
         /* -- */
-        .fullscreen-player,.mini-player {
+        .fullscreen-player, .mini-player {
             transition: all ease 0.6s;
         }
+
         .btn {
-            outline: none;
-            border: none;
             position: absolute;
             z-index: 9;
-            padding: 5px;
         }
+
         .screen-switch {
             bottom: 230px;
-            right: 30px;
+            right: 13px;
         }
+
         body {
             overflow: hidden;
             background: #000;
@@ -59,16 +60,21 @@
     </style>
 </head>
 <body>
+
 <div id="localplayer" class="mini-player"></div>
 <div id="remoteplayer" class="fullscreen-player">
-    <canvas width="640" height="480" id="remotewave"></canvas>
+    <canvas style="width: 640px;height: 480px;position: absolute;top: 0" id="remotewave"></canvas>
 </div>
 <!-- 添加大小窗切换的按钮 -->
-<button class="btn screen-switch" onclick="switchScreen()">大小窗切换</button>
+<button class="btn layui-btn layui-btn-warm screen-switch" onclick="switchScreen()">切换</button>
+
 <div>
     <input type="hidden" name="roomToken" id="roomToken" th:value="${roomToken}">
 </div>
 
+<script th:src="@{/admin/js/jquery.min.js}"></script>
+<script th:src="@{/front/layui/layui.js}"></script>
+<script src="..static/front/js/pili-rtc-web.js" th:src="@{/front/js/pili-rtc-web.js}"></script>
 <script>
     //切换窗口
     function switchScreen() {
@@ -83,6 +89,8 @@
             remotePlayer.className = "fullscreen-player";
         }
     }
+
+
     // 订阅用户的函数，myRTC 代表之前初始化 SDK 后拿到的示例
     // user 代表加入房间返回或者事件返回的单个用户对象
     function subscribeUser(myRTC, user) {
