@@ -1,0 +1,271 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>在线模拟面试</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta charset="utf-8" name="viewport" content="width=device-width">
+    <link rel="stylesheet" th:href="@{/front/layui/css/layui.css}">
+    <script th:src="@{/admin/js/jquery.min.js}"></script>
+    <script th:src="@{/front/layui/layui.js}"></script>
+
+    <style type="text/css">
+        html, body {
+            height: 100%;
+            margin: 0;
+            padding: 0;
+        }
+
+        .message {
+            width: 80%;
+            margin-left: 5%;
+            height: 30px;
+            border: 1px solid #999;
+            resize: none;
+            border-radius: 8px;
+        }
+
+        .li-content {
+            margin: 10px;
+            line-height: 22px;
+        }
+
+        .li-finder-style {
+            color: #29bdb9;
+        }
+
+        .li-interviewer-style {
+            color: #ff8a00;
+        }
+
+        .li-message-style {
+            color: #eeeeee;
+            margin: 0 5px;
+        }
+    </style>
+</head>
+<body style="overflow: hidden;">
+<!-- 头部 -->
+<ul class="layui-nav">
+    <li class="layui-nav-item">IT模拟面试</li>
+    <span style="float: right;">
+	  <li class="layui-nav-item">
+		  	<span>面试官：[[${interviewer.username}]]	</span>
+	  </li>
+	  <li class="layui-nav-item">
+	  	<a href="" class="layui-btn layui-btn-danger">面试结束</a>
+	  </li>
+  </span>
+</ul>
+
+<div style="background-color: #f6f6f6;height: 85%">
+    <div class="layui-row layui-col-space5" style="height: 100%;">
+        <div class="layui-col-md8" style="padding: 10px;height: 100%">
+            <div style="background-color: #464e58;height:100%;">
+                <!--<iframe src="#" width="100%" height="100%"></iframe>-->
+            </div>
+        </div>
+        <div class="layui-col-md4" style="padding: 10px;height: 100%;">
+            <div style="background-color: #464e58;height: 30px;padding:10px;border-radius: 8px 8px 0 0;">
+                <div>求职者 - [[${finder.username}]]</div>
+                <div> [[${finder.phone}]] | [[${finder.email}]]</div>
+            </div>
+            <div style="height: 75%;background-color: #3d444d">
+                <ul style="overflow:auto;height: 100%;" id="message-container">
+                    <li class="li-content" th:each="chat:${chats}">
+                        <span class="li-message-style">[[${chat.sendTime}]]</span>
+                        <span th:if="${chat.sendType}=='1'" class="li-finder-style">应聘者:</span>
+                        <span th:if="${chat.sendType}=='2'" class="li-interviewer-style">面试官:</span>
+                        <span class="li-message-style">[[${chat.message}]]</span>
+                    </li>
+                </ul>
+            </div>
+            <div style="height: 60px;">
+                <div style="background-color: #181e22;height: 100%;border-radius: 0 0 8px 8px;">
+                    <textarea name="message" id="message" class="message" placeholder="请输入聊天内容"></textarea>
+                    <div>回车键发送</div>
+                    <div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div>
+        <input type="hidden" name="fid" id="finderId" th:value="${finder.fid}">
+        <input type="hidden" name="iid" id="interviewerId" th:value="${interviewer.iid}">
+        <input type="hidden" name="webSocketUrl" id="webSocketUrl" th:value="${webSocketUrl}">
+    </div>
+</div>
+
+<div>
+    底部@IT模拟面试
+</div>
+
+
+<script type="text/javascript">
+    // 消息div滚动到底部
+    scrollToButton();
+
+    function scrollToButton() {
+        var div = document.getElementById('message-container');
+        div.scrollTop = div.scrollHeight;
+    }
+
+
+    var fid = $('#finderId').val();
+    var iid = $('#interviewerId').val();
+    var webSocketUrl = $('#webSocketUrl').val();
+
+    /**
+     * WebSocket客户端
+     *
+     * 使用说明：
+     * 1、WebSocket客户端通过回调函数来接收服务端消息。例如：webSocket.onmessage
+     * 2、WebSocket客户端通过send方法来发送消息给服务端。例如：webSocket.send();
+     */
+    function getWebSocket() {
+        /**
+         * WebSocket客户端 PS：URL开头表示WebSocket协议 中间是域名端口 结尾是服务端映射地址
+         */
+        var webSocket = new WebSocket(webSocketUrl);
+        /**
+         * 当服务端打开连接
+         */
+        webSocket.onopen = function (event) {
+            console.log('WebSocket打开连接');
+            $.ajax({
+                type: 'post',
+                url: '/chat/insert',
+                data: {message: '已上线！', sendUid: iid, sendType: '2', acceptUid: fid, acceptType: '1'},
+                async: true,
+                success: function (data) {
+                    if (data == 'success') {
+                        console.log("已上线！");
+                    }
+                }
+            });
+        };
+
+        /**
+         * 当服务端发来消息：1.广播消息 2.更新在线人数
+         */
+        webSocket.onmessage = function (event) {
+            console.log('WebSocket收到消息：%c' + event.data, 'color:green');
+            //获取服务端消息
+            var chat = JSON.parse(event.data) || {};
+            var $messageContainer = $('#message-container');
+            //发送消息
+            var msg = '';
+            msg += '<li class="li-content">' + '<span class="li-message-style">' + format(chat.sendTime) + '</span>';
+            if (chat.sendType === '1') {
+                msg += '<span class="li-finder-style">应聘者:</span>';
+            } else {
+                msg += '<span class="li-interviewer-style">面试官:</span>';
+            }
+            msg += '<span class="li-message-style">' + chat.message + '</span>' + '</li>';
+            $messageContainer.append(msg);
+            scrollToButton();
+        };
+
+        /**
+         * 关闭连接
+         */
+        webSocket.onclose = function (event) {
+            console.log('WebSocket关闭连接');
+        };
+        window.onunload = function (event) {
+            closeSession();
+        };
+        /**
+         * 通信失败
+         */
+        webSocket.onerror = function (event) {
+            console.log('WebSocket发生异常');
+
+        };
+        return webSocket;
+    }
+
+    var webSocket = getWebSocket();
+
+
+    /**
+     * 通过WebSocket对象发送消息给服务端
+     */
+    function sendMsgToServer() {
+        var $message = $('#message');
+        if ($message.val()) {
+            webSocket.send(JSON.stringify({
+                message: $message.val(),
+                sendUid: iid,
+                sendType: '2',
+                acceptUid: fid,
+                acceptType: '1'
+            }));
+            // 插入一条聊天记录到数据库
+            $.ajax({
+                type: 'post',
+                url: '/chat/insert',
+                data: {message: $message.val(), sendUid: iid, sendType: '2', acceptUid: fid, acceptType: '1'},
+                async: true,
+                success: function (data) {
+                    if (data == 'success') {
+                        console.log("插入一条聊天记录到数据库");
+                    }
+                }
+            });
+            $message.val(null);
+        }
+
+    }
+
+    /**
+     * 使用ENTER发送消息
+     */
+    document.onkeydown = function (event) {
+        var e = event || window.event || arguments.callee.caller.arguments[0];
+        e.keyCode === 13 && sendMsgToServer();
+        if (e.keyCode === 13) {
+            if (window.event) {
+                window.event.returnValue = false;
+            } else {
+                e.preventDefault(); //for firefox
+            }
+        }
+    };
+
+    /**
+     * 关闭会话
+     */
+    function closeSession() {
+        $.ajax({
+            type: 'post',
+            url: '/chat/insert',
+            data: {message: '已下线！', sendUid: iid, sendType: '2', acceptUid: fid, acceptType: '1'},
+            async: true,
+            success: function (data) {
+                if (data == 'success') {
+                    console.log("关闭会话！");
+                }
+            }
+        });
+    }
+
+    //时间解析 jsonTime是整数，否则要parseInt转换
+    function format(jsonTime) {
+        var time = new Date(jsonTime);
+        var y = time.getFullYear();
+        var m = time.getMonth() + 1;
+        var d = time.getDate() + 1;
+        var h = time.getHours() + 1;
+        var mm = time.getMinutes() + 1;
+        var s = time.getSeconds() + 1;
+        return add0(h) + ':' + add0(mm) + ':' + add0(s);
+    }
+
+    function add0(m) {
+        return m < 10 ? '0' + m : m
+    }
+
+</script>
+</body>
+</html>

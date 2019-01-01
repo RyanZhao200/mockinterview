@@ -38,16 +38,32 @@
                 </div>
                 <ul class="fly-list">
                     <li th:each="forum:${pageInfo.list}">
-                        <a href="#" class="fly-avatar">
-                            <img th:src="${forum.headUrl}">
-                        </a>
+                        <span th:if="${forum.userType}=='1'">
+                            <a href="#" th:href="@{/finder/home/}+${forum.uid}" class="fly-avatar">
+                                <img th:src="${forum.headUrl}">
+                            </a>
+                        </span>
+                        <span th:if="${forum.userType}=='2'">
+                            <a href="#" th:href="@{/interviewer/}+${forum.uid}" class="fly-avatar">
+                                <img th:src="${forum.headUrl}">
+                            </a>
+                        </span>
+
                         <h2>
                             <a th:href="@{/forum/}+${forum.pid}"><span th:text="${forum.title}"></span></a>
                         </h2>
                         <div class="fly-list-info">
-                            <a href="#" link>
-                                <cite>[[${forum.username}]]</cite>
-                            </a>
+                            <span th:if="${forum.userType}=='1'">
+                                <a href="#" th:href="@{/finder/home/}+${forum.uid}" link>
+                                    <cite>[[${forum.username}]]</cite>
+                                </a>
+                            </span>
+                            <span th:if="${forum.userType}=='2'">
+                                <a href="#" th:href="@{/interviewer/}+${forum.uid}" link>
+                                    <cite>[[${forum.username}]]</cite>
+                                </a>
+                            </span>
+
                             <span>[[${#dates.format(forum.createTime, 'yyyy-MM-dd')}]] &nbsp;<b>[[${forum.typeName}]]</b>
                                 最后回复：[[${#dates.format(forum.replyTime, 'yyyy-MM-dd HH:mm')}]]</span>
                             <span class="fly-list-nums">

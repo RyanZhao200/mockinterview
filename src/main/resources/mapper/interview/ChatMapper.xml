@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.debuggor.mockinterview.interview.dao.ChatDao">
+
+    <insert id="insert" parameterType="com.debuggor.mockinterview.interview.bean.Chat">
+        INSERT into j_chat(message,send_uid,send_type,accept_uid,accept_type,message_status,send_time)
+        VALUES(#{message},#{sendUid},#{sendType},#{acceptUid},#{acceptType},#{messageStatus},#{sendTime})
+    </insert>
+
+    <select id="getChatListForDouble" resultType="com.debuggor.mockinterview.interview.bean.Chat"
+            parameterType="com.debuggor.mockinterview.interview.bean.Chat">
+        select * from j_chat
+        WHERE (send_uid = #{sendUid}  and send_type = #{sendType}
+        and accept_uid = #{acceptUid} and accept_type = #{acceptType})
+        OR (send_uid = #{acceptUid}  and send_type = #{acceptType}
+        and accept_uid = #{sendUid} and accept_type = #{sendType})
+        ORDER BY send_time
+    </select>
+
+</mapper>

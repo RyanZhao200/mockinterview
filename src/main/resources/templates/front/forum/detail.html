@@ -14,8 +14,8 @@
 <body>
 <!--前台公共头部-->
 <div th:replace="front/common/bar::topbar"></div>
-<!--论坛头部-->
-<!--<div th:replace="front/common/bar::forumtopbar"></div>-->
+
+
 <span id="top"></span>
 <div class="layui-container">
     <div class="layui-row layui-col-space15">
@@ -31,16 +31,29 @@
                 <div class="fly-detail-info"></div>
                 <div style="background-color: #f2f2f2;margin: 10px;height: 50px;padding-left: 10px;padding-top: 10px;">
                     <div>
-                        <a href="#" style="float: left;">
-                            <img th:src="${forum.headUrl}" style="width: 40px;height: 40px;">
-                        </a>
+                        <span th:if="${forum.userType}=='1'">
+                            <a href="#" th:href="@{/finder/home/}+${forum.uid}" style="float: left;">
+                                <img th:src="${forum.headUrl}" style="width: 40px;height: 40px;">
+                            </a>
+                        </span>
+                        <span th:if="${forum.userType}=='2'">
+                            <a href="#" th:href="@{/interviewer/}+${forum.uid}" style="float: left;">
+                                <img th:src="${forum.headUrl}" style="width: 40px;height: 40px;">
+                            </a>
+                        </span>
                     </div>
                     <div style="margin-top: 10px;">
-                        <span style="padding: 10px;font-size: 16px;">
-                            <a href="#">
+                        <span style="padding: 10px;font-size: 16px;" th:if="${forum.userType}=='1'">
+                            <a href="#" th:href="@{/finder/home/}+${forum.uid}" >
                                 <cite>[[${forum.username}]]</cite>
                             </a>
                         </span>
+                        <span style="padding: 10px;font-size: 16px;" th:if="${forum.userType}=='2'">
+                            <a href="#" th:href="@{/interviewer/}+${forum.uid}" >
+                                <cite>[[${forum.username}]]</cite>
+                            </a>
+                        </span>
+
                         <span>[[${#dates.format(forum.createTime, 'yyyy-MM-dd')}]] </span>
                         <span style="float:right;margin-right: 10px;">
                             <a href="#comment"><i class="iconfont" title="回答">&#xe60c;</i>
@@ -60,13 +73,29 @@
                 <ul class="jieda" id="jieda">
                     <li th:each="comment:${comments}">
                         <div class="detail-about detail-about-reply">
-                            <a class="fly-avatar" href="">
-                                <img th:src="${comment.headUrl}" alt="">
-                            </a>
-                            <div class="fly-detail-user">
-                                <a href="" class="fly-link">
-                                    <cite>[[${comment.username}]]</cite>
+                            <span th:if="${comment.userType}=='1'">
+                                <a class="fly-avatar" href="" th:href="@{/finder/home/}+${comment.uid}">
+                                    <img th:src="${comment.headUrl}" alt="">
                                 </a>
+                            </span>
+                            <span th:if="${comment.userType}=='2'">
+                                <a class="fly-avatar" href="#" th:href="@{/interviewer/}+${comment.uid}">
+                                     <img th:src="${comment.headUrl}" alt="">
+                                </a>
+                            </span>
+
+                            <div class="fly-detail-user">
+                                <span th:if="${comment.userType}=='1'">
+                                    <a href="" class="fly-link" th:href="@{/finder/home/}+${comment.uid}">
+                                        <cite>[[${comment.username}]]</cite>
+                                    </a>
+                                </span>
+                                <span th:if="${comment.userType}=='2'">
+                                    <a href="" class="fly-link" th:href="@{/interviewer/}+${comment.uid}">
+                                        <cite>[[${comment.username}]]</cite>
+                                    </a>
+                                </span>
+
                             </div>
                             <div class="detail-hits">
                                 <span>[[${#dates.format(comment.commentTime, 'yyyy-MM-dd')}]]</span>
