@@ -61,9 +61,9 @@
                         <span>[[${interviewer.email}]]</span>
                     </div>
                     <div class="layui-form-item" style="margin-top: 10px;">
-                        <a class="layui-btn" th:href="@{/interview/subscribe(iid=${interviewer.iid})}">
-                            发起/加入视频
-                        </a>
+                        <button class="layui-btn" th:onclick="'enterRoom('+${finder.fid}+','+${interviewer.iid}+')'">
+                            发起/加入面试
+                        </button>
                         <button class="layui-btn" onclick="confirmOrder()">确认结单</button>
                         <a id="confirmOrder" th:href="@{/interview/confirmOrder(oid=${order.oid})}"></a>
                     </div>
@@ -94,6 +94,19 @@
                 window.open(href, name = "_self");  // 在当前窗口打开链接
             }
         });
+    }
+
+    function enterRoom(fid, iid) {
+        if (fid == null || iid == null) {
+            console.log("进入面试发生错误！");
+        } else {
+            var code = Math.random().toString(36).substr(10) + '-'
+                + String(fid * 7 + 1) + '-' + String(fid * 13 + 2) + '-'
+                + String(iid * 17 + 3) + '-' + String(iid * 19 + 4) + '-'
+                + Math.random().toString(20).substr(10);
+            var href = '/interview/interviewee?code=' + code;
+            window.open(href, name = "_blank");  // 在新窗口打开链接
+        }
     }
 </script>
 </body>

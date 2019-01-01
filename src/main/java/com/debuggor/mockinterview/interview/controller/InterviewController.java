@@ -153,16 +153,16 @@ public class InterviewController {
      *
      * @return
      */
-    @RequestMapping("/interview/publish")
-    public String interviewerToFinder(@RequestParam(required = false, value = "fid") Integer fid,
+    @RequestMapping("/interview/publish/{fid}/{iid}")
+    public String interviewerToFinder(@PathVariable("fid") Integer fid,
+                                      @PathVariable("iid") Integer iid,
                                       HttpSession session, Model model) throws Exception {
-        Interviewer interviewer = (Interviewer) session.getAttribute("interviewer");
-        if (interviewer == null) {
+        if (fid == null || iid == null) {
             return "/";
         }
-        String roomToken = qiniuService.getRoomToken(interviewer.getIid(), fid, UserConstant.Interviewer_Type);
+        String roomToken = qiniuService.getRoomToken(iid, fid, UserConstant.Interviewer_Type);
         model.addAttribute("roomToken", roomToken);
-        logger.info("面试官：" + interviewer.getUsername() + "发起了面试");
+        logger.info("面试官：" + iid + "发起了面试");
         return "front/interview/room";
     }
 
@@ -171,16 +171,16 @@ public class InterviewController {
      *
      * @return
      */
-    @RequestMapping("/interview/subscribe")
-    public String finderToInterviewer(@RequestParam(required = false, value = "iid") Integer iid,
+    @RequestMapping("/interview/subscribe/{fid}/{iid}")
+    public String finderToInterviewer(@PathVariable("fid") Integer fid,
+                                      @PathVariable("iid") Integer iid,
                                       HttpSession session, Model model) throws Exception {
-        Finder finder = (Finder) session.getAttribute("finder");
-        if (finder == null) {
+        if (fid == null || iid == null) {
             return "/";
         }
-        String roomToken = qiniuService.getRoomToken(iid, finder.getFid(), UserConstant.Finder_Type);
+        String roomToken = qiniuService.getRoomToken(iid, fid, UserConstant.Finder_Type);
         model.addAttribute("roomToken", roomToken);
-        logger.info("求职者：" + finder.getUsername() + "发起了面试");
+        logger.info("求职者：" + fid + "发起了面试");
         return "front/interview/room";
     }
 
@@ -199,7 +199,9 @@ public class InterviewController {
         Order order = ordersService.getOrderById(oid);
         // 获取面试官信息
         Interviewer interviewer = interviewerService.getInterviewerById(order.getInterviewerId());
+        Finder finder = finderService.getFinderById(order.getFinderId());
         model.addAttribute("interviewer", interviewer);
+        model.addAttribute("finder", finder);
         model.addAttribute("order", order);
         return "front/interview/interview";
     }
@@ -302,13 +304,22 @@ public class InterviewController {
         Order order = ordersService.getOrderById(oid);
         model.addAttribute("order", order);
         Finder finder = null;
+        Interviewer interviewer = null;
         if (order != null) {
             finder = finderService.getFinderById(order.getFinderId());
+            interviewer = interviewerService.getInterviewerById(order.getInterviewerId());
         }
         model.addAttribute("finder", finder);
+        model.addAttribute("interviewer", interviewer);
         return "front/interview/interviewToFinder";
     }
 
+    /**
+     * 面试结束
+     *
+     * @param oid
+     * @return
+     */
     @RequestMapping("/interview/orderEnd")
     public String interviewerEnd(@RequestParam(required = false, value = "oid") Integer oid) {
         if (oid == null) {

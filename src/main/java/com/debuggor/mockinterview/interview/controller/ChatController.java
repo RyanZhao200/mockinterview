@@ -25,7 +25,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Controller
-@RequestMapping("/chat")
+@RequestMapping("/interview")
 public class ChatController {
     private Logger logger = LoggerFactory.getLogger(ChatController.class);
     @Autowired

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50638
 File Encoding         : 65001
 
-Date: 2018-12-26 23:56:11
+Date: 2019-01-01 11:00:46
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -56,7 +56,7 @@ CREATE TABLE `c_follower` (
   `follow_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '关注时间',
   `unfollow_time` datetime DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP COMMENT '取消关注时间',
   PRIMARY KEY (`fid`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8 COMMENT='关注表';
+) ENGINE=InnoDB AUTO_INCREMENT=74 DEFAULT CHARSET=utf8 COMMENT='关注表';
 
 -- ----------------------------
 -- Table structure for c_message
@@ -133,6 +133,22 @@ CREATE TABLE `f_type` (
   `order_no` int(20) DEFAULT NULL COMMENT '帖子顺序',
   PRIMARY KEY (`tid`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8 COMMENT='帖子类别';
+
+-- ----------------------------
+-- Table structure for j_chat
+-- ----------------------------
+DROP TABLE IF EXISTS `j_chat`;
+CREATE TABLE `j_chat` (
+  `cid` int(11) NOT NULL AUTO_INCREMENT COMMENT '聊天消息ID',
+  `message` varchar(255) DEFAULT NULL COMMENT '消息内容',
+  `send_uid` int(11) DEFAULT NULL COMMENT '发送人ID',
+  `send_type` varchar(255) DEFAULT NULL COMMENT '发送人类别（1求职者，2、面试官）',
+  `accept_uid` int(11) DEFAULT NULL COMMENT '接受者ID',
+  `accept_type` varchar(255) DEFAULT NULL COMMENT '接受者类别',
+  `message_status` varchar(255) DEFAULT NULL COMMENT '消息状态（暂时不用）',
+  `send_time` datetime DEFAULT NULL COMMENT '发送时间',
+  PRIMARY KEY (`cid`)
+) ENGINE=InnoDB AUTO_INCREMENT=18 DEFAULT CHARSET=utf8 COMMENT='聊天记录表';
 
 -- ----------------------------
 -- Table structure for j_evaluation

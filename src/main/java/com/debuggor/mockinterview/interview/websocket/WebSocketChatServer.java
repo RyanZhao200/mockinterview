@@ -89,8 +89,10 @@ public class WebSocketChatServer {
      */
     @OnClose
     public void onClose(Session session) {
-        String sendKey = null;
-        String acceptKey = null;
+        String sendKey = sendUid + "" + sendType;
+        onlineSessions.remove(sendKey);
+
+/*        String acceptKey = null;
         if (UserEnum.INTERVIEWER.key.equals(sendType)) {
             sendKey = sendUid + "" + sendType;
             acceptKey = acceptUid + "" + UserEnum.FINDER.key;
@@ -100,7 +102,7 @@ public class WebSocketChatServer {
             acceptKey = acceptUid + "" + UserEnum.INTERVIEWER.key;
             sendMessageTo(sendKey, acceptKey, Chat.jsonStr("已下线！", sendUid, UserEnum.FINDER.key, acceptUid, UserEnum.INTERVIEWER.key, new Date()));
         }
-        onlineSessions.remove(sendKey);
+*/
     }
 
     /**

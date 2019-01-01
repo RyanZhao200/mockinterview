@@ -58,9 +58,9 @@
                                 <cite th:if="${message.statusType}=='5'">面试结束</cite>
                             </a>
                             <span style="position: absolute;right: 20px;bottom: 20px;">
-                                <button onclick="deleteByMid()"
+                                <button th:onclick="'deleteByMid('+${message.mid}+')'"
                                         class="layui-btn layui-btn-small layui-btn-danger fly-delete">删除</button>
-                                <a id="deleteByMid" th:href="@{/interviewer/deleteMessage/}+${message.mid}"></a>
+                                <a id="deleteByMid" th:href="@{/interviewer/deleteMessage/}"></a>
                             </span>
                         </blockquote>
                     </li>
@@ -84,10 +84,11 @@
         element.init();
     });
 
-    function deleteByMid() {
+    function deleteByMid(mid) {
         win.confirm('温馨提示', '确定删除该条面试记录吗？', function (r) {
             if (r) {
                 var href = document.getElementById("deleteByMid");
+                href = href+mid;
                 window.open(href, name = "_self");  // 在当前窗口打开链接
             }
         });
