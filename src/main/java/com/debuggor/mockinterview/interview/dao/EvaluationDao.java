@@ -41,4 +41,11 @@ public interface EvaluationDao {
      * @return
      */
     Float getEvaluationGradeByIid(Integer iid);
+
+    /**
+     * 获得最近的高分评论
+     *
+     * @return
+     */
+    List<Evaluation> getHotEvaluations();
 }

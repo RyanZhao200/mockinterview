@@ -97,6 +97,9 @@ public class InterviewController {
         PageInfo interviewerList = interviewService.getInterviewerList(interviewer, pn);
         logger.info("总页数：" + String.valueOf(interviewerList.getPages()));
         model.addAttribute("pageInfo", interviewerList);
+        // 获得最近的热评
+        List<Evaluation> hotEvaluations = evaluationService.getRecentHotEvaluations();
+        model.addAttribute("hotEvaluations",hotEvaluations);
         return "front/interview/list";
     }
 

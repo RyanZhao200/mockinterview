@@ -16,6 +16,10 @@
             <result column="username" property="username"/>
             <result column="head_url" property="headUrl"/>
         </association>
+        <association property="interviewer" javaType="com.debuggor.mockinterview.interview.bean.Interviewer">
+            <result column="iusername" property="username"></result>
+            <result column="ihead_url" property="headUrl"></result>
+        </association>
     </resultMap>
 
     <insert id="insert" parameterType="com.debuggor.mockinterview.interview.bean.Evaluation"
@@ -35,5 +39,19 @@
 
     <select id="getEvaluationGradeByIid" parameterType="java.lang.Integer" resultType="java.lang.Float">
         SELECT AVG(grade) from j_evaluation WHERE iid=#{iid}
+    </select>
+
+    <sql id="with_Recent_Eva_Column_List">
+        e.eid,e.comment,e.grade,e.create_time,i.iid,i.username iusername,i.head_url ihead_url,f.fid,f.username,f.head_url
+    </sql>
+
+    <select id="getHotEvaluations" resultMap="evaluationMap">
+        SELECT
+        <include refid="with_Recent_Eva_Column_List"/>
+        from j_evaluation e
+        LEFT JOIN j_interviewer i on e.iid=i.iid
+        LEFT JOIN j_finder f on f.fid=e.fid
+        WHERE e.create_time>DATE_SUB(CURDATE(),INTERVAL 5 MONTH)
+        ORDER BY e.grade DESC LIMIT 0,10
     </select>
 </mapper>

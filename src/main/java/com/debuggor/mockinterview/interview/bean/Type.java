@@ -1,7 +1,10 @@
 package com.debuggor.mockinterview.interview.bean;
 
+import lombok.Data;
+
 import java.util.List;
 
+@Data
 public class Type {
 
     // 分类ID
@@ -17,51 +20,4 @@ public class Type {
     // 子栏目
     private List<Type> childTypes;
 
-    public List<Type> getChildTypes() {
-        return childTypes;
-    }
-
-    public void setChildTypes(List<Type> childTypes) {
-        this.childTypes = childTypes;
-    }
-
-    public String getParentName() {
-        return parentName;
-    }
-
-    public void setParentName(String parentName) {
-        this.parentName = parentName;
-    }
-
-    public Integer getTid() {
-        return tid;
-    }
-
-    public void setTid(Integer tid) {
-        this.tid = tid;
-    }
-
-    public String getTypeName() {
-        return typeName;
-    }
-
-    public void setTypeName(String typeName) {
-        this.typeName = typeName;
-    }
-
-    public Integer getOrderNo() {
-        return orderNo;
-    }
-
-    public void setOrderNo(Integer orderNo) {
-        this.orderNo = orderNo;
-    }
-
-    public Integer getParentId() {
-        return parentId;
-    }
-
-    public void setParentId(Integer parentId) {
-        this.parentId = parentId;
-    }
 }

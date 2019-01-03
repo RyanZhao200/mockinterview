@@ -89,7 +89,8 @@ public class EvaluationService {
     /**
      * 获得最近的热评
      */
-    public void getRecentHotEvaluations(){
-
+    public List<Evaluation> getRecentHotEvaluations(){
+        List<Evaluation> hotEvaluations = evaluationDao.getHotEvaluations();
+        return hotEvaluations;
     }
 }

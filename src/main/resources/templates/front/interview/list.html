@@ -10,8 +10,8 @@
     <link rel="stylesheet" href="..static/front/layui/css/layui.css" th:href="@{/front/layui/css/layui.css}">
     <link rel="stylesheet" href="..static/front/css/global.css" th:href="@{/front/css/global.css}">
     <link rel="stylesheet" href="..static/front/raty/jquery.raty.css" th:href="@{/front/raty/jquery.raty.css}">
-    <link rel="stylesheet" href="..static/front/bxslider/jquery.bxslider.css"
-          th:href="@{/front/bxslider/jquery.bxslider.css}">
+    <link rel="stylesheet" href="..static/front/swiper/css/swiper.min.css"
+          th:href="@{/front/swiper/css/swiper.min.css}">
 
 </head>
 <body>
@@ -166,27 +166,26 @@
                 </dd>
             </dl>
 
-            <div class="fly-panel fly-list-one" style="padding: 5px;">
+            <div class="fly-panel fly-list-one ">
                 <div class="fly-panel-title">
-                    这里可作为广告区域
+                    最近评议
                 </div>
-                <div class="slider5">
-                    <div class="slide">
-                        111111111111111111111111
+                <div class="swiper-container" style="height:400px;">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide" th:each="evaluation:${hotEvaluations}" style="padding: 10px;">
+                            <div>
+                                <span>
+                                    [[${evaluation.finder.username}]]&nbsp;评价
+                                    <b><a th:href="@{/interviewer/}+${evaluation.iid}">[[${evaluation.interviewer.username}]]</a></b>
+                                </span>
+                                <span style="float: right;margin-right: 20px;">[[${#dates.format(evaluation.createTime, 'yyyy-MM-dd HH:mm')}]]</span>
+                            </div>
+                            <div style="padding: 5px;width: 95%;">
+                                <span style="font-family: 微软雅黑; padding: 1px;" th:utext="${evaluation.comment}"></span>
+                            </div>
+                            <div style="background-color: #f2f2f2;height: 1px;width: 100%;"></div>
+                        </div>
                     </div>
-                    <div class="slide">
-                        222222222222222222222222
-                    </div>
-                    <div class="slide">
-                        333333333333333333333333
-                    </div>
-                    <div class="slide">2</div>
-                    <div class="slide">3</div>
-                    <div class="slide">4</div>
-                    <div class="slide">5</div>
-                    <div class="slide">6</div>
-                    <div class="slide">7</div>
-                    <div class="slide">8</div>
                 </div>
             </div>
 
@@ -226,9 +225,19 @@
 <script src="..static/front/layui/layui.js" th:src="@{/front/layui/layui.js}"></script>
 <script src="..static/admin/js/jquery.min.js" th:src="@{/admin/js/jquery.min.js}"></script>
 <script src="..static/front/raty/jquery.raty.js" th:src="@{/front/raty/jquery.raty.js}"></script>
-<script src="..static/front/bxslider/jquery.bxslider.js" th:src="@{/front/bxslider/jquery.bxslider.js}"></script>
+<script src="..static/front/swiper/js/swiper.min.js" th:src="@{/front/swiper/js/swiper.min.js}"></script>
 
 <script>
+    var mySwiper = new Swiper('.swiper-container', {
+        direction: 'vertical', // 垂直切换选项
+        autoHeight: true, // 自动高度
+        loop: true, // 循环模式选项
+        slidesPerView: 'auto',
+        autoplay: {
+            delay: 5000
+        }
+    });
+
     layui.use(['carousel', 'form', 'element'], function () {
         var carousel = layui.carousel, form = layui.form;
         var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
@@ -245,7 +254,7 @@
             starHalf: '/front/raty/images/star-half.png',
             readOnly: true,
             halfShow: true,
-            size: 40,
+            size: 40
         })
     });
 
@@ -254,18 +263,6 @@
         $(".layui-order[selected='selected']").addClass("layui-this");
     });
 
-    $(function () {
-        $('.slider5').bxSlider({
-            mode: 'vertical',
-            //  slideWidth: 200,
-            minSlides: 5,
-            maxSlides: 5,
-            slideMargin: 10,
-            ticker: true,
-            speed: 30000
-            //, controls: false//隐藏左右按钮
-        });
-    });
 </script>
 </body>
 </html>
