@@ -10,6 +10,8 @@
     <link rel="stylesheet" href="..static/front/layui/css/layui.css" th:href="@{/front/layui/css/layui.css}">
     <link rel="stylesheet" href="..static/front/css/global.css" th:href="@{/front/css/global.css}">
     <link rel="stylesheet" href="..static/front/raty/jquery.raty.css" th:href="@{/front/raty/jquery.raty.css}">
+    <link rel="stylesheet" href="..static/front/bxslider/jquery.bxslider.css"
+          th:href="@{/front/bxslider/jquery.bxslider.css}">
 
 </head>
 <body>
@@ -53,18 +55,18 @@
         <div class="layui-col-md8">
             <div class="fly-panel" style="margin-bottom: 0;">
                 <div class="fly-panel-title fly-filter">
-                    <a href="" class="layui-this">综合</a>
+                    <a th:href="@{/interviewer(tid=${tid},order=null)}" th:selected="${order}==null"
+                       class="layui-order">综合</a>
                     <span class="fly-mid"></span>
-                    <a href="">未结</a>
+                    <a th:href="@{/interviewer(tid=${tid},order=1)}" th:selected="${order}==1" class="layui-order">评分&nbsp;↓</a>
                     <span class="fly-mid"></span>
-                    <a href="">已结</a>
+                    <a th:href="@{/interviewer(tid=${tid},order=2)}" th:selected="${order}==2" class="layui-order">价格&nbsp;↓</a>
                     <span class="fly-mid"></span>
-                    <a href="">精华</a>
-                    <span class="fly-filter-right layui-hide-xs">
-                        <a href="" class="layui-this">按最新</a>
-                        <span class="fly-mid"></span>
-                        <a href="">按热议</a>
-                    </span>
+                    <a th:href="@{/interviewer(tid=${tid},order=3)}" th:selected="${order}==3" class="layui-order">价格&nbsp;↑</a>
+                    <span class="fly-mid"></span>
+                    <a th:href="@{/interviewer(tid=${tid},order=4)}" th:selected="${order}==4" class="layui-order">帮助人数&nbsp;↓</a>
+                    <span class="fly-mid"></span>
+                    <a th:href="@{/interviewer(tid=${tid},order=5)}" th:selected="${order}==5" class="layui-order">工作年限&nbsp;↓</a>
                 </div>
 
                 <ul class="">
@@ -128,21 +130,24 @@
                         <ul class="pagination">
                             <!--上一页-->
                             <li th:if="${pageInfo.hasPreviousPage}">
-                                <a th:href="@{/interviewer(pn=${pageInfo.pageNum-1},tid=${tid})}"
+                                <a th:href="@{/interviewer(tid=${tid},order=${order},pn=${pageInfo.pageNum-1})}"
                                    aria-label="Previous">
                                     <span aria-hidden="true">«</span>
                                 </a>
                             </li>
                             <!--循环遍历连续显示的页面，若是当前页就高亮显示，并且没有链接-->
                             <li th:each="page_num:${pageInfo.navigatepageNums}">
-                        <span class="active" th:if="${page_num == pageInfo.pageNum}"><a
-                                href="#">[[${page_num}]]</a></span>
-                                <span th:if="${page_num != pageInfo.pageNum}"><a
-                                        th:href="@{/interviewer(pn=${page_num},tid=${tid})}">[[${page_num}]]</a></span>
+                                <span class="active" th:if="${page_num == pageInfo.pageNum}">
+                                    <a href="#">[[${page_num}]]</a>
+                                </span>
+                                <span th:if="${page_num != pageInfo.pageNum}">
+                                    <a th:href="@{/interviewer(tid=${tid},order=${order},pn=${page_num})}">[[${page_num}]]</a>
+                                </span>
                             </li>
                             <!--下一页-->
                             <li th:if="${pageInfo.hasNextPage}">
-                                <a th:href="@{/interviewer(pn=${pageInfo.pageNum+1},tid=${tid})}" aria-label="Next">
+                                <a th:href="@{/interviewer(tid=${tid},order=${order},pn=${pageInfo.pageNum+1})}"
+                                   aria-label="Next">
                                     <span aria-hidden="true">»</span>
                                 </a>
                             </li>
@@ -160,6 +165,30 @@
                     <span><i class="iconfont icon-pinglun1"></i> 16</span>
                 </dd>
             </dl>
+
+            <div class="fly-panel fly-list-one" style="padding: 5px;">
+                <div class="fly-panel-title">
+                    这里可作为广告区域
+                </div>
+                <div class="slider5">
+                    <div class="slide">
+                        111111111111111111111111
+                    </div>
+                    <div class="slide">
+                        222222222222222222222222
+                    </div>
+                    <div class="slide">
+                        333333333333333333333333
+                    </div>
+                    <div class="slide">2</div>
+                    <div class="slide">3</div>
+                    <div class="slide">4</div>
+                    <div class="slide">5</div>
+                    <div class="slide">6</div>
+                    <div class="slide">7</div>
+                    <div class="slide">8</div>
+                </div>
+            </div>
 
             <div class="fly-panel">
                 <div class="fly-panel-title">
@@ -197,6 +226,7 @@
 <script src="..static/front/layui/layui.js" th:src="@{/front/layui/layui.js}"></script>
 <script src="..static/admin/js/jquery.min.js" th:src="@{/admin/js/jquery.min.js}"></script>
 <script src="..static/front/raty/jquery.raty.js" th:src="@{/front/raty/jquery.raty.js}"></script>
+<script src="..static/front/bxslider/jquery.bxslider.js" th:src="@{/front/bxslider/jquery.bxslider.js}"></script>
 
 <script>
     layui.use(['carousel', 'form', 'element'], function () {
@@ -217,6 +247,24 @@
             halfShow: true,
             size: 40,
         })
+    });
+
+    // 排序选中
+    $(function () {
+        $(".layui-order[selected='selected']").addClass("layui-this");
+    });
+
+    $(function () {
+        $('.slider5').bxSlider({
+            mode: 'vertical',
+            //  slideWidth: 200,
+            minSlides: 5,
+            maxSlides: 5,
+            slideMargin: 10,
+            ticker: true,
+            speed: 30000
+            //, controls: false//隐藏左右按钮
+        });
     });
 </script>
 </body>

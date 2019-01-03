@@ -79,6 +79,7 @@ public class InterviewController {
     @RequestMapping("/interviewer")
     public String list(@RequestParam(required = false, defaultValue = "1", value = "pn") Integer pn,
                        @RequestParam(required = false, value = "tid") Integer tid,
+                       @RequestParam(required = false, value = "order") Integer order,
                        Interviewer interviewer, Model model) {
         // 获取面试官类别
         List<Type> interviewTypeList = interviewTypeService.getInterviewTypeList();
@@ -90,6 +91,9 @@ public class InterviewController {
             Type type = interviewTypeService.getTypeById(tid);
             model.addAttribute("type", type);
         }
+        // 排序
+        interviewer.setOrder(order);
+        model.addAttribute("order", order);
         PageInfo interviewerList = interviewService.getInterviewerList(interviewer, pn);
         logger.info("总页数：" + String.valueOf(interviewerList.getPages()));
         model.addAttribute("pageInfo", interviewerList);

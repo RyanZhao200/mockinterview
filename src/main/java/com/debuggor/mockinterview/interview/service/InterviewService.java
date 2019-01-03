@@ -53,8 +53,7 @@ public class InterviewService {
         for (Interviewer iv : interviewerList) {
             List<String> interviewTypes = interviewDao.getInterviewTypes(iv.getIid());
             iv.setTypes(interviewTypes);
-            Integer helpPeopleNum = flowDao.getFlowNumByIid(iv.getIid());
-            iv.setHelpPeopleNum(helpPeopleNum);
+
             interviewers.add(iv);
         }
         pageInfo.setList(interviewers);

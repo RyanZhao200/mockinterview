@@ -19,13 +19,28 @@
             WHERE it.tid=${tid} or t.parent_id = ${tid} )
         </if>
     </sql>
-
+    <!--
+       做排序 null、综合；1、评分从高到低；2、价格从高到低；3、价格从低到高； 4、帮助人数；5、工作年限
+    -->
     <select id="getInterviewerList" resultType="com.debuggor.mockinterview.interview.bean.Interviewer"
             parameterType="com.debuggor.mockinterview.interview.bean.Interviewer">
         SELECT * from j_interviewer
         <where>
             <include refid="query_interview_where"></include>
         </where>
+        ORDER BY
+        <choose>
+            <when test="order != null">
+                <if test="order == 1">grade DESC</if>
+                <if test="order == 2">(cost+0) DESC</if>
+                <if test="order == 3">(cost+0)</if>
+                <if test="order == 4">help_people_num DESC</if>
+                <if test="order == 5">work_year DESC</if>
+            </when>
+            <otherwise>
+                grade DESC,help_people_num DESC
+            </otherwise>
+        </choose>
     </select>
 
     <!-- 根据面试官的ID，获取面试官能面试的类别 -->

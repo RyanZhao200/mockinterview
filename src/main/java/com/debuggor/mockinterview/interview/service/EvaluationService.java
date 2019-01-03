@@ -85,4 +85,11 @@ public class EvaluationService {
         DecimalFormat df = new DecimalFormat("0.0");
         return Float.valueOf(df.format(grade));
     }
+
+    /**
+     * 获得最近的热评
+     */
+    public void getRecentHotEvaluations(){
+
+    }
 }
