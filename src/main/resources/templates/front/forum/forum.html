@@ -8,7 +8,8 @@
     <meta name="description" content="">
     <link rel="stylesheet" href="..static/front/layui/css/layui.css" th:href="@{/front/layui/css/layui.css}">
     <link rel="stylesheet" href="..static/front/css/global.css" th:href="@{/front/css/global.css}">
-
+    <link rel="stylesheet" href="..static/front/swiper/css/swiper.min.css"
+          th:href="@{/front/swiper/css/swiper.min.css}">
 </head>
 <body>
 <!--前台公共头部-->
@@ -107,13 +108,29 @@
             </div>
         </div>
         <div class="layui-col-md4">
-            <dl class="fly-panel fly-list-one">
-                <dt class="fly-panel-title">本周热议</dt>
-                <dd>
-                    <a href="">基于 layui 的极简社区页面模版</a>
-                    <span><i class="iconfont icon-pinglun1"></i> 16</span>
-                </dd>
-            </dl>
+            <div class="fly-panel fly-list-one">
+                <dt class="fly-panel-title">近期热帖</dt>
+                <div class="swiper-container" style="height:400px;">
+                    <div class="swiper-wrapper">
+                        <div class="swiper-slide" th:each="forum:${hotPosts}" style="padding: 10px;">
+                            <div>
+                                <a th:href="@{/forum/}+${forum.pid}"> [[${forum.title}]]</a>
+                            </div>
+                            <div style="font-size: 12px;" class="fly-list-info">
+                                <span style="padding-bottom: 20px;">
+                                    发表于[[${#dates.format(forum.createTime, 'yyyy-MM-dd HH:mm')}]]
+                                </span>
+                                <span style="float: right;margin-right: 30px;">
+                                    浏览([[${forum.scanCount}]])
+                                    <span class="fly-mid"></span>
+                                    回复([[${forum.commentCount}]])
+                                </span>
+                            </div>
+                            <div style="width: 100%;height: 1px;margin-top:5px;background-color: #f2f2f2"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
 
             <div class="fly-panel">
                 <div class="fly-panel-title">
@@ -149,8 +166,19 @@
 
 <script src="..static/front/layui/layui.js" th:src="@{/front/layui/layui.js}"></script>
 <script src="..static/admin/js/jquery.min.js" th:src="@{/admin/js/jquery.min.js}"></script>
+<script src="..static/front/swiper/js/swiper.min.js" th:src="@{/front/swiper/js/swiper.min.js}"></script>
 
 <script>
+    var mySwiper = new Swiper('.swiper-container', {
+        direction: 'vertical', // 垂直切换选项
+        autoHeight: true, // 自动高度
+        loop: true, // 循环模式选项
+        slidesPerView: 'auto',
+        autoplay: {
+            delay: 5000
+        }
+    });
+
     $(function () {
         $("a[selected='selected']").css("color", "#5fb878");
     });

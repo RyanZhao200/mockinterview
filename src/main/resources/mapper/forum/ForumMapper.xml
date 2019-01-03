@@ -60,4 +60,11 @@
         </set>
         WHERE pid = #{pid}
     </update>
+
+    <select id="getRecentHotPosts" resultType="com.debuggor.mockinterview.forum.bean.Forum">
+        SELECT * from f_forum f
+        WHERE f.create_time>DATE_SUB(CURDATE(),INTERVAL 30 DAY )
+        ORDER BY f.scan_count DESC,f.comment_count desc
+        LIMIT 0,15
+    </select>
 </mapper>

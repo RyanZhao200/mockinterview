@@ -55,6 +55,8 @@ public class ForumController {
         forum.setForumStatus(StatusEnum.NORMAL.key);
         PageInfo pageInfo = forumService.getPostList(forum, pn);
         List<Type> types = forumTypeService.getForumTypeList();
+        List<Forum> hotPosts = forumService.getRecentHotPosts();
+        model.addAttribute("hotPosts",hotPosts);
         model.addAttribute("pageInfo", pageInfo);
         model.addAttribute("types", types);
         // 为前台选中标签起辅助作用
@@ -80,6 +82,8 @@ public class ForumController {
 
         forum = forumService.getForumById(pid);
         List<Comment> comments = commentService.getCommentListByPid(pid);
+        List<Forum> hotPosts = forumService.getRecentHotPosts();
+        model.addAttribute("hotPosts",hotPosts);
         model.addAttribute("forum", forum);
         model.addAttribute("comments", comments);
         return "front/forum/detail";

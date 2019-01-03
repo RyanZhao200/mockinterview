@@ -132,4 +132,12 @@ public class ForumService {
         forum.setUpdateTime(new Date());
         forumDao.update(forum);
     }
+
+    /**
+     * 近期热帖 15条
+     */
+    public List<Forum> getRecentHotPosts() {
+       List<Forum> hotPosts= forumDao.getRecentHotPosts();
+       return hotPosts;
+    }
 }

@@ -48,4 +48,11 @@ public interface ForumDao {
      * @param forum
      */
     void update(Forum forum);
+
+    /**
+     * 获得近期的热帖
+     *
+     * @return
+     */
+    List<Forum> getRecentHotPosts();
 }
