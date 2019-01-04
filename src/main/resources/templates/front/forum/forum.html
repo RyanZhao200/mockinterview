@@ -24,18 +24,14 @@
             <div class="fly-panel" style="margin-bottom: 0;">
 
                 <div class="fly-panel-title fly-filter">
-                    <a href="" class="layui-this">综合</a>
+                    <a th:href="@{/forum(tid=${tid},order=null)}" th:selected="${order}==null"
+                       class="layui-order">最新回复</a>
                     <span class="fly-mid"></span>
-                    <a href="">未结</a>
-                    <span class="fly-mid"></span>
-                    <a href="">已结</a>
-                    <span class="fly-mid"></span>
-                    <a href="">精华</a>
-                    <span class="fly-filter-right layui-hide-xs">
-                        <a href="" class="layui-this">按最新</a>
-                        <span class="fly-mid"></span>
-                        <a href="">按热议</a>
-                    </span>
+                    <a th:href="@{/forum(tid=${tid},order=1)}" th:selected="${order}==1"
+                       class="layui-order">最新发表</a>
+                    <span class="fly-mid"></span>v
+                    <a th:href="@{/forum(tid=${tid},order=2)}" th:selected="${order}==2"
+                       class="layui-order">最热</a>
                 </div>
                 <ul class="fly-list">
                     <li th:each="forum:${pageInfo.list}">
@@ -79,10 +75,10 @@
                 <div style="text-align: center">
                     <nav>
                         <ul class="pagination">
-                            <li><a th:href="@{/forum(pn=1,tid=${tid})}">首页</a></li>
+                            <li><a th:href="@{/forum(tid=${tid},order=${order},pn=1)}">首页</a></li>
                             <!--上一页-->
                             <li th:if="${pageInfo.hasPreviousPage}">
-                                <a th:href="@{/forum(pn=${pageInfo.pageNum-1},tid=${tid})}"
+                                <a th:href="@{/forum(tid=${tid},order=${order},pn=${pageInfo.pageNum-1})}"
                                    aria-label="Previous">
                                     <span aria-hidden="true">«</span>
                                 </a>
@@ -92,15 +88,15 @@
                         <span class="active" th:if="${page_num == pageInfo.pageNum}"><a
                                 href="#">[[${page_num}]]</a></span>
                                 <span th:if="${page_num != pageInfo.pageNum}"><a
-                                        th:href="@{/forum(pn=${page_num},tid=${tid})}">[[${page_num}]]</a></span>
+                                        th:href="@{/forum(tid=${tid},order=${order},pn=${page_num})}">[[${page_num}]]</a></span>
                             </li>
                             <!--下一页-->
                             <li th:if="${pageInfo.hasNextPage}">
-                                <a th:href="@{/forum(pn=${pageInfo.pageNum+1},tid=${tid})}" aria-label="Next">
+                                <a th:href="@{/forum(tid=${tid},order=${order},pn=${pageInfo.pageNum+1})}" aria-label="Next">
                                     <span aria-hidden="true">»</span>
                                 </a>
                             </li>
-                            <li><a th:href="@{/forum(pn=${pageInfo.pages},tid=${tid})}">尾页</a></li>
+                            <li><a th:href="@{/forum(tid=${tid},order=${order},pn=${pageInfo.pages})}">尾页</a></li>
                         </ul>
                     </nav>
                 </div>
@@ -181,13 +177,14 @@
 
     $(function () {
         $("a[selected='selected']").css("color", "#5fb878");
+        // 排序选中
+        $(".layui-order[selected='selected']").addClass("layui-this");
     });
 
     layui.use('element', function () {
         var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
         element.init();
     });
-
 </script>
 </body>
 </html>

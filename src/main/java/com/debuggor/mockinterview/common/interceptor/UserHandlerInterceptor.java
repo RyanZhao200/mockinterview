@@ -1,19 +1,18 @@
 package com.debuggor.mockinterview.common.interceptor;
 
-import com.debuggor.mockinterview.common.constant.MockConstant;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-public class LoginHandlerInterceptor implements HandlerInterceptor {
+public class UserHandlerInterceptor implements HandlerInterceptor {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object o) throws Exception {
-        Object admin = request.getSession().getAttribute("username");
-        if (admin == null) {
-            request.setAttribute("msg", MockConstant.LOGIN_NO_AUTHORITY);
-            request.getRequestDispatcher("/admin/login").forward(request, response);
+        Object finder = request.getSession().getAttribute("finder");
+        Object interviewer = request.getSession().getAttribute("interviewer");
+        if (finder == null && interviewer == null) {
+            request.getRequestDispatcher("/finder/login").forward(request, response);
             return false;
         }
         return true;

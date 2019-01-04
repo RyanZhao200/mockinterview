@@ -47,20 +47,24 @@ public class ForumController {
      */
     @RequestMapping("")
     public String forumList(@RequestParam(required = false, defaultValue = "1", value = "pn") Integer pn,
-                            @RequestParam(required = false, value = "tid") Integer tid, Model model) {
+                            @RequestParam(required = false, value = "tid") Integer tid,
+                            @RequestParam(required = false, value = "order") Integer order,
+                            Model model) {
         Forum forum = new Forum();
         if (tid != null) {
             forum.setTid(tid);
         }
+        forum.setOrder(order);
         forum.setForumStatus(StatusEnum.NORMAL.key);
         PageInfo pageInfo = forumService.getPostList(forum, pn);
         List<Type> types = forumTypeService.getForumTypeList();
         List<Forum> hotPosts = forumService.getRecentHotPosts();
-        model.addAttribute("hotPosts",hotPosts);
+        model.addAttribute("hotPosts", hotPosts);
         model.addAttribute("pageInfo", pageInfo);
         model.addAttribute("types", types);
         // 为前台选中标签起辅助作用
         model.addAttribute("tid", tid);
+        model.addAttribute("order", order);
         return "front/forum/forum";
     }
 
@@ -83,7 +87,7 @@ public class ForumController {
         forum = forumService.getForumById(pid);
         List<Comment> comments = commentService.getCommentListByPid(pid);
         List<Forum> hotPosts = forumService.getRecentHotPosts();
-        model.addAttribute("hotPosts",hotPosts);
+        model.addAttribute("hotPosts", hotPosts);
         model.addAttribute("forum", forum);
         model.addAttribute("comments", comments);
         return "front/forum/detail";
