@@ -84,6 +84,15 @@
     //   关注
     function follow() {
         var followersUid = document.getElementById("finderId").value;
+        var islogin = [[${(#lists.isEmpty(session.finder)) and (#lists.isEmpty(session.interviewer))}]];
+        if (islogin) {
+            win.confirm('系统提示', '请登录！', function (r) {
+                if (r) {
+                    window.location.href="/finder/login";
+                }
+            });
+            return false;
+        }
         $.ajax({
             type: 'post',
             url: '/follower/follow',

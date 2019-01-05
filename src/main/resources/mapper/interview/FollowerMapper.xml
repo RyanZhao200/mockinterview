@@ -36,6 +36,7 @@
         <where>
             <include refid="query_follow_where"></include>
         </where>
+        ORDER BY follow_time DESC
     </select>
 
     <!-- 判断是否关注 -->

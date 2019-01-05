@@ -11,6 +11,8 @@
     <link rel="stylesheet" href="..static/front/css/wangEditor.css" th:href="@{/front/css/wangEditor.css}">
     <link rel="stylesheet" href="..static/front/swiper/css/swiper.min.css"
           th:href="@{/front/swiper/css/swiper.min.css}">
+    <link rel="stylesheet" href="..static/front/window/window.css" th:href="@{/front/window/window.css}">
+
 </head>
 <body>
 <!--前台公共头部-->
@@ -55,16 +57,19 @@
                             </a>
                         </span>
 
-                        <span>[[${#dates.format(forum.createTime, 'yyyy-MM-dd')}]] </span>
+                        <span>[[${#dates.format(forum.createTime,  'yyyy-MM-dd HH:mm')}]] </span>
                         <span style="float:right;margin-right: 10px;">
                             <a href="#comment"><i class="iconfont" title="回答">&#xe60c;</i>
                                 [[${forum.commentCount}]]
                             </a>
-                            <i class="iconfont" title="浏览" style="padding-left: 10px;">&#xe60b;</i>[[${forum.scanCount}]]
+                            <i class="iconfont" title="浏览" style="padding-left: 10px;">&#xe60b;</i>
+                            &nbsp;[[${forum.scanCount}]]
                         </span>
                     </div>
                 </div>
-                <div class="detail-body photos" th:utext="${forum.content}"></div>
+                <div class="detail-body photos">
+                    <span th:utext="${forum.content}"></span>
+                </div>
             </div>
 
             <div class="fly-panel detail-box" id="flyReply">
@@ -99,7 +104,7 @@
 
                             </div>
                             <div class="detail-hits">
-                                <span>[[${#dates.format(comment.commentTime, 'yyyy-MM-dd')}]]</span>
+                                <span>[[${#dates.format(comment.commentTime, 'yyyy-MM-dd HH:mm')}]]</span>
                             </div>
                         </div>
                         <div class="detail-body jieda-body photos">
@@ -121,16 +126,16 @@
                     </li>
                 </ul>
             </div>
-
-            <div class="fly-panel detail-box" id="flyReply"
-                 th:if="${(not #lists.isEmpty(session.finder)) or (not #lists.isEmpty(session.interviewer))}">
+            <!-- th:if="${(not #lists.isEmpty(session.finder)) or (not #lists.isEmpty(session.interviewer))}" -->
+            <div class="fly-panel detail-box" id="comment">
                 <div class="layui-form layui-form-pane">
                     <form th:action="@{/forum/insertComment}" method="post">
                         <input type="hidden" name="pid" th:value="${forum.pid}">
                         <div class="layui-form-item layui-form-text">
-                            <div class="layui-input-block" id="comment">
+                            <label for="L_content"></label>
+                            <div class="layui-input-block">
                                     <textarea id="L_content" name="comment" required lay-verify="required"
-                                              style="height: 260px;" placeholder="评论最少10个字">
+                                              style="height: 200px;" placeholder="评论最少10个字">
                                     </textarea>
                             </div>
                         </div>
@@ -194,8 +199,10 @@
             <!--评论、回到顶部-->
             <div>
                 <ul class="layui-fixbar">
-                    <li class="layui-icon" lay-type="bar1" style="background-color:#009688"></li>
-                    <a href="#top">
+                    <a th:href="@{/forum/add}">
+                        <li class="layui-icon" lay-type="bar1" style="background-color:#009688"></li>
+                    </a>
+                    <a onclick='$("html,body").animate({"scrollTop":0});'>
                         <li class="layui-icon layui-fixbar-top" lay-type="top"
                             style="background-color: rgb(0, 150, 136); display: list-item;">
                         </li>
@@ -214,8 +221,10 @@
 <script src="..static/front/js/verification.js" th:src="@{/front/js/verification.js}"></script>
 <script src="..static/front/js/wangEditor.js" th:src="@{/front/js/wangEditor.js}"></script>
 <script src="..static/front/swiper/js/swiper.min.js" th:src="@{/front/swiper/js/swiper.min.js}"></script>
+<script src="..static/front/window/window.js" th:src="@{/front/window/window.js}"></script>
 
-<script>
+<script language='javascript' th:inline="javascript">
+
     var mySwiper = new Swiper('.swiper-container', {
         direction: 'vertical', // 垂直切换选项
         autoHeight: true, // 自动高度
@@ -242,23 +251,33 @@
     $(function () {
         var show_num = [];
         draw(show_num);
+        var islogin = [[${(#lists.isEmpty(session.finder)) and (#lists.isEmpty(session.interviewer))}]];
 
         $("#canvas").on('click', function () {
             draw(show_num);
         });
         $(".layui-btn").on('click', function () {
-            var content = $("#L_content").val();
+            var content = $.trim($("#L_content").val());
             var val = $("#L_vercode").val().toLowerCase();
             var num = show_num.join("");
-            if (content == '' || content.length() < 10) {
-                document.getElementById('L_content').focus();
+            if (islogin) {
+                win.confirm('系统提示', '请登录！', function (r) {
+                    if (r) {
+                        window.location.href="/finder/login";
+                    }
+                });
+                return false;
+            }
+            if (content.length < 10) {
+                win.alert('提示', '评论内容太短！');
+                return false;
             }
             if (val == '') {
                 document.getElementById('L_vercode').focus();
             } else if (val == num) {
                 $("form").submit();
             } else {
-                alert('验证码错误！请重新输入！');
+                win.alert('提示', '验证码错误！请重新输入！');
                 $("#L_vercode").val('');
                 draw(show_num);
             }

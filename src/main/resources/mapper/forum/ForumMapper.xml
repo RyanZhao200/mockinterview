@@ -50,6 +50,7 @@
         from f_forum f
         LEFT JOIN f_type t on f.tid=t.tid
         WHERE f.uid=#{uid} and f.user_type=#{userType} and f.forum_status=1
+        ORDER BY f.create_time DESC
     </select>
 
     <insert id="insertForum" parameterType="com.debuggor.mockinterview.forum.bean.Forum" useGeneratedKeys="true"
@@ -75,7 +76,7 @@
 
     <select id="getRecentHotPosts" resultType="com.debuggor.mockinterview.forum.bean.Forum">
         SELECT * from f_forum f
-        WHERE f.create_time>DATE_SUB(CURDATE(),INTERVAL 30 DAY )
+        WHERE f.create_time>DATE_SUB(CURDATE(),INTERVAL 100 DAY )
         ORDER BY f.scan_count DESC,f.comment_count desc
         LIMIT 0,15
     </select>

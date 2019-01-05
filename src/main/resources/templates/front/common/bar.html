@@ -118,10 +118,10 @@
                    style="color: #000000;">[[${type.typeName}]]</a>
             </li>
         </ul>
-        <div class="fly-column-right layui-hide-xs" th:if="${not #lists.isEmpty(session.finder)}">
+        <div class="fly-column-right layui-hide-xs">
             <a href="#" th:href="@{/forum/add}" class="layui-btn">发表新帖</a>
         </div>
-        <div class="fly-column-right layui-hide-xs" th:if="${not #lists.isEmpty(session.interviewer)}">
+        <div class="fly-column-right layui-hide-xs">
             <a href="#" th:href="@{/forum/add}" class="layui-btn">发表新帖</a>
         </div>
     </div>

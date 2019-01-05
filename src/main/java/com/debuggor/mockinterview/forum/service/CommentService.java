@@ -1,6 +1,7 @@
 package com.debuggor.mockinterview.forum.service;
 
 import com.debuggor.mockinterview.common.constant.PageConstant;
+import com.debuggor.mockinterview.common.enumerate.StatusEnum;
 import com.debuggor.mockinterview.common.enumerate.UserEnum;
 import com.debuggor.mockinterview.forum.bean.Comment;
 import com.debuggor.mockinterview.forum.dao.CommentDao;

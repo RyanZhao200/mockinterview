@@ -31,6 +31,7 @@
     <select id="getEvaluationByIid" resultMap="evaluationMap" parameterType="java.lang.Integer">
         SELECT e.eid,e.comment,e.grade,e.iid,e.fid,e.create_time,f.username,f.head_url
         from j_evaluation e LEFT JOIN j_finder f on e.fid=f.fid WHERE e.iid = #{iid}
+        ORDER BY e.create_time DESC
     </select>
 
     <select id="getEvaluationNumByIid" parameterType="java.lang.Integer" resultType="java.lang.Integer">
@@ -52,6 +53,6 @@
         LEFT JOIN j_interviewer i on e.iid=i.iid
         LEFT JOIN j_finder f on f.fid=e.fid
         WHERE e.create_time>DATE_SUB(CURDATE(),INTERVAL 5 MONTH)
-        ORDER BY e.grade DESC LIMIT 0,10
+        ORDER BY e.grade DESC LIMIT 0,15
     </select>
 </mapper>
