@@ -28,34 +28,34 @@
             </div>
 
             <div class="layui-col-md12" style="background-color: #fcf8e4;padding: 10px;">
-                <span style="color: #987a24;margin: 20px;">付款成功后，请留意自己的邮箱或手机，面试官近期会联系你</span>
+                <span style="color: #987a24;margin: 20px;">付款成功后，请留意自己的邮箱或手机，面试官近期将会联系你</span>
             </div>
 
             <div class="layui-col-md12" style="background-color: white;margin-top: 20px;padding: 20px;">
                 <label style="font-size: 20px;">付款信息</label>
                 <form th:action="@{/pay/goAlipay}" method="post">
-                    <div>
+                    <div style="margin: 5px 0px;">
                         <label>订单编号：</label>
                         <span>[[${order.orderNum}]]</span>
                         <input type="hidden" name="orderNum" th:value="${order.orderNum}">
                     </div>
-                    <div>
+                    <div style="margin: 5px 0px;">
                         <label>订单名称：</label>
                         <span>
                             IT模拟面试（[[${finder.username}]]—[[${interviewer.username}]]）
                         </span>
                     </div>
-                    <div>
+                    <div style="margin: 5px 0px;">
+                        <label>面试官&nbsp;&nbsp;&nbsp;：</label>
+                        <span>[[${interviewer.username}]]</span>
+                        <input type="hidden" name="interviewerId" th:value="${interviewer.iid}">
+                    </div>
+                    <div style="margin: 5px 0px;">
                         <label>联系方式：</label>
                         <span> [[${finder.phone}]]</span>
                         <input type="hidden" name="finderId" th:value="${finder.fid}">
                     </div>
-                    <div>
-                        <label>面试官：</label>
-                        <span>[[${interviewer.username}]]</span>
-                        <input type="hidden" name="interviewerId" th:value="${interviewer.iid}">
-                    </div>
-                    <div>
+                    <div style="margin: 5px 0px;">
                         <label>支付金额：</label>
                         <span style="color: red;">[[${interviewer.cost}]]元</span>
                         <input type="hidden" name="orderAmount" th:value="${interviewer.cost}">

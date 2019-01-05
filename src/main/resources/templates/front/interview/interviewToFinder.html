@@ -17,51 +17,41 @@
 <div class="layui-container" style="margin-top: 30px;">
     <div class="layui-row">
         <div class="layui-col-md12" style="background-color: white;padding: 20px;">
-            <label style="font-size: 20px;">求职者信息</label>
             <div>
-                <label>用户名：</label>
-                <span>
-                    [[${finder.username}]]
+                <span style="font-size: 20px;"><b>求职者信息</b></span>
+                <span style="float: right;">
+                    <a th:href="@{/finder/home/}+${finder.fid}" style="color: #009688;"> Ta的主页>></a>
                 </span>
             </div>
-            <div>
-                <label>性别：</label>
-                <span>
-                    [[${finder.sex}]]
-                </span>
-            </div>
-            <div>
-                <label>电话号码：</label>
-                <span>
-                    [[${finder.phone}]]
-                </span>
-            </div>
-            <div>
-                <label>邮箱：</label>
-                <span>
-                    [[${finder.email}]]
-                </span>
-            </div>
-            <div>
-                <label>QQ：</label>
-                <span>
-                    [[${finder.qq}]]
-                </span>
-            </div>
-            <div>
-                <label>微信：</label>
-                <span>
-                    [[${finder.weixin}]]
-                </span>
-            </div>
-            <div>
-                <label>描述：</label>
-                <span>
-                    [[${order.introduction}]]
-                </span>
+            <div style="font-size: 15px;line-height: 22px;margin-top: 20px;">
+                <div>
+                    <label>用户名：</label>
+                    <span>[[${finder.username}]]</span>
+                </div>
+                <div>
+                    <label>性&nbsp;&nbsp;&nbsp;别：</label>
+                    <span th:text="${finder.sex}==1?'女':'男'"></span>
+                </div>
+                <div>
+                    <label>电&nbsp;&nbsp;&nbsp;话：</label>
+                    <span>[[${finder.phone}]]</span>
+                </div>
+                <div>
+                    <label>邮&nbsp;&nbsp;&nbsp;箱：</label>
+                    <span>[[${finder.email}]]</span>
+                </div>
+                <div style="margin: 10px 0;">
+                    <label>描&nbsp;&nbsp;&nbsp;述：</label>
+                    <span style="font-size: 14px;font-family: 微软雅黑;">[[${order.introduction}]]</span>
+                </div>
+                <div>
+                    <label>简&nbsp;&nbsp;&nbsp;历：</label>
+                    <span>[[${finder.weixin}]]</span>
+                </div>
             </div>
             <div class="layui-form-item" style="margin-top: 10px;">
-                <button class="layui-btn" th:onclick="'enterRoom('+${finder.fid}+','+${interviewer.iid}+')'">发起面试</button>
+                <button class="layui-btn" th:onclick="'enterRoom('+${finder.fid}+','+${interviewer.iid}+')'">发起面试
+                </button>
                 <a class="layui-btn" th:href="@{/interview/orderEnd(oid=${order.oid})}">面试结束</a>
             </div>
         </div>

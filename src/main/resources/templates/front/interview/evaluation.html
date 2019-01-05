@@ -28,32 +28,32 @@
             </div>
 
             <div class="layui-col-md12" style="background-color: #fcf8e4;padding: 10px;">
-                <span style="color: #987a24;margin: 20px;">非常感谢您能抽出宝贵时间对面试官进行评价！</span>
+                <span style="color: #987a24;margin: 20px;font-size: 18px;">非常感谢您能抽出宝贵时间对面试官进行评价！</span>
             </div>
 
             <div class="layui-col-md12" style="background-color: white;margin-top: 20px;padding: 20px;">
-                <label style="font-size: 20px;">评价</label>
+                <div style="font-size: 20px;"><b>评价</b></div>
                 <form th:action="@{/interview/evaluateAction}" method="post">
                     <input type="hidden" name="iid" th:value="${order.interviewerId}">
                     <input type="hidden" name="fid" th:value="${order.finderId}">
                     <input type="hidden" name="oid" th:value="${order.oid}">
-                    <div>
+                    <div style="font-size: 16px;padding: 5px 0;">
                         <label>面试官：</label>
                         <span>
                             [[${interviewer.username}]]
                         </span>
                     </div>
-                    <div>
+                    <div style="font-size: 16px;padding: 5px 0;">
                         <label>评分：</label>
                         <span>
-                            <input type="radio" name="grade" value="5"/>5分&nbsp;
+                            <input type="radio" name="grade" value="5" checked/>5分&nbsp;
                             <input type="radio" name="grade" value="4"/>4分&nbsp;
                             <input type="radio" name="grade" value="3"/>3分&nbsp;
                             <input type="radio" name="grade" value="2"/>2分&nbsp;
                             <input type="radio" name="grade" value="1"/>1分&nbsp;
                         </span>
                     </div>
-                    <div>
+                    <div style="font-size: 16px;padding: 5px 0;">
                         <label>评价内容：</label>
                         <div>
                             <textarea id="" name="comment" autocomplete="off" class="layui-textarea"

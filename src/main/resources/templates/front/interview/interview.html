@@ -38,35 +38,37 @@
             </div>
 
             <div class="layui-col-md12" style="background-color: white;margin-top: 20px;padding: 20px;">
-                <label style="font-size: 20px;">面试官信息</label>
-                <div>
-                    <span>
+                <div style="font-size: 20px;"><b>面试官信息</b></div>
+                <div style="margin-top: 20px;">
+                    <div style="float: left">
                         <img style="width: 100px;height: 100px;border-radius: 50px;"
                              th:src="${interviewer.headUrl}">
-                    </span>
-                    <div>
-                        <label>面试官：</label>
-                        <span>[[${interviewer.username}]]</span>
                     </div>
-                    <div th:if="${not #lists.isEmpty(interviewer.sex)}">
-                        <label>性别：</label>
-                        <span th:text="${interviewer.sex}==1?'女':'男'"></span>
+                    <div style="padding-left: 120px;">
+                        <div style="font-size: 18px;">
+                            <label>面试官：</label>
+                            <span>[[${interviewer.username}]]</span>
+                        </div>
+                        <div style="font-size: 18px;" th:if="${not #lists.isEmpty(interviewer.sex)}">
+                            <label>性&nbsp;&nbsp;&nbsp;别：</label>
+                            <span th:text="${interviewer.sex}==1?'女':'男'"></span>
+                        </div>
+                        <div style="font-size: 18px;">
+                            <label>电&nbsp;&nbsp;&nbsp;话：</label>
+                            <span> [[${interviewer.phone}]]</span>
+                        </div>
+                        <div style="font-size: 18px;">
+                            <label>邮&nbsp;&nbsp;&nbsp;箱：</label>
+                            <span>[[${interviewer.email}]]</span>
+                        </div>
                     </div>
-                    <div>
-                        <label>联系方式：</label>
-                        <span> [[${interviewer.phone}]]</span>
-                    </div>
-                    <div>
-                        <label>邮箱：</label>
-                        <span>[[${interviewer.email}]]</span>
-                    </div>
-                    <div class="layui-form-item" style="margin-top: 10px;">
-                        <button class="layui-btn" th:onclick="'enterRoom('+${finder.fid}+','+${interviewer.iid}+')'">
-                            发起/加入面试
-                        </button>
-                        <button class="layui-btn" onclick="confirmOrder()">确认结单</button>
-                        <a id="confirmOrder" th:href="@{/interview/confirmOrder(oid=${order.oid})}"></a>
-                    </div>
+                </div>
+                <div class="layui-form-item" style="margin-top: 20px;">
+                    <button class="layui-btn" th:onclick="'enterRoom('+${finder.fid}+','+${interviewer.iid}+')'">
+                        进入面试房间
+                    </button>
+                    <button class="layui-btn" onclick="confirmOrder()">确认结单</button>
+                    <a id="confirmOrder" th:href="@{/interview/confirmOrder(oid=${order.oid})}"></a>
                 </div>
             </div>
         </div>

@@ -30,43 +30,41 @@
             <div class="layui-col-md12" style="background-color: white">
                 <div class="layui-card" style="padding:30px;">
                     <div>
-                        <span>
+                        <div style="float: left">
                             <img style="width: 100px;height: 100px;border-radius: 50px;"
                                  th:src="${interviewer.headUrl}">
-                        </span>
-                        <span>
-                            <span >
-                                 [[${interviewer.username}]]
-                            </span>
-                            <span>
-                                 累计已帮助过20896人  收到466次感谢
-                            </span>
-                            <span>
-                                工作年限：4年
-                            </span>
-                        </span>
+                        </div>
+                        <div style="margin-left: 130px;">
+                            <div style="font-size: 20px;padding-top: 10px;">
+                                [[${interviewer.username}]]
+                            </div>
+                            <div style="padding-top: 10px;">
+                                累计已帮助过[[${interviewer.helpPeopleNum}]]人
+                            </div>
+                            <div>
+                                工作年限：[[${interviewer.workYear}]]年
+                            </div>
+                        </div>
                     </div>
 
-                    <div style="padding: 50px;">
+                    <div style="margin: 50px;">
                         <form th:action="@{/pay/toPay}" method="post">
                             <div>
-                                <label>费用小计</label>
-                                <div>
-                                    <span style="font-size: 30px;color: red;">[[${interviewer.cost}]]元</span>
-                                    <input type="hidden" name="interviewerId" th:value="${interviewer.iid}">
-                                </div>
+                                <span style="float: left;margin-top: 10px;font-size: 18px;">费用小计</span>
+                                <span style="font-size: 30px;color: red;margin-left:20px;">[[${interviewer.cost}]]元</span>
+                                <input type="hidden" name="interviewerId" th:value="${interviewer.iid}">
                             </div>
                             <div style="margin-top: 20px;">
-                                <label>个人简历 </label>
+                                <label style="font-size: 15px;">个人简历 </label>
                                 <span style="margin-left: 20px;">
-                                   <input type="file" />
+                                   <input type="file"/>
                                </span>
                             </div>
                             <div style="margin-top: 10px;">
-                                <label>个人描述(所应聘的职位等)</label>
+                                <label style="font-size: 15px;">个人描述</label>
                                 <div>
                                     <textarea id="" name="introduction" autocomplete="off" class="layui-textarea"
-                                              style="height: 100px;" placeholder="描述文字最少10个字"></textarea>
+                                              style="height: 100px;" placeholder="所应聘的职位,想加入的公司等"></textarea>
                                 </div>
                             </div>
                             <div style="margin-top: 10px;">

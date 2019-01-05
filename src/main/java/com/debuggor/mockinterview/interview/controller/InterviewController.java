@@ -115,7 +115,7 @@ public class InterviewController {
                             HttpSession session, Model model) {
         Interviewer interviewer = interviewService.getInterviewerById(iid);
         model.addAttribute("interviewer", interviewer);
-        List<Interviewer> interviewers = interviewService.getInterviewerHot(5);
+        List<Interviewer> interviewers = interviewService.getInterviewerHot(15);
         model.addAttribute("interviewers", interviewers);
         PageInfo pageInfo = evaluationService.getEvaluationByIid(iid, pn);
         model.addAttribute("pageInfo", pageInfo);
