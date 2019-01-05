@@ -7,8 +7,10 @@ import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradePagePayRequest;
 import com.debuggor.mockinterview.common.bean.Message;
 import com.debuggor.mockinterview.common.config.AlipayConfig;
+import com.debuggor.mockinterview.common.constant.QiniuConstant;
 import com.debuggor.mockinterview.common.enumerate.*;
 import com.debuggor.mockinterview.common.service.MessageService;
+import com.debuggor.mockinterview.common.service.QiniuService;
 import com.debuggor.mockinterview.common.util.ActivateCodeUtil;
 import com.debuggor.mockinterview.common.util.OrdersNumberUtil;
 import com.debuggor.mockinterview.interview.bean.Finder;
@@ -26,14 +28,14 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
+import java.io.IOException;
+import java.util.*;
 
 /**
  * 支付宝支付controller
@@ -55,6 +57,9 @@ public class AlipayController {
     private FlowService flowService;
     @Autowired
     private MessageService messageService;
+    @Autowired
+    private QiniuService qiniuService;
+
 
     /**
      * 用户提交订单页面
@@ -76,11 +81,12 @@ public class AlipayController {
      *
      * @return
      */
-    @RequestMapping("/toPay")
-    public String toPay(Integer interviewerId, String introduction,
-                        HttpSession session, Model model) {
+    @RequestMapping(value = "/toPay", method = {RequestMethod.POST}, produces = "text/plain;charset=UTF-8")
+    public String toPay(Integer interviewerId, String introduction, MultipartFile resumeFile,
+                        HttpSession session, Model model) throws IOException {
         Finder finder = (Finder) session.getAttribute("finder");
         Interviewer interviewer = interviewerService.getInterviewerById(interviewerId);
+        String resumeUrl = uploadResume(resumeFile);
 
         Order order = new Order();
         // 订单号 30位 单一无二
@@ -93,6 +99,7 @@ public class AlipayController {
         order.setIntroduction(introduction);
         order.setInterviewerId(interviewerId);
         order.setFinderId(finder.getFid());
+        order.setResumeUrl(resumeUrl);
         logger.info(order.toString());
         // 插入一条订单
         ordersService.insert(order);
@@ -113,6 +120,25 @@ public class AlipayController {
         messageService.insert(message);
 
         return "redirect:/pay/pay/" + order.getOid();
+    }
+
+    /**
+     * 上传简历到七牛云
+     *
+     * @return
+     */
+    public String uploadResume(MultipartFile resumeFile) throws IOException {
+        // 包含原始文件名的字符串
+        String fi = resumeFile.getOriginalFilename();
+        // 提取文件拓展名
+        String fileNameExtension = fi.substring(fi.indexOf("."), fi.length());
+        // 生成云端的真实文件名
+        String remoteFileName = UUID.randomUUID().toString() + fileNameExtension;
+        qiniuService.upload(resumeFile.getBytes(), remoteFileName);
+        // 返回简历的URL地址
+        String resumeUrl = QiniuConstant.QINIU_IMAGE_URL + remoteFileName;
+        logger.info(resumeUrl);
+        return resumeUrl;
     }
 
     /**
@@ -247,7 +273,7 @@ public class AlipayController {
 
             // 更新求职者消息
             logger.info(order.toString());
-            Message m = messageService.getMessageByOid(order.getOid(),UserEnum.FINDER.key);
+            Message m = messageService.getMessageByOid(order.getOid(), UserEnum.FINDER.key);
             Message message = new Message();
             message.setMid(m.getMid());
             String content = "于" + ActivateCodeUtil.formatDate(new Date()) + "向<b>" + interviewer.getUsername() + "</b>发起IT模拟面试邀请";

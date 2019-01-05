@@ -48,7 +48,7 @@
                     </div>
 
                     <div style="margin: 50px;">
-                        <form th:action="@{/pay/toPay}" method="post">
+                        <form th:action="@{/pay/toPay}" method="post" enctype="multipart/form-data">
                             <div>
                                 <span style="float: left;margin-top: 10px;font-size: 18px;">费用小计</span>
                                 <span style="font-size: 30px;color: red;margin-left:20px;">[[${interviewer.cost}]]元</span>
@@ -57,7 +57,7 @@
                             <div style="margin-top: 20px;">
                                 <label style="font-size: 15px;">个人简历 </label>
                                 <span style="margin-left: 20px;">
-                                   <input type="file"/>
+                                   <input type="file" name="resumeFile" id="resumeFile"/>
                                </span>
                             </div>
                             <div style="margin-top: 10px;">
@@ -91,6 +91,17 @@
 <script>
     layui.use(['element'], function () {
         var element = layui.element;
+    });
+
+    $(function () {
+        $(".layui-btn").on('click', function () {
+            var resume = $("#resumeFile").val();
+            if (resume == '') {
+                alert("请上传简历");
+            } else {
+                $("form").submit();
+            }
+        })
     });
 </script>
 </body>
