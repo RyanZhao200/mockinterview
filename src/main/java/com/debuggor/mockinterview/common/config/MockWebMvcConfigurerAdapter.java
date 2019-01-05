@@ -23,10 +23,10 @@ public class MockWebMvcConfigurerAdapter extends WebMvcConfigurerAdapter {
                 .addPathPatterns("/finder/toUpdate", "/finder/update", "/finder/updateHeadUrl", "/finder/judgeOldPwd", "/finder/updatePassword", "/finder/messageInterview")
                 .addPathPatterns("/finder/deleteMessage/*", "/finder/deleteMessageAll/*", "/finder/posts", "/finder/deletePost/*")
                 .addPathPatterns("/pay/**", "/follower/follow", "/follower/unfollow")
-                .addPathPatterns("/interview/publish/**", "/interview/subscribe/**", "/interview/interview/*", "/interview/confirmOrder", "/interview/evaluate/*")
+                .addPathPatterns("/interview/interview/*", "/interview/confirmOrder", "/interview/evaluate/*")
                 .addPathPatterns("/interview/evaluateAction", "/interview/finder/*", "/interview/orderEnd")
                 .addPathPatterns("/interviewer/toUpdate", "/interviewer/update", "/interviewer/updateHeadUrl", "/interviewer/judgeOldPwd", "/interviewer/updatePassword")
                 .addPathPatterns("/interviewer/deleteMessageAll/*", "/interviewer/posts", "/interviewer/deletePost/*", "/interviewer/messageInterview", "/interviewer/deleteMessage/*")
-                .addPathPatterns("/forum/add", "/forum/action", "/forum/updatePost/*", "/forum/update","/forum/insertComment");
+                .addPathPatterns("/forum/add", "/forum/action", "/forum/updatePost/*", "/forum/update", "/forum/insertComment");
     }
 }

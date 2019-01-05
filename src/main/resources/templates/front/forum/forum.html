@@ -29,7 +29,7 @@
                     <span class="fly-mid"></span>
                     <a th:href="@{/forum(tid=${tid},order=1)}" th:selected="${order}==1"
                        class="layui-order">最新发表</a>
-                    <span class="fly-mid"></span>v
+                    <span class="fly-mid"></span>
                     <a th:href="@{/forum(tid=${tid},order=2)}" th:selected="${order}==2"
                        class="layui-order">最热</a>
                 </div>
@@ -75,28 +75,44 @@
                 <div style="text-align: center">
                     <nav>
                         <ul class="pagination">
-                            <li><a th:href="@{/forum(tid=${tid},order=${order},pn=1)}">首页</a></li>
+                            <li>
+                                <span style="font-size: 12px;">
+                                    <a th:href="@{/forum(tid=${tid},order=${order},pn=1)}">首页</a>
+                                </span>
+                            </li>
                             <!--上一页-->
                             <li th:if="${pageInfo.hasPreviousPage}">
-                                <a th:href="@{/forum(tid=${tid},order=${order},pn=${pageInfo.pageNum-1})}"
-                                   aria-label="Previous">
-                                    <span aria-hidden="true">«</span>
-                                </a>
+                                <span>
+                                    <a th:href="@{/forum(tid=${tid},order=${order},pn=${pageInfo.pageNum-1})}"
+                                       aria-label="Previous">
+                                        <span aria-hidden="true">«</span>
+                                    </a>
+                                </span>
                             </li>
                             <!--循环遍历连续显示的页面，若是当前页就高亮显示，并且没有链接-->
                             <li th:each="page_num:${pageInfo.navigatepageNums}">
-                        <span class="active" th:if="${page_num == pageInfo.pageNum}"><a
-                                href="#">[[${page_num}]]</a></span>
-                                <span th:if="${page_num != pageInfo.pageNum}"><a
-                                        th:href="@{/forum(tid=${tid},order=${order},pn=${page_num})}">[[${page_num}]]</a></span>
+                                <span th:if="${page_num == pageInfo.pageNum}">
+                                    <a href="#" class="active">[[${page_num}]]</a>
+                                </span>
+                                <span th:if="${page_num != pageInfo.pageNum}">
+                                    <a th:href="@{/forum(tid=${tid},order=${order},pn=${page_num})}">[[${page_num}]]</a>
+                                </span>
                             </li>
                             <!--下一页-->
                             <li th:if="${pageInfo.hasNextPage}">
-                                <a th:href="@{/forum(tid=${tid},order=${order},pn=${pageInfo.pageNum+1})}" aria-label="Next">
-                                    <span aria-hidden="true">»</span>
-                                </a>
+                                <span>
+                                    <a th:href="@{/forum(tid=${tid},order=${order},pn=${pageInfo.pageNum+1})}"
+                                       aria-label="Next">
+                                        <span aria-hidden="true">»</span>
+                                    </a>
+                                </span>
                             </li>
-                            <li><a th:href="@{/forum(tid=${tid},order=${order},pn=${pageInfo.pages})}">尾页</a></li>
+                            <li>
+                                <span style="font-size: 12px;">
+                                    <a th:href="@{/forum(tid=${tid},order=${order},pn=${pageInfo.pages})}">尾页</a>
+                                </span>
+                            </li>
+
                         </ul>
                     </nav>
                 </div>

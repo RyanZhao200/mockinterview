@@ -15,9 +15,11 @@ ul.pagination {
     margin: 0;
 }
 
-ul.pagination li {display: inline;}
+ul.pagination li {
+    display: inline;
+}
 
-ul.pagination li a {
+ul.pagination li span a {
     color: black;
     float: left;
     padding: 8px 16px;
@@ -36,13 +38,13 @@ ul.pagination li a {
     border-bottom-right-radius: 5px;
 }
 
-ul.pagination li a.active {
-    background-color: #4CAF50;
+ul.pagination li span a.active {
+    background-color: #25bb9b;
     color: white;
-    border: 1px solid #4CAF50;
+    border: 1px solid #25bb9b;
 }
 
-ul.pagination li a:hover:not(.active) {background-color: #ddd;}
+ul.pagination li span a:hover:not(.active) {background-color: #ddd;}
 
 /*------------------------debuggor添加css结束--------------------------*/
 

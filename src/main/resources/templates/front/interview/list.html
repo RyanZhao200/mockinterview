@@ -12,7 +12,33 @@
     <link rel="stylesheet" href="..static/front/raty/jquery.raty.css" th:href="@{/front/raty/jquery.raty.css}">
     <link rel="stylesheet" href="..static/front/swiper/css/swiper.min.css"
           th:href="@{/front/swiper/css/swiper.min.css}">
+    <style>
+        /*重写layui子栏目样式*/
+        .layui-nav .layui-nav-more {
+            content: '';
+            width: 0;
+            height: 0;
+            border-style: solid dashed dashed;
+            border-color: #fff transparent transparent;
+            overflow: hidden;
+            cursor: pointer;
+            transition: all .2s;
+            -webkit-transition: all .2s;
+            position: absolute;
+            top: 50%;
+            right: 3px;
+            margin-top: -3px;
+            border-width: 6px;
+            border-top-color: rgba(57, 61, 73, 0.7)
+        }
 
+        .layui-nav .layui-nav-mored, .layui-nav-itemed .layui-nav-more {
+            margin-top: -9px;
+            border-style: dashed dashed solid;
+            border-color: transparent transparent #393D49
+        }
+
+    </style>
 </head>
 <body>
 
@@ -27,7 +53,9 @@
                 <a style="color: #000;" th:href="@{/interviewer}">全部</a>
             </li>
             <li class="layui-nav-item" th:each="parent:${parentList}">
-                <a href="javascript:;" style="color: #000;">[[${parent.typeName}]]</a>
+                <a href="javascript:;" style="color: #000;">
+                    [[${parent.typeName}]]
+                </a>
                 <dl class="layui-nav-child" th:if="${not #lists.isEmpty(parent.childTypes)}">
                     <dd th:each="type:${parent.childTypes}">
                         <a href="" th:href="@{/interviewer(tid=${type.tid})}">[[${type.typeName}]]</a>
@@ -128,17 +156,24 @@
                 <div style="text-align: center">
                     <nav style="padding-bottom: 20px;">
                         <ul class="pagination">
+                            <li>
+                                <span style="font-size: 12px;">
+                                    <a th:href="@{/interviewer(tid=${tid},order=${order},pn=1)}">首页</a>
+                                </span>
+                            </li>
                             <!--上一页-->
                             <li th:if="${pageInfo.hasPreviousPage}">
-                                <a th:href="@{/interviewer(tid=${tid},order=${order},pn=${pageInfo.pageNum-1})}"
-                                   aria-label="Previous">
-                                    <span aria-hidden="true">«</span>
-                                </a>
+                                <span>
+                                    <a th:href="@{/interviewer(tid=${tid},order=${order},pn=${pageInfo.pageNum-1})}"
+                                       aria-label="Previous">
+                                        <span aria-hidden="true">«</span>
+                                    </a>
+                                </span>
                             </li>
                             <!--循环遍历连续显示的页面，若是当前页就高亮显示，并且没有链接-->
                             <li th:each="page_num:${pageInfo.navigatepageNums}">
-                                <span class="active" th:if="${page_num == pageInfo.pageNum}">
-                                    <a href="#">[[${page_num}]]</a>
+                                <span th:if="${page_num == pageInfo.pageNum}">
+                                    <a href="#" class="active">[[${page_num}]]</a>
                                 </span>
                                 <span th:if="${page_num != pageInfo.pageNum}">
                                     <a th:href="@{/interviewer(tid=${tid},order=${order},pn=${page_num})}">[[${page_num}]]</a>
@@ -146,10 +181,17 @@
                             </li>
                             <!--下一页-->
                             <li th:if="${pageInfo.hasNextPage}">
-                                <a th:href="@{/interviewer(tid=${tid},order=${order},pn=${pageInfo.pageNum+1})}"
-                                   aria-label="Next">
-                                    <span aria-hidden="true">»</span>
-                                </a>
+                                <span>
+                                    <a th:href="@{/interviewer(tid=${tid},order=${order},pn=${pageInfo.pageNum+1})}"
+                                       aria-label="Next">
+                                        <span aria-hidden="true">»</span>
+                                    </a>
+                                </span>
+                            </li>
+                            <li>
+                                <span style="font-size: 12px;">
+                                    <a th:href="@{/interviewer(tid=${tid},order=${order},pn=${pageInfo.pages})}">尾页</a>
+                                </span>
                             </li>
                         </ul>
                     </nav>
