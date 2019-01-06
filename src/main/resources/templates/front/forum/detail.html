@@ -86,6 +86,7 @@
                     <legend>回帖</legend>
                 </fieldset>
                 <ul class="jieda" id="jieda">
+                    <!-- 一级评论 -->
                     <li th:each="comment:${comments}" class="comment">
                         <div class="detail-about detail-about-reply">
                             <span th:if="${comment.userType}=='1'">
@@ -119,14 +120,7 @@
                         <div class="detail-body jieda-body photos">
                             <p th:utext="${comment.comment}"></p>
                         </div>
-                        <div class="jieda-reply">
-                            <span class="jieda-zan" type="zan">
-                                <i class="iconfont icon-zan"></i>
-                                <em>0</em>
-                            </span>
-                            <span type="reply" >
-                                <i class="iconfont icon-svgmoban53"></i>回复
-                            </span>
+                        <div class="jieda-reply" style="position: relative;left: 70%;">
                             <div class="jieda-admin fly-list-info" th:if="${not #lists.isEmpty(session.finder)}">
                                 <span th:if="${comment.userType}=='1'">
                                     <span th:if="${comment.uid}==${session.finder.fid}">
@@ -143,6 +137,45 @@
                                      </span>
                                 </span>
                             </div>
+                            <div style="position: relative;left: 50px;">
+                                <span class="jieda-zan" type="zan">
+                                    <i class="iconfont icon-zan"></i>
+                                    <em>0</em>
+                                </span>
+                                <span type="reply">
+                                    <i class="iconfont icon-svgmoban53"></i>回复
+                                </span>
+                            </div>
+                        </div>
+                        <!-- 二级评论-->
+                        <div style="background-color: #f2f2f2;position: relative;margin: 0 20px;">
+                            <div th:each="sonComment:${comment.sonComments}"
+                                 style="padding: 10px;font-size: 12px;font-family: 微软雅黑;">
+                                <div style="margin-bottom: 10px;height: auto;">
+                                    <span>
+                                        <a href="#" style="color: #ff5722">[[${sonComment.username}]]</a>:
+                                    </span>
+                                    <span th:utext="${sonComment.comment}" style="margin-right: 10px;"></span>
+                                </div>
+                                <div>
+                                    <span>
+                                        [[${#dates.format(sonComment.commentTime, 'yyyy-MM-dd HH:mm')}]]
+                                    </span>
+                                </div>
+                                <div style="height: 1px;width: 100%;background-color: #dbdbdb;margin-top: 5px;"></div>
+                            </div>
+                            <div style="padding:10px 20px 40px 20px;">
+                                <form th:action="@{/forum/insertComment}" method="post">
+                                    <input type="hidden" name="pid" th:value="${forum.pid}">
+                                    <input type="hidden" name="parentId" th:value="${comment.cid}" value="0">
+                                    <div>
+                                        <input name="comment" class="layui-input" placeholder="请输入你的观点">
+                                    </div>
+                                    <div class="layui-form-item" style="float:right;margin-right: 20px;margin-top: 5px;">
+                                        <button class="layui-btn layui-btn-sm" lay-filter="*" lay-submit>回复</button>
+                                    </div>
+                                </form>
+                            </div>
                         </div>
                     </li>
                 </ul>
@@ -152,6 +185,7 @@
                 <div class="layui-form layui-form-pane">
                     <form th:action="@{/forum/insertComment}" method="post">
                         <input type="hidden" name="pid" th:value="${forum.pid}">
+                        <input type="hidden" name="parentId" value="0">
                         <div class="layui-form-item layui-form-text">
                             <label for="L_content"></label>
                             <div class="layui-input-block">
@@ -171,7 +205,7 @@
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <button class="layui-btn" lay-filter="*" lay-submit>提交回复</button>
+                            <button class="layui-btn parentComment" lay-filter="*" lay-submit>提交回复</button>
                         </div>
                     </form>
                 </div>
@@ -297,7 +331,7 @@
         $("#canvas").on('click', function () {
             draw(show_num);
         });
-        $(".layui-btn").on('click', function () {
+        $(".parentComment").on('click', function () {
             var content = $.trim($("#L_content").val());
             var val = $("#L_vercode").val().toLowerCase();
             var num = show_num.join("");

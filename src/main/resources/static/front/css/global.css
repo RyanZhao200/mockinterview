@@ -397,7 +397,7 @@ body .layui-edit-face  .layui-layer-content{padding:0; background-color:#fff; co
 .jie-admin{cursor: pointer;}
 .detail-hits .jie-admin{color: #fff; padding: 0 10px; }
 .detail-hits .jie-admin a{color: #fff;}
-.jieda-admin{position:absolute; right: 120px; top: 4px;}
+.jieda-admin{position:absolute; margin-right: 90%;top:4px;}
 
 /* 回答 */
 .jieda{margin-bottom: 30px;}
@@ -413,7 +413,7 @@ body .layui-edit-face  .layui-layer-content{padding:0; background-color:#fff; co
 .jieda-body{margin: 25px 0 20px; min-height: 0; line-height: 24px; font-size:14px;}
 .jieda-body p{margin-bottom: 10px;}
 .jieda-body a{color:#4f99cf}
-.jieda-reply{position:absolute;right: 0;bottom: 10px;}
+.jieda-reply{position:relative;right: 0;bottom: 10px;}
 .jieda-reply span{padding-right:20px; color:#999; cursor:pointer;}
 .jieda-reply span:hover{color:#666;}
 .jieda-reply span i{margin-right:5px; font-size:16px;}

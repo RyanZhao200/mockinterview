@@ -21,11 +21,11 @@
         <if test="endTime != null and endTime !='' ">and f.create_time <![CDATA[ <= ]]> #{endTime}</if>
     </sql>
 
-
+    <!-- 获得帖子的评论 -->
     <select id="getCommentListByPid" resultType="com.debuggor.mockinterview.forum.bean.Comment"
             parameterType="java.lang.Integer">
         SELECT c.cid,c.comment,c.uid,c.user_type,c.pid,c.comment_time,c.parent_id
-        from f_comment c  WHERE c.pid = #{pid} and c.comment_status=1
+        from f_comment c  WHERE c.pid = #{pid} and c.comment_status=1 AND parent_id = #{parentId}
         ORDER BY c.comment_time
     </select>
 

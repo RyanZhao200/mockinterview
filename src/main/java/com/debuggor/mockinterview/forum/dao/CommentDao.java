@@ -11,11 +11,14 @@ public interface CommentDao {
 
     /**
      * 根据帖子ID获得评论
+     * 根据parentId获得子评论
      *
-     * @param pid 帖子ID
+     * @param pid      帖子ID
+     * @param parentId 父评论ID
      * @return
      */
-    List<Comment> getCommentListByPid(Integer pid);
+    List<Comment> getCommentListByPid(@Param("pid") Integer pid, @Param("parentId") Integer parentId);
+
 
     /**
      * 插入一条评论

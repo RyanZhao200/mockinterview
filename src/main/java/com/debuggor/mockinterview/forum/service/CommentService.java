@@ -40,7 +40,7 @@ public class CommentService {
             return null;
         }
         PageHelper.startPage(pn, PageConstant.Page_Sizes);
-        List<Comment> comments = commentDao.getCommentListByPid(pid);
+        List<Comment> comments = commentDao.getCommentListByPid(pid, 0);
         PageInfo pageInfo = new PageInfo<>(comments, PageConstant.Navigate_Pages);
         return pageInfo;
     }
@@ -55,22 +55,42 @@ public class CommentService {
         if (pid == null) {
             return null;
         }
-        List<Comment> comments = commentDao.getCommentListByPid(pid);
+        // 获得一级评论
+        List<Comment> comments = commentDao.getCommentListByPid(pid, 0);
         List<Comment> list = new ArrayList<>();
         for (Comment c : comments) {
-            if (UserEnum.FINDER.key.equals(c.getUserType())) {
-                Finder finder = finderDao.getFinderById(c.getUid());
-                c.setUsername(finder.getUsername());
-                c.setHeadUrl(finder.getHeadUrl());
+            // 获得二级评论
+            List<Comment> sonComments = commentDao.getCommentListByPid(pid, c.getCid());
+            if (sonComments != null) {
+                List<Comment> sonC = new ArrayList<>();
+                for (Comment son : sonComments) {
+                    Comment comment = getCommentOtherInfo(son);
+                    sonC.add(comment);
+                }
+                sonComments = sonC;
             }
-            if (UserEnum.INTERVIEWER.key.equals(c.getUserType())) {
-                Interviewer interviewer = interviewerDao.getInterviewerById(c.getUid());
-                c.setUsername(interviewer.getUsername());
-                c.setHeadUrl(interviewer.getHeadUrl());
-            }
-            list.add(c);
+            Comment comment = getCommentOtherInfo(c);
+            comment.setSonComments(sonComments);
+            list.add(comment);
         }
         return list;
+    }
+
+    /**
+     * 补充评论的其他信息
+     */
+    private Comment getCommentOtherInfo(Comment c) {
+        if (UserEnum.FINDER.key.equals(c.getUserType())) {
+            Finder finder = finderDao.getFinderById(c.getUid());
+            c.setUsername(finder.getUsername());
+            c.setHeadUrl(finder.getHeadUrl());
+        }
+        if (UserEnum.INTERVIEWER.key.equals(c.getUserType())) {
+            Interviewer interviewer = interviewerDao.getInterviewerById(c.getUid());
+            c.setUsername(interviewer.getUsername());
+            c.setHeadUrl(interviewer.getHeadUrl());
+        }
+        return c;
     }
 
     /**
