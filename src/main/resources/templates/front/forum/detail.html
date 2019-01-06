@@ -27,8 +27,6 @@
 <!--前台公共头部-->
 <div th:replace="front/common/bar::topbar"></div>
 
-
-<span id="top"></span>
 <div class="layui-container">
     <div class="layui-row layui-col-space15">
         <div class="layui-col-md8 content detail">
@@ -78,6 +76,27 @@
                 </div>
                 <div class="detail-body photos">
                     <span th:utext="${forum.content}"></span>
+                    <div style="height: 2px;width: 100%;background-color: #f2f2f2;margin: 10px 0;"></div>
+                    <div style="padding: 10px;font-size: 12px;">
+                        <span style="float: left;">
+                            <span th:if="${not #lists.isEmpty(preForum)}">
+                                 <a th:href="@{/forum/}+${preForum.pid}" style="color: #3c3f41;">
+                                     <i class="layui-icon" style="font-size: 12px;">&#xe65a;</i>上一贴
+                                     <span th:text="${preForum.title}"></span>
+                                 </a>
+                            </span>
+                            <span th:if="${#lists.isEmpty(preForum)}">没有更多了~</span>
+                        </span>
+                        <span style="float: right;">
+                            <span th:if="${not #lists.isEmpty(nextForum)}">
+                                <a th:href="@{/forum/}+${nextForum.pid}" style="color: #3c3f41;">
+                                    <span th:text="${nextForum.title}"></span>
+                                    &nbsp;下一贴<i class="layui-icon" style="font-size: 12px;">&#xe65b;</i>
+                                </a>
+                            </span>
+                            <span th:if="${#lists.isEmpty(nextForum)}">没有更多了~</span>
+                        </span>
+                    </div>
                 </div>
             </div>
 
@@ -142,18 +161,19 @@
                                     <i class="iconfont icon-zan"></i>
                                     <em>0</em>
                                 </span>
-                                <span type="reply">
-                                    <i class="iconfont icon-svgmoban53"></i>回复
+                                <span class="replyComment" type="reply">
+                                    <i class="iconfont icon-svgmoban53"></i>回复([[${#lists.size(comment.sonComments)}]])
                                 </span>
                             </div>
                         </div>
                         <!-- 二级评论-->
-                        <div style="background-color: #f2f2f2;position: relative;margin: 0 20px;">
+                        <div class="secondComment" style="background-color: #f2f2f2;position: relative;margin: 0 20px;">
                             <div th:each="sonComment:${comment.sonComments}"
                                  style="padding: 10px;font-size: 12px;font-family: 微软雅黑;">
                                 <div style="margin-bottom: 10px;height: auto;">
                                     <span>
-                                        <a href="#" style="color: #ff5722">[[${sonComment.username}]]</a>:
+                                        <a href="#"
+                                           style="color: #db7868;font-size: 15px;">[[${sonComment.username}]]</a>:
                                     </span>
                                     <span th:utext="${sonComment.comment}" style="margin-right: 10px;"></span>
                                 </div>
@@ -171,7 +191,8 @@
                                     <div>
                                         <input name="comment" class="layui-input" placeholder="请输入你的观点">
                                     </div>
-                                    <div class="layui-form-item" style="float:right;margin-right: 20px;margin-top: 5px;">
+                                    <div class="layui-form-item"
+                                         style="float:right;margin-right: 20px;margin-top: 5px;">
                                         <button class="layui-btn layui-btn-sm" lay-filter="*" lay-submit>回复</button>
                                     </div>
                                 </form>
@@ -279,6 +300,13 @@
 <script src="..static/front/window/window.js" th:src="@{/front/window/window.js}"></script>
 
 <script language='javascript' th:inline="javascript">
+
+    $(function () {
+        $(".secondComment").hide();
+        $(".replyComment").click(function () {
+            $("li:hover div.secondComment").toggle();
+        });
+    });
 
     function deleteComment(cid) {
         win.confirm('温馨提示', '确定删除评论吗？', function (r) {

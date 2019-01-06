@@ -76,6 +76,9 @@ public class ForumService {
             return null;
         }
         Forum post = forumDao.getForumById(pid);
+        if (post==null){
+            return null;
+        }
         if (post.getUserType().equals(UserEnum.FINDER.key)) {
             Finder finder = finderDao.getFinderById(post.getUid());
             post.setUsername(finder.getUsername());

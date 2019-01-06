@@ -87,10 +87,32 @@ public class ForumController {
         forum = forumService.getForumById(pid);
         List<Comment> comments = commentService.getCommentListByPid(pid);
         List<Forum> hotPosts = forumService.getRecentHotPosts();
+        // 上一贴
+        Forum preForum = forumService.getForumById(pid - 1);
+        // 下一贴
+        Forum nextForum = forumService.getForumById(pid + 1);
+        model.addAttribute("preForum", shortForumTitle(preForum));
+        model.addAttribute("nextForum", shortForumTitle(nextForum));
         model.addAttribute("hotPosts", hotPosts);
         model.addAttribute("forum", forum);
         model.addAttribute("comments", comments);
         return "front/forum/detail";
+    }
+
+    /**
+     * 变短论坛的标题
+     *
+     * @param forum
+     * @return
+     */
+    private Forum shortForumTitle(Forum forum) {
+        if (forum == null || forum.getTitle() == null) {
+            return forum;
+        }
+        if (forum.getTitle().length() > 15) {
+            forum.setTitle(forum.getTitle().substring(0, 15) + "...");
+        }
+        return forum;
     }
 
     /**
