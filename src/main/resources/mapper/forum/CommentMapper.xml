@@ -41,4 +41,13 @@
         where c.uid=#{uid} and c.user_type=#{userType} and c.comment_status=1
         ORDER BY c.comment_time DESC
     </select>
+
+    <update id="update" parameterType="com.debuggor.mockinterview.forum.bean.Comment">
+        update f_comment
+        <set>
+            <if test="comment != null">comment = #{comment},</if>
+            <if test="commentStatus != null">comment_status = #{commentStatus},</if>
+        </set>
+        where cid=#{cid};
+    </update>
 </mapper>

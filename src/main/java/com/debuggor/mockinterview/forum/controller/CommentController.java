@@ -12,7 +12,9 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpSession;
 import java.util.Date;
@@ -62,5 +64,23 @@ public class CommentController {
             forumService.update(f);
         }
         return "redirect:/forum/" + comment.getPid();
+    }
+
+    /**
+     * 逻辑上删除评论，改变评论状态，让用户不可见
+     *
+     * @return
+     */
+    @RequestMapping("/deleteComment/{cid}")
+    public @ResponseBody
+    String deleteComment(@PathVariable("cid") Integer cid) {
+        if (cid == null) {
+            return "error";
+        }
+        Comment comment = new Comment();
+        comment.setCid(cid);
+        comment.setCommentStatus(StatusEnum.DELETE.key);
+        commentService.updateComment(comment);
+        return "success";
     }
 }

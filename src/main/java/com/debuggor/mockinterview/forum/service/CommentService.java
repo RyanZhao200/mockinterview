@@ -96,4 +96,15 @@ public class CommentService {
         PageInfo<Comment> pageInfo = new PageInfo<>(comments, PageConstant.Navigate_Pages);
         return pageInfo;
     }
+
+    /**
+     * 跟新评论
+     *
+     * @param comment
+     */
+    public void updateComment(Comment comment) {
+        if (comment != null) {
+            commentDao.update(comment);
+        }
+    }
 }

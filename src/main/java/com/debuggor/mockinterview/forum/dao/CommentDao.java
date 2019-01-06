@@ -32,4 +32,11 @@ public interface CommentDao {
      * @return
      */
     List<Comment> getCommentListByUid(@Param("uid") Integer uid, @Param("userType") String userType);
+
+    /**
+     * 跟新评论
+     *
+     * @param comment
+     */
+    void update(Comment comment);
 }

@@ -13,6 +13,15 @@
           th:href="@{/front/swiper/css/swiper.min.css}">
     <link rel="stylesheet" href="..static/front/window/window.css" th:href="@{/front/window/window.css}">
 
+    <style>
+        .jieda-admin {
+            display: none;
+        }
+
+        .comment:hover .jieda-reply .jieda-admin {
+            display: block;
+        }
+    </style>
 </head>
 <body>
 <!--前台公共头部-->
@@ -77,7 +86,7 @@
                     <legend>回帖</legend>
                 </fieldset>
                 <ul class="jieda" id="jieda">
-                    <li th:each="comment:${comments}">
+                    <li th:each="comment:${comments}" class="comment">
                         <div class="detail-about detail-about-reply">
                             <span th:if="${comment.userType}=='1'">
                                 <a class="fly-avatar" href="" th:href="@{/finder/home/}+${comment.uid}">
@@ -115,12 +124,24 @@
                                 <i class="iconfont icon-zan"></i>
                                 <em>0</em>
                             </span>
-                            <span type="reply">
+                            <span type="reply" >
                                 <i class="iconfont icon-svgmoban53"></i>回复
                             </span>
-                            <div class="jieda-admin">
-                                <span type="edit">编辑</span>
-                                <span type="del">删除</span>
+                            <div class="jieda-admin fly-list-info" th:if="${not #lists.isEmpty(session.finder)}">
+                                <span th:if="${comment.userType}=='1'">
+                                    <span th:if="${comment.uid}==${session.finder.fid}">
+                                        <a th:onclick="'deleteComment('+${comment.cid}+')'"
+                                           style="color: #5fb878;">删除</a>
+                                    </span>
+                                </span>
+                            </div>
+                            <div class="jieda-admin fly-list-info" th:if="${not #lists.isEmpty(session.interviewer)}">
+                                <span th:if="${comment.userType}=='2'">
+                                     <span th:if="${comment.uid}==${session.interviewer.iid}">
+                                         <a th:onclick="'deleteComment('+${comment.cid}+')'"
+                                            style="color: #5fb878;">删除</a>
+                                     </span>
+                                </span>
                             </div>
                         </div>
                     </li>
@@ -225,6 +246,26 @@
 
 <script language='javascript' th:inline="javascript">
 
+    function deleteComment(cid) {
+        win.confirm('温馨提示', '确定删除评论吗？', function (r) {
+            if (r) {
+                $.ajax({
+                    type: 'get',
+                    url: '/forum/deleteComment/' + cid,
+                    async: true,
+                    success: function (data) {
+                        if (data == 'success') {
+                            window.location.reload();
+                        }
+                        if (data == 'error') {
+                            layui.msg("删除评论失败！");
+                        }
+                    }
+                });
+            }
+        });
+    }
+
     var mySwiper = new Swiper('.swiper-container', {
         direction: 'vertical', // 垂直切换选项
         autoHeight: true, // 自动高度
@@ -263,7 +304,7 @@
             if (islogin) {
                 win.confirm('系统提示', '请登录！', function (r) {
                     if (r) {
-                        window.location.href="/finder/login";
+                        window.location.href = "/finder/login";
                     }
                 });
                 return false;
