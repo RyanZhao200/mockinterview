@@ -31,7 +31,7 @@ public class AdminInterviewTypeController {
         List<Type> parentType = interviewTypeService.getTypeByParentId(0);
         model.addAttribute("types", parentType);
         model.addAttribute("list", typeList);
-        return "admin/interView/typeList";
+        return "admin/interview/typeList";
     }
 
     @RequestMapping("/addType")
@@ -57,7 +57,7 @@ public class AdminInterviewTypeController {
         List<Type> parentType = interviewTypeService.getTypeByParentId(0);
         model.addAttribute("parentType", parentType);
         model.addAttribute("type", type);
-        return "admin/interView/editType";
+        return "admin/interview/editType";
     }
 
     @RequestMapping("/editType")

@@ -37,6 +37,7 @@
             <if test="headUrl != null">head_url=#{headUrl},</if>
             <if test="blogUrl != null">blog_url=#{blogUrl},</if>
             <if test="cost != null">cost=#{cost},</if>
+            <if test="grade != null">grade=#{grade},</if>
             <if test="workYear != null">work_year=#{workYear},</if>
         </set>
         WHERE iid = #{iid}

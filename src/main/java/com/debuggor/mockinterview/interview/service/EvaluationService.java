@@ -2,7 +2,9 @@ package com.debuggor.mockinterview.interview.service;
 
 import com.debuggor.mockinterview.common.constant.PageConstant;
 import com.debuggor.mockinterview.interview.bean.Evaluation;
+import com.debuggor.mockinterview.interview.bean.Interviewer;
 import com.debuggor.mockinterview.interview.dao.EvaluationDao;
+import com.debuggor.mockinterview.interview.dao.InterviewerDao;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,8 @@ public class EvaluationService {
 
     @Autowired
     private EvaluationDao evaluationDao;
+    @Autowired
+    private InterviewerDao interviewerDao;
 
     /**
      * 插入一条评论
@@ -33,6 +37,11 @@ public class EvaluationService {
                 evaluation.setGrade(evaluation.getGrade() * 2);
             }
             eid = evaluationDao.insert(evaluation);
+            Float avgGrade = getEvaluationGradeByIid(evaluation.getIid());
+            Interviewer interviewer = new Interviewer();
+            interviewer.setIid(evaluation.getIid());
+            interviewer.setGrade(avgGrade);
+            interviewerDao.update(interviewer);
         }
         return eid;
     }
@@ -89,7 +98,7 @@ public class EvaluationService {
     /**
      * 获得最近的热评
      */
-    public List<Evaluation> getRecentHotEvaluations(){
+    public List<Evaluation> getRecentHotEvaluations() {
         List<Evaluation> hotEvaluations = evaluationDao.getHotEvaluations();
         return hotEvaluations;
     }

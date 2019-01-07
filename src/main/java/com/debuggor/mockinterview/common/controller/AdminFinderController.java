@@ -25,6 +25,6 @@ public class AdminFinderController {
         PageInfo pageInfo = finderService.getFinderList(finder, pn);
         model.addAttribute("pageInfo", pageInfo);
         logger.info(String.valueOf(pageInfo.getTotal()));
-        return "admin/interView/finderList";
+        return "admin/interview/finderList";
     }
 }

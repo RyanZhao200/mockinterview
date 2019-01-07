@@ -26,7 +26,7 @@ public class AdminInterviewerController {
         PageInfo pageInfo = interviewService.getInterviewerList(interviewer, pn);
         model.addAttribute("pageInfo", pageInfo);
         logger.info(String.valueOf(pageInfo.getTotal()));
-        return "admin/interView/interviewList";
+        return "admin/interview/interviewList";
     }
 
 }
