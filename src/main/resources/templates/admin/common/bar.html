@@ -4,138 +4,80 @@
     <meta charset="UTF-8">
 </head>
 <body>
-<!--头部公共部分-->
-<nav class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0" th:fragment="topbar">
-    <a class="navbar-brand col-sm-3 col-md-2 mr-0"
-       href="#" >[[${session.username}]]</a>
-    <ul class="navbar-nav px-3">
-        <li class="nav-item text-nowrap">
-            <a class="nav-link" href="#" th:href="@{/admin/logout}">退出</a>
-        </li>
-    </ul>
-</nav>
 
-<!--左侧公共部分-->
-<nav class="col-md-2 d-none d-md-block bg-light sidebar" th:fragment="leftbar">
-
-    <div>
-        <div id="accordion">
-            <div class="card">
-                <div class="card-header">
-                    <a class="card-link" data-toggle="collapse" href="#collapseOne"># </a>
-                </div>
-                <div id="collapseOne" class="collapse" data-parent="#accordion">
-                    <div class="card-body"></div>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header">
-                    <a class="card-link" data-toggle="collapse" href="#collapseTwo"> <i class="fa fa-home"></i>主页 </a>
-                </div>
-                <div id="collapseTwo" class="collapse" data-parent="#accordion">
-                    <nav class="navbar bg-light">
-                        <ul class="navbar-nav">
-                            <li class="nav-item">
-                                <a class="nav-link" href="#" th:href="@{/admin/main}">首页</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#" th:href="@{/admin/system/admin/toUpdate}">修改资料</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#" th:href="@{/admin/system/admin/resetPwd}">修改密码</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#" th:href="@{/admin/logout}">退出</a>
-                            </li>
-                        </ul>
-                    </nav>
-
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header">
-                    <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree2"> 面试官管理 </a>
-                </div>
-                <div id="collapseThree2" class="collapse" data-parent="#accordion">
-                    <nav class="navbar bg-light">
-                        <ul class="navbar-nav">
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Link 1</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Link 2</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Link 3</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header">
-                    <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree3"> 求职者管理 </a>
-                </div>
-                <div id="collapseThree3" class="collapse" data-parent="#accordion">
-                    <nav class="navbar bg-light">
-                        <ul class="navbar-nav">
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Link 1</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Link 2</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Link 3</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header">
-                    <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree4"> 论坛管理 </a>
-                </div>
-                <div id="collapseThree4" class="collapse" data-parent="#accordion">
-                    <nav class="navbar bg-light">
-                        <ul class="navbar-nav">
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Link 1</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Link 2</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Link 3</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-            <div class="card">
-                <div class="card-header">
-                    <a class="collapsed card-link" data-toggle="collapse" href="#collapseThree5"> 系统管理 </a>
-                </div>
-                <div id="collapseThree5" class="collapse" data-parent="#accordion">
-                    <nav class="navbar bg-light">
-                        <ul class="navbar-nav">
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Link 1</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Link 2</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#">Link 3</a>
-                            </li>
-                        </ul>
-                    </nav>
-                </div>
-            </div>
-        </div>
+<!-- 头部公共部分-->
+<div class="layui-header" th:fragment="topbar">
+    <div class="layui-logo">
+        <a th:href="@{/admin/index}">
+            <img th:src="@{/front/images/logo.png}">
+        </a>
     </div>
-</nav>
 
+    <ul class="layui-nav layui-layout-right">
+        <li class="layui-nav-item">
+            <a href="javascript:;">
+                <img th:src="${session.admin.headUrl}" class="layui-nav-img">
+                [[${session.admin.username}]]
+            </a>
+            <dl class="layui-nav-child">
+                <dd><a href="">基本资料</a></dd>
+                <dd><a href="">安全设置</a></dd>
+            </dl>
+        </li>
+        <li class="layui-nav-item"><a th:href="@{/admin/logout}">退出</a></li>
+    </ul>
+</div>
+
+<!-- 左侧公共部分 -->
+<div class="layui-side layui-bg-black" th:fragment="leftbar">
+    <div class="layui-side-scroll">
+        <ul class="layui-nav layui-nav-tree" lay-filter="test">
+            <li class="layui-nav-item">
+                <a th:href="@{/admin/index}"><i class="layui-icon">&#xe68e;</i>&nbsp;&nbsp;&nbsp;&nbsp;主页</a>
+            </li>
+            <li class="layui-nav-item">
+                <a class="" href="javascript:;"><i class="layui-icon">&#xe613;</i>&nbsp;面试管理</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="javascript:;">订单列表</a></dd>
+                    <dd><a href="javascript:;">流水管理</a></dd>
+                    <dd><a href="javascript:;">聊天记录</a></dd>
+                    <dd><a href="javascript:;">IT类别</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item">
+                <a href="javascript:;"><i class="layui-icon">&#xe611;</i>&nbsp;&nbsp;论坛管理</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="javascript:;">帖子列表</a></dd>
+                    <dd><a href="javascript:;">评论列表</a></dd>
+                    <dd><a href="javascript:;">帖子类别</a></dd>
+                </dl>
+            </li>
+            <li class="layui-nav-item">
+                <a href="javascript:;"><i class="layui-icon">&#xe612;</i>&nbsp;&nbsp;用户管理</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="javascript:;">面试官列表</a></dd>
+                    <dd><a href="javascript:;">求职者列表</a></dd>
+                    <dd><a href="javascript:;">面试官认证</a></dd>
+
+                </dl>
+            </li>
+            <li class="layui-nav-item">
+                <a href="javascript:;"><i class="layui-icon">&#xe716;</i>&nbsp;&nbsp;系统管理</a>
+                <dl class="layui-nav-child">
+                    <dd><a href="javascript:;">数据源</a></dd>
+                    <dd><a href="javascript:;">文章管理</a></dd>
+                    <dd><a href="javascript:;">管理员信息</a></dd>
+                </dl>
+            </li>
+        </ul>
+    </div>
+</div>
+
+<!-- 底部公共部分 -->
+<div class="layui-footer" style="text-align: center;" th:fragment="bottombar">
+    <!-- 底部固定区域 -->
+    IT模拟面试社区 2019 ©
+</div>
 
 </body>
 </html>

@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpSession;
+import java.util.Date;
 
 @RequestMapping("/admin")
 @Controller
@@ -23,37 +25,66 @@ public class AdminLoginController {
     @Autowired
     private AdminService adminService;
 
+    /**
+     * 转到后台登录页面
+     *
+     * @return
+     */
     @RequestMapping("/login")
     public String login() {
         return "admin/login";
     }
 
-    @PostMapping("/main")
+    /**
+     * 用户登录
+     *
+     * @param username
+     * @param password
+     * @param session
+     * @return
+     */
+    @RequestMapping("/loginAction")
     public String login(@RequestParam("username") String username,
                         @RequestParam("password") String password,
-                        Model model, HttpSession session) {
-        logger.info(username + "....." + password + ".......");
+                        HttpSession session, RedirectAttributes redirectAttributes) {
         Admin admin = new Admin();
         admin.setUsername(username);
         admin.setPassword(password);
         String result = adminService.login(admin);
         if (!MockConstant.LOGIN_SUCCESS.equals(result)) {
-            model.addAttribute("msg", result);
-            return "admin/login";
+            redirectAttributes.addFlashAttribute("msg", result);
+            return "redirect:/admin/login";
         }
-        session.setAttribute("username", username);
-        return "admin/main";
+        admin = adminService.getAdminByUserName(username);
+        session.setAttribute("admin", admin);
+        logger.info(username + "与" + new Date() + "登录后台");
+        return "redirect:/admin/index";
     }
 
+    /**
+     * 后台首页
+     *
+     * @param session
+     * @param model
+     * @return
+     */
     @RequestMapping("/index")
-    public String index() {
+    public String index(HttpSession session, Model model) {
+        Admin admin = (Admin) session.getAttribute("admin");
+        model.addAttribute("admin", admin);
         return "admin/index";
     }
 
+    /**
+     * 后台管理员退出登录，销毁session
+     *
+     * @param session
+     * @return
+     */
     @RequestMapping("/logout")
     public String logout(HttpSession session) {
         logger.info("退出登录。。。。。。");
-        session.setAttribute("admin", null);
+        session.invalidate();
         return "admin/login";
     }
 

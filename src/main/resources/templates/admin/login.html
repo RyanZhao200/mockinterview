@@ -2,33 +2,38 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-    <title>登录后台</title>
-    <!-- Bootstrap core CSS -->
-    <link href="..static/admin/css/bootstrap.min.css" th:href="@{/admin/css/bootstrap.min.css}" rel="stylesheet">
-    <!-- Custom styles for this template -->
-    <link href="..static/admin/css/signin.css" th:href="@{/admin/css/signin.css}" rel="stylesheet">
+    <title>IT模拟面试后台登录</title>
+    <link th:href="@{/admin/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/admin/css/signin.css}" rel="stylesheet">
 </head>
 
-<body class="text-center">
-<form class="form-signin" action="#" th:action="@{/admin/main}" method="post">
-    <img class="mb-4" src="..static/img/bootstrap-solid.svg" th:src="@{/admin/img/bootstrap-solid.svg}" alt="" width="72"
-         height="72">
-    <h1 class="h3 mb-3 font-weight-normal">请登录</h1>
-    <h4 style="color: red" th:text="${msg}"></h4>
-    <label class="sr-only">用户名：</label>
-    <input type="text" name="username" class="form-control" placeholder="Username" required="" autofocus="">
-    <label class="sr-only">密码：</label>
-    <input type="password" name="password" class="form-control" placeholder="Password" required="">
+<body class="text-center" style="background-color: #f2f2f2;">
+<form class="form-signin" action="#" th:action="@{/admin/loginAction}" method="post">
+    <img class="mb-4" th:src="@{/front/images/interviewer/interviewer_login_logo.png}">
+    <div>
+        <h1 class="h3 mb-3 font-weight-normal">请登录</h1>
+        <h4 style="color: red" th:text="${msg}"></h4>
+    </div>
+    <div>
+        <label class="sr-only">用户名：</label>
+        <input type="text" name="username" class="form-control" placeholder="Username" required="" autofocus="">
+    </div>
+    <div style="margin: 5px 0">
+        <label class="sr-only">密码：</label>
+        <input type="password" name="password" class="form-control" placeholder="Password" required="">
+    </div>
     <div class="checkbox mb-3">
         <label>
-            <input type="checkbox" value="remember-me"> Remember me
+            <input type="checkbox" value="remember-me" checked> Remember me
         </label>
     </div>
-    <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
-    <p class="mt-5 mb-3 text-muted">© 2017-2018</p>
-
+    <div>
+        <button class="btn btn-lg btn-primary btn-block" type="submit">登录</button>
+    </div>
+    <div>
+        <p class="mt-5 mb-3 text-muted">© 2017-2018</p>
+    </div>
 </form>
 
 </body>
-
 </html>

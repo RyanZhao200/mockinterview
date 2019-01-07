@@ -16,9 +16,9 @@ public class MockWebMvcConfigurerAdapter extends WebMvcConfigurerAdapter {
 
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
-        registry.addInterceptor(new AdminHandlerInterceptor())
+     /*   registry.addInterceptor(new AdminHandlerInterceptor())
                 .addPathPatterns("/admin/**")
-                .excludePathPatterns("/admin/login", "/admin/main", "/admin");
+                .excludePathPatterns("/admin/login", "/admin/main", "/admin");*/
         registry.addInterceptor(new UserHandlerInterceptor())
                 .addPathPatterns("/finder/toUpdate", "/finder/update", "/finder/updateHeadUrl", "/finder/judgeOldPwd", "/finder/updatePassword", "/finder/messageInterview")
                 .addPathPatterns("/finder/deleteMessage/*", "/finder/deleteMessageAll/*", "/finder/posts", "/finder/deletePost/*")
