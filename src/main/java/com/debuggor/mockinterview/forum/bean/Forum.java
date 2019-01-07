@@ -70,11 +70,11 @@ public class Forum {
     /**
      * 查询 开始时间
      */
-    private Date startTime;
+    private String startTime;
     /**
      * 查询 结束时间
      */
-    private Date endTime;
+    private String endTime;
     /**
      * order 排序用
      * null、最新回复;1、最新发表;2、最热;

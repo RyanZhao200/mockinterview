@@ -3,39 +3,38 @@
 <head>
     <meta charset="UTF-8">
     <title>面试官列表</title>
-    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" th:href="@{/admin/css/bootstrap.min.css}">
 
 </head>
 <body style="background-color: #F3F3F4;">
 <div class="container-fluid">
     <div class="row">
-        <div class="col-sm-12 search-collapse" style="background-color: #ffffff;border-radius:15px;">
+        <div class="col-sm-12 search-collapse" style="background-color: #ffffff;">
             <div>&nbsp;</div>
-            <form class="form-horizontal" role="form" th:action="@{/admin/forum/postList}" method="post">
-                <ul style="list-style-type:none">
-                    <li>
-                        <div class="col-sm-3">
-                            帖子类别：
-                            <select name="tid" style="width:200px;height: 30px;">
-                                <option value="0">所有</option>
-                                <option th:each="type:${types}" th:value="${type.tid}"
-                                        th:text="${type.typeName}"></option>
-                            </select>
-                        </div>
-                        <div class="col-sm-3">
-                            创建人：<input name="nickname">
-                        </div>
-                        <div class="col-sm-6">
-                            创建时间：<input name="startTime">-<input name="endTime">
-                        </div>
-                    </li>
-                    <li align="center">
-                        <button type="submit" class="btn btn-info">查询</button>&nbsp;
-                        <button type="reset" class="btn btn-default">重置</button>
-                    </li>
-                </ul>
+            <form class="form-inline" role="form" th:action="@{/admin/forum/postList}" method="post">
+                <div>
+                    <div class="col-sm-2"></div>
+                    <div class="form-group col-sm-4">
+                        <label class="control-label">类别：</label>
+                        <select name="tid" class="form-control" style="width: 50%;">
+                            <option value="0" th:selected="${tid==0}">所有</option>
+                            <option th:each="type:${types}" th:value="${type.tid}" th:selected="${type.tid==tid}"
+                                    th:text="${type.typeName}"></option>
+                        </select>
+                    </div>
+
+                    <div class="form-group col-sm-6">
+                        <label class="control-label">发表时间：</label>
+                        <input name="startTime" class="form-control" id="startTime" style="width: 30%;"
+                               placeholder="如：2000-01-01" th:value="${startTime}">-
+                        <input name="endTime" class="form-control" id="endTime" style="width: 30%;"
+                               placeholder="2020-12-12" th:value="${endTime}">
+                    </div>
+                </div>
+                <div class="form-group col-sm-12" style="text-align: center;padding: 20px">
+                    <button type="submit" class="btn btn-info btn-lg">查询</button>&nbsp;
+                    <!--<button type="reset" class="btn btn-default resetBtn">重置</button>-->
+                </div>
             </form>
         </div>
         <div>&nbsp;</div>
@@ -50,8 +49,7 @@
                     <th>浏览量</th>
                     <th>评论数量</th>
                     <th>创建时间</th>
-                    <th>最近回复时间</th>
-
+                    <th>操作</th>
                 </tr>
                 </thead>
                 <tbody>
@@ -76,7 +74,9 @@
         <div class="col-sm-6">
             <nav aria-label="Page navigation">
                 <ul class="pagination  pagination-lg" style="display:inline-block;list-style:none;">
-                    <li><a th:href="@{/admin/forum/postList(pn=1)}">首页</a></li>
+                    <li>
+                        <a th:href="@{/admin/forum/postList(tid=${tid},startTime=${startTime},endTime=${endTime},pn=1)}">首页</a>
+                    </li>
                     <!--上一页-->
                     <li th:if="${pageInfo.hasPreviousPage}">
                         <a th:href="@{/admin/forum/postList(pn=${pageInfo.pageNum-1})}"
@@ -86,23 +86,38 @@
                     </li>
                     <!--循环遍历连续显示的页面，若是当前页就高亮显示，并且没有链接-->
                     <li th:each="page_num:${pageInfo.navigatepageNums}">
-                        <span class="active" th:if="${page_num == pageInfo.pageNum}"><a
-                                href="#">[[${page_num}]]</a></span>
-                        <span th:if="${page_num != pageInfo.pageNum}"><a
-                                th:href="@{/admin/forum/postList(pn=${page_num})}">[[${page_num}]]</a></span>
+                        <span class="active" th:if="${page_num == pageInfo.pageNum}">
+                            <a href="#">[[${page_num}]]</a></span>
+                        <span th:if="${page_num != pageInfo.pageNum}">
+                            <a th:href="@{/admin/forum/postList(tid=${tid},startTime=${startTime},endTime=${endTime},pn=${page_num})}">[[${page_num}]]</a></span>
                     </li>
                     <!--下一页-->
                     <li th:if="${pageInfo.hasNextPage}">
-                        <a th:href="@{/admin/forum/postList(pn=${pageInfo.pageNum+1})}" aria-label="Next">
+                        <a th:href="@{/admin/forum/postList(tid=${tid},startTime=${startTime},endTime=${endTime},pn=${pageInfo.pageNum+1})}"
+                           aria-label="Next">
                             <span aria-hidden="true">»</span>
                         </a>
                     </li>
-                    <li><a th:href="@{/admin/forum/postList(pn=${pageInfo.pages})}">尾页</a></li>
+                    <li>
+                        <a th:href="@{/admin/forum/postList(tid=${tid},startTime=${startTime},endTime=${endTime},pn=${pageInfo.pages})}">尾页</a>
+                    </li>
                 </ul>
             </nav>
         </div>
     </div>
 </div>
+<script th:src="@{/admin/js/jquery.min.js}"></script>
+<script th:src="@{/admin/js/bootstrap.min.js}"></script>
+<script th:src="@{/front/laydate/laydate.js}"></script>
+<script>
+    //执行一个laydate实例
+    laydate.render({
+        elem: '#startTime'
+    });
+    laydate.render({
+        elem: '#endTime'
+    });
 
+</script>
 </body>
 </html>

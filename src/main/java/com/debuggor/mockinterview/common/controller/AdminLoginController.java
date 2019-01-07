@@ -58,7 +58,7 @@ public class AdminLoginController {
         admin = adminService.getAdminByUserName(username);
         session.setAttribute("admin", admin);
         logger.info(username + "与" + new Date() + "登录后台");
-        return "redirect:/admin/index";
+        return "redirect:/admin";
     }
 
     /**
@@ -68,7 +68,7 @@ public class AdminLoginController {
      * @param model
      * @return
      */
-    @RequestMapping("/index")
+    @RequestMapping("")
     public String index(HttpSession session, Model model) {
         Admin admin = (Admin) session.getAttribute("admin");
         model.addAttribute("admin", admin);
@@ -88,9 +88,14 @@ public class AdminLoginController {
         return "admin/login";
     }
 
-    @GetMapping("/main")
-    public String main() {
-        return "admin/main";
+    /**
+     * 后台首页
+     *
+     * @return
+     */
+    @RequestMapping("/home")
+    public String home() {
+        return "admin/home";
     }
 
 }

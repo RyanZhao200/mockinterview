@@ -22,6 +22,12 @@ public class AdminForumTypeController {
     @Autowired
     private ForumTypeService forumTypeService;
 
+    /**
+     * 类别列表
+     *
+     * @param model
+     * @return
+     */
     @RequestMapping("/typeList")
     public String typeList(Model model) {
         List<Type> forumTypeList = forumTypeService.getForumTypeList();
@@ -30,6 +36,12 @@ public class AdminForumTypeController {
         return "admin/forum/typeList";
     }
 
+    /**
+     * 添加类别
+     *
+     * @param type
+     * @return
+     */
     @RequestMapping("/addType")
     public String addType(Type type) {
         if (type != null) {
@@ -39,6 +51,12 @@ public class AdminForumTypeController {
         return "redirect:/admin/forum/typeList";
     }
 
+    /**
+     * 删除类别
+     *
+     * @param tid
+     * @return
+     */
     @RequestMapping("/delete/{tid}")
     public String delete(@PathVariable("tid") Integer tid) {
         if (tid != null) {
@@ -48,6 +66,13 @@ public class AdminForumTypeController {
         return "redirect:/admin/forum/typeList";
     }
 
+    /**
+     * 转到编辑类别页面
+     *
+     * @param tid
+     * @param model
+     * @return
+     */
     @RequestMapping("/toEdit/{tid}")
     public String editPage(@PathVariable("tid") Integer tid, Model model) {
         Type type = forumTypeService.getTypeById(tid);
@@ -55,6 +80,13 @@ public class AdminForumTypeController {
         return "admin/forum/editType";
     }
 
+    /**
+     * 提交类别修改
+     *
+     * @param type
+     * @param response
+     * @throws IOException
+     */
     @RequestMapping("/editType")
     public void editType(Type type, HttpServletResponse response) throws IOException {
         logger.info(type.getTid() + " " + type.getTypeName() + " " + type.getOrderNo());
