@@ -14,19 +14,35 @@ public class AdminService {
     @Autowired
     private AdminDao adminDao;
 
+    /**
+     * 根据ID得到管理员信息
+     *
+     * @param id
+     * @return
+     */
     public Admin getAdminById(Integer id) {
-        if (id != null) {
-            return adminDao.getAdminById(id);
-        } else {
+        if (id == null) {
             return null;
         }
+        return adminDao.getAdminById(id);
+
     }
 
-
+    /**
+     * 跟新管理员信息
+     *
+     * @param admin
+     */
     public void updateAdmin(Admin admin) {
         adminDao.updateAdminByUserName(admin);
     }
 
+    /**
+     * 通过用户名得到管理员信息
+     *
+     * @param username
+     * @return
+     */
     public Admin getAdminByUserName(String username) {
         if (username == null || "".equals(username)) {
             return null;
@@ -34,6 +50,12 @@ public class AdminService {
         return adminDao.getAdminByUserName(username);
     }
 
+    /**
+     * 管理员登录
+     *
+     * @param admin
+     * @return
+     */
     public String login(Admin admin) {
         String username = admin.getUsername();
         String password = admin.getPassword();

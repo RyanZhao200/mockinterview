@@ -1,12 +1,12 @@
 package com.debuggor.mockinterview.interview.controller;
 
-import com.debuggor.mockinterview.common.bean.Message;
-import com.debuggor.mockinterview.common.bean.vo.InterviewerVo;
+import com.debuggor.mockinterview.interview.bean.Message;
+import com.debuggor.mockinterview.interview.bean.vo.InterviewerVo;
 import com.debuggor.mockinterview.common.constant.UserConstant;
 import com.debuggor.mockinterview.common.enumerate.*;
-import com.debuggor.mockinterview.common.service.InterviewTypeService;
-import com.debuggor.mockinterview.common.service.MessageService;
-import com.debuggor.mockinterview.common.service.QiniuService;
+import com.debuggor.mockinterview.interview.service.InterviewTypeService;
+import com.debuggor.mockinterview.interview.service.MessageService;
+import com.debuggor.mockinterview.interview.service.QiniuService;
 import com.debuggor.mockinterview.interview.bean.*;
 import com.debuggor.mockinterview.interview.service.*;
 import com.github.pagehelper.PageInfo;

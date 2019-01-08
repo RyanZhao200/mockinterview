@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping("/admin/interview")
+@RequestMapping("/admin/user")
 public class AdminInterviewerController {
     Logger logger = LoggerFactory.getLogger(AdminInterviewerController.class);
 
@@ -26,7 +26,7 @@ public class AdminInterviewerController {
         PageInfo pageInfo = interviewService.getInterviewerList(interviewer, pn);
         model.addAttribute("pageInfo", pageInfo);
         logger.info(String.valueOf(pageInfo.getTotal()));
-        return "admin/interview/interviewList";
+        return "admin/user/interviewList";
     }
 
 }

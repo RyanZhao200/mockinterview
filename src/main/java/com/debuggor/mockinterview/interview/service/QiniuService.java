@@ -1,4 +1,4 @@
-package com.debuggor.mockinterview.common.service;
+package com.debuggor.mockinterview.interview.service;
 
 import com.debuggor.mockinterview.common.constant.QiniuConstant;
 import com.debuggor.mockinterview.common.constant.UserConstant;

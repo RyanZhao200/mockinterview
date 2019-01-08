@@ -1,13 +1,13 @@
 package com.debuggor.mockinterview.interview.controller;
 
-import com.debuggor.mockinterview.common.bean.Message;
+import com.debuggor.mockinterview.interview.bean.Message;
 import com.debuggor.mockinterview.common.constant.MockConstant;
 import com.debuggor.mockinterview.common.constant.QiniuConstant;
 import com.debuggor.mockinterview.common.enumerate.MessageStatusEnum;
 import com.debuggor.mockinterview.common.enumerate.StatusEnum;
 import com.debuggor.mockinterview.common.enumerate.UserEnum;
-import com.debuggor.mockinterview.common.service.MessageService;
-import com.debuggor.mockinterview.common.service.QiniuService;
+import com.debuggor.mockinterview.interview.service.MessageService;
+import com.debuggor.mockinterview.interview.service.QiniuService;
 import com.debuggor.mockinterview.common.util.Md5Util;
 import com.debuggor.mockinterview.forum.bean.Comment;
 import com.debuggor.mockinterview.forum.bean.Forum;

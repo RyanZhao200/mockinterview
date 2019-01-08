@@ -2,10 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title></title>
-    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" th:href="@{/admin/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/front/window/window.css}">
 
 </head>
 <body>
@@ -18,6 +16,7 @@
                     <thead>
                     <tr>
                         <th>名称</th>
+                        <th>帖子数量</th>
                         <th>顺序</th>
                         <th>操作</th>
                     </tr>
@@ -25,11 +24,12 @@
                     <tbody>
                     <tr th:each="type:${list}">
                         <td th:text="${type.typeName}"></td>
+                        <td th:text="${type.postNum}"></td>
                         <td th:text="${type.orderNo}"></td>
                         <td>
                             <a class="btn btn-primary" th:onclick="'javascript:edit('+${type.tid}+');'">编辑</a>
                             <button class="btn btn-danger deleteBtn"
-                                    th:attr="del_url=@{/admin/forum/delete/}+${type.tid}">删除
+                                    th:onclick="'deleteType('+${type.tid}+','+${type.postNum}+')'">删除
                             </button>
                         </td>
                     </tr>
@@ -37,9 +37,6 @@
                 </table>
             </div>
         </main>
-        <form id="deleteTypeForm" method="post">
-            <input type="hidden" name="_method" value="delete"/>
-        </form>
 
         <div class="col-sm-6">
             <h2>添加类别</h2>
@@ -68,6 +65,9 @@
         </div>
     </div>
 </div>
+<script th:src="@{/admin/js/jquery.min.js}"></script>
+<script th:src="@{/admin/js/bootstrap.min.js}"></script>
+<script th:src="@{/front/window/window.js}"></script>
 
 <script>
     function validateForm() {
@@ -75,26 +75,34 @@
         var orderNo = $.trim(document.forms["formType"]["orderNo"].value);
         console.info(name + " " + orderNo);
         if (name == null || name == "") {
-            alert("请填写栏目名称！");
+            win.alertEx("请填写栏目名称！");
             return false;
         }
         if (orderNo == "" || isNaN(orderNo)) {
-            alert("栏目顺序请填写整数！");
+            win.alertEx("栏目顺序请填写整数！");
             return false;
         }
     }
 
-    $(".deleteBtn").click(function () {
-        //删除当前员工的
-        if (confirm("确定要删除当前栏目吗？")) {
-            $("#deleteTypeForm").attr("action", $(this).attr("del_url")).submit();
+    //删除当前栏目
+    function deleteType(tid, postNum) {
+        if (postNum > 0) {
+            win.alertEx( "当前栏目帖子数量不为0，不能直接删除！");
+            return false;
         }
-        return false;
-    });
+        win.confirm('温馨提示', '确定删除当前栏目吗？', function (r) {
+            if (r) {
+                var href = '/admin/forum/delete/';
+                href = href + tid;
+                window.location.href = href;
+            }
+        });
+    }
+
 
     function edit(tid) {
         var url = "/admin/forum/toEdit/" + tid;
-        window.open(url, "修改栏目", "height=400, width=600, top=200, left=300, toolbar=no, menubar=no, scrollbars=no, resizable=yes,location=no, status=no");
+        win.open(400, 300, "", url);
     }
 
 </script>

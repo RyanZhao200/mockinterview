@@ -1,5 +1,7 @@
 package com.debuggor.mockinterview.common.controller;
 
+import com.debuggor.mockinterview.common.bean.Admin;
+import com.debuggor.mockinterview.common.util.TimeUtil;
 import com.debuggor.mockinterview.forum.bean.Type;
 import com.debuggor.mockinterview.forum.service.ForumTypeService;
 import org.slf4j.Logger;
@@ -10,14 +12,20 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Date;
 import java.util.List;
 
 @Controller
 @RequestMapping("/admin/forum")
 public class AdminForumTypeController {
-    Logger logger = LoggerFactory.getLogger(AdminForumTypeController.class);
+    private Logger logger = LoggerFactory.getLogger(AdminForumTypeController.class);
+    /**
+     * 公共的方法
+     */
+    private UtilController utilController = new UtilController();
 
     @Autowired
     private ForumTypeService forumTypeService;
@@ -31,7 +39,6 @@ public class AdminForumTypeController {
     @RequestMapping("/typeList")
     public String typeList(Model model) {
         List<Type> forumTypeList = forumTypeService.getForumTypeList();
-        logger.info(forumTypeList.toString());
         model.addAttribute("list", forumTypeList);
         return "admin/forum/typeList";
     }
@@ -43,9 +50,10 @@ public class AdminForumTypeController {
      * @return
      */
     @RequestMapping("/addType")
-    public String addType(Type type) {
+    public String addType(Type type, HttpServletRequest request) {
+        Admin admin = utilController.getAdminFromSession(request);
         if (type != null) {
-            logger.info("插入" + type.getTypeName() + " " + type.getOrderNo());
+            logger.info(admin.getUsername() + "于" + TimeUtil.format(new Date()) + "插入" + type.toString());
             forumTypeService.insert(type);
         }
         return "redirect:/admin/forum/typeList";
@@ -58,11 +66,13 @@ public class AdminForumTypeController {
      * @return
      */
     @RequestMapping("/delete/{tid}")
-    public String delete(@PathVariable("tid") Integer tid) {
+    public String delete(@PathVariable("tid") Integer tid, HttpServletRequest request) {
+        Admin admin = utilController.getAdminFromSession(request);
         if (tid != null) {
+            Type type = forumTypeService.getTypeById(tid);
+            logger.info(admin.getUsername() + "于" + TimeUtil.format(new Date()) + "删除" + type.toString());
             forumTypeService.delete(tid);
         }
-        logger.info("删除帖子类别！");
         return "redirect:/admin/forum/typeList";
     }
 
@@ -88,14 +98,15 @@ public class AdminForumTypeController {
      * @throws IOException
      */
     @RequestMapping("/editType")
-    public void editType(Type type, HttpServletResponse response) throws IOException {
-        logger.info(type.getTid() + " " + type.getTypeName() + " " + type.getOrderNo());
+    public void editType(Type type, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Admin admin = utilController.getAdminFromSession(request);
+        logger.info(admin.getUsername() + "于" + TimeUtil.format(new Date()) + "修改" + type.toString());
         if (type != null) {
             forumTypeService.updateType(type);
         }
         StringBuilder str = new StringBuilder();
         str.append("<script>");
-        str.append(" window.opener.location.href = window.opener.location.href; window.close();");
+        str.append(" window.opener.location.href = window.opener.location.href; win.close();");
         str.append("</script>");
         response.getWriter().write(str.toString());
     }

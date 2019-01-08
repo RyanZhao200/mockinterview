@@ -1,4 +1,4 @@
-package com.debuggor.mockinterview.common.bean.vo;
+package com.debuggor.mockinterview.interview.bean.vo;
 
 import com.debuggor.mockinterview.interview.bean.Interviewer;
 

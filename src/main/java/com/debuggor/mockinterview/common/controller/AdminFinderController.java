@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
-@RequestMapping("/admin/interview")
+@RequestMapping("/admin/user")
 public class AdminFinderController {
     Logger logger = LoggerFactory.getLogger(AdminFinderController.class);
 
@@ -25,6 +25,6 @@ public class AdminFinderController {
         PageInfo pageInfo = finderService.getFinderList(finder, pn);
         model.addAttribute("pageInfo", pageInfo);
         logger.info(String.valueOf(pageInfo.getTotal()));
-        return "admin/interview/finderList";
+        return "admin/user/finderList";
     }
 }

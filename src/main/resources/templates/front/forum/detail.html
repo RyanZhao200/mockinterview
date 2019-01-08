@@ -6,12 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <meta name="keywords" content="">
     <meta name="description" content="">
-    <link rel="stylesheet" href="..static/front/layui/css/layui.css" th:href="@{/front/layui/css/layui.css}">
-    <link rel="stylesheet" href="..static/front/css/global.css" th:href="@{/front/css/global.css}">
-    <link rel="stylesheet" href="..static/front/css/wangEditor.css" th:href="@{/front/css/wangEditor.css}">
-    <link rel="stylesheet" href="..static/front/swiper/css/swiper.min.css"
-          th:href="@{/front/swiper/css/swiper.min.css}">
-    <link rel="stylesheet" href="..static/front/window/window.css" th:href="@{/front/window/window.css}">
+    <link rel="stylesheet" th:href="@{/front/layui/css/layui.css}">
+    <link rel="stylesheet" th:href="@{/front/css/global.css}">
+    <link rel="stylesheet" th:href="@{/front/css/wangEditor.css}">
+    <link rel="stylesheet" th:href="@{/front/swiper/css/swiper.min.css}">
+    <link rel="stylesheet" th:href="@{/front/window/window.css}">
 
     <style>
         .jieda-admin {
@@ -158,12 +157,12 @@
                             </div>
                             <div style="position: relative;left: 50px;">
                                 <!-- 点赞功能，后续有时间在完成 -->
-                                 <!--
-                                <span class="jieda-zan" type="zan">
-                                    <i class="iconfont icon-zan"></i>
-                                    <em>0</em>
-                                </span>
-                                -->
+                                <!--
+                               <span class="jieda-zan" type="zan">
+                                   <i class="iconfont icon-zan"></i>
+                                   <em>0</em>
+                               </span>
+                               -->
                                 <span class="replyComment" type="reply">
                                     <i class="iconfont icon-svgmoban53"></i>回复([[${#lists.size(comment.sonComments)}]])
                                 </span>
@@ -295,12 +294,12 @@
 <!--公共底部-->
 <div th:replace="front/common/bar::footerbar"></div>
 
-<script src="..static/front/layui/layui.js" th:src="@{/front/layui/layui.js}"></script>
-<script src="..static/admin/js/jquery.min.js" th:src="@{/admin/js/jquery.min.js}"></script>
-<script src="..static/front/js/verification.js" th:src="@{/front/js/verification.js}"></script>
-<script src="..static/front/js/wangEditor.js" th:src="@{/front/js/wangEditor.js}"></script>
-<script src="..static/front/swiper/js/swiper.min.js" th:src="@{/front/swiper/js/swiper.min.js}"></script>
-<script src="..static/front/window/window.js" th:src="@{/front/window/window.js}"></script>
+<script th:src="@{/front/layui/layui.js}"></script>
+<script th:src="@{/admin/js/jquery.min.js}"></script>
+<script th:src="@{/front/js/verification.js}"></script>
+<script th:src="@{/front/js/wangEditor.js}"></script>
+<script th:src="@{/front/swiper/js/swiper.min.js}"></script>
+<script th:src="@{/front/window/window.js}"></script>
 
 <script language='javascript' th:inline="javascript">
 

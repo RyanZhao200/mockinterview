@@ -1,8 +1,8 @@
 package com.debuggor.mockinterview.interview.service;
 
-import com.debuggor.mockinterview.common.bean.vo.InterviewerVo;
+import com.debuggor.mockinterview.interview.bean.vo.InterviewerVo;
 import com.debuggor.mockinterview.common.constant.PageConstant;
-import com.debuggor.mockinterview.common.dao.InterviewTypeDao;
+import com.debuggor.mockinterview.interview.dao.InterviewTypeDao;
 import com.debuggor.mockinterview.common.enumerate.FollowStatusEnum;
 import com.debuggor.mockinterview.common.enumerate.UserEnum;
 import com.debuggor.mockinterview.interview.bean.Follower;

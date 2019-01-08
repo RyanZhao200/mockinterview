@@ -1,6 +1,6 @@
-package com.debuggor.mockinterview.common.dao;
+package com.debuggor.mockinterview.interview.dao;
 
-import com.debuggor.mockinterview.common.bean.Message;
+import com.debuggor.mockinterview.interview.bean.Message;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 

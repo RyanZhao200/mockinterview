@@ -1,8 +1,8 @@
 package com.debuggor.mockinterview.common.controller;
 
+import com.debuggor.mockinterview.common.bean.Admin;
 import com.debuggor.mockinterview.common.constant.QiniuConstant;
-import com.debuggor.mockinterview.common.service.QiniuService;
-import com.debuggor.mockinterview.common.util.FileUploadUtils;
+import com.debuggor.mockinterview.interview.service.QiniuService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.UUID;
@@ -35,7 +36,7 @@ public class UtilController {
     public @ResponseBody
     String uploadImage(MultipartFile myFileName) throws IOException {
         // 文件类型限制
-        String[] allowedType = {"image/bmp", "image/gif", "image/jpeg", "image/png","image/jpg"};
+        String[] allowedType = {"image/bmp", "image/gif", "image/jpeg", "image/png", "image/jpg"};
         boolean allowed = Arrays.asList(allowedType).contains(myFileName.getContentType());
         if (!allowed) {
             return "error|不支持的类型";
@@ -54,5 +55,16 @@ public class UtilController {
         // 返回图片的URL地址
         System.out.println(QiniuConstant.QINIU_IMAGE_URL + remoteFileName);
         return QiniuConstant.QINIU_IMAGE_URL + remoteFileName;
+    }
+
+    /**
+     * 从session中获得用户
+     *
+     * @param request
+     * @return
+     */
+    public Admin getAdminFromSession(HttpServletRequest request) {
+        Admin admin = (Admin) request.getSession().getAttribute("admin");
+        return admin;
     }
 }

@@ -1,7 +1,7 @@
-package com.debuggor.mockinterview.common.service;
+package com.debuggor.mockinterview.interview.service;
 
-import com.debuggor.mockinterview.common.bean.Message;
-import com.debuggor.mockinterview.common.dao.MessageDao;
+import com.debuggor.mockinterview.interview.bean.Message;
+import com.debuggor.mockinterview.interview.dao.MessageDao;
 import com.debuggor.mockinterview.common.enumerate.MessageStatusEnum;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;

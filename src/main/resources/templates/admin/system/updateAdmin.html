@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>修改密码</title>
-    <link href="..static/admin/css/bootstrap.min.css" th:href="@{/admin/css/bootstrap.min.css}" rel="stylesheet">
-    <link href="..static/admin/css/font-awesome.min93e3.css" th:href="@{/admin/css/font-awesome.min.css}" rel="stylesheet">
-    <link href="..static/admin/css/dashboard.css" th:href="@{/admin/css/dashboard.css}" rel="stylesheet">
+    <link th:href="@{/admin/css/bootstrap.min.css}" rel="stylesheet">
+    <link th:href="@{/admin/css/font-awesome.min.css}" rel="stylesheet">
+    <link th:href="@{/admin/css/dashboard.css}" rel="stylesheet">
 
 </head>
 <body>
@@ -14,9 +14,7 @@
 <div class="container-fluid">
     <div class="row">
 
-
         <main role="main" class="col-md-9 ml-sm-auto col-lg-10 pt-3 px-4">
-
             <div class="">
                 <h2>修改资料</h2>
                 <h4 style="color: red" th:text="${info}==''?'':${info}"></h4>
@@ -26,7 +24,8 @@
                     <div class="form-group">
                         <label for="username" class="col-sm-2 control-label">用户名：</label>
                         <div class="col-sm-3">
-                            <input type="text" class="form-control" id="username" name="username"  th:field="*{username}" disabled>
+                            <input type="text" class="form-control" id="username" name="username" th:field="*{username}"
+                                   disabled>
                         </div>
                     </div>
                     <div class="form-group">
@@ -54,8 +53,8 @@
 </div>
 
 <div>
-    <script type="text/javascript" src="..static/admin/js/jquery.min.js" th:src="@{/admin/js/jquery.min.js}"></script>
-    <script type="text/javascript" src="..static/admin/js/bootstrap.min.js" th:src="@{/admin/js/bootstrap.min.js}"></script>
+    <script type="text/javascript" th:src="@{/admin/js/jquery.min.js}"></script>
+    <script type="text/javascript" th:src="@{/admin/js/bootstrap.min.js}"></script>
 
 </div>
 </body>

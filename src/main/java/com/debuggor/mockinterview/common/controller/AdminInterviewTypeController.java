@@ -1,6 +1,6 @@
 package com.debuggor.mockinterview.common.controller;
 
-import com.debuggor.mockinterview.common.service.InterviewTypeService;
+import com.debuggor.mockinterview.interview.service.InterviewTypeService;
 import com.debuggor.mockinterview.interview.bean.Type;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

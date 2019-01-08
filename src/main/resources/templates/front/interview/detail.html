@@ -3,12 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <title>面试官详情</title>
-    <link rel="stylesheet" href="..static/front/layui/css/layui.css" th:href="@{/front/layui/css/layui.css}">
-    <link rel="stylesheet" href="..static/front/css/global.css" th:href="@{/front/css/global.css}">
-    <link rel="stylesheet" href="..static/front/raty/jquery.raty.css" th:href="@{/front/raty/jquery.raty.css}">
-    <link rel="stylesheet" href="..static/front/window/window.css" th:href="@{/front/window/window.css}">
-    <link rel="stylesheet" href="..static/front/swiper/css/swiper.min.css"
-          th:href="@{/front/swiper/css/swiper.min.css}">
+    <link rel="stylesheet" th:href="@{/front/layui/css/layui.css}">
+    <link rel="stylesheet" th:href="@{/front/css/global.css}">
+    <link rel="stylesheet" th:href="@{/front/raty/jquery.raty.css}">
+    <link rel="stylesheet" th:href="@{/front/window/window.css}">
+    <link rel="stylesheet" th:href="@{/front/swiper/css/swiper.min.css}">
 
 </head>
 <body>
@@ -173,11 +172,11 @@
 <!--公共底部-->
 <div th:replace="front/common/bar::footerbar"></div>
 
-<script src="..static/front/layui/layui.js" th:src="@{/front/layui/layui.js}"></script>
-<script src="..static/admin/js/jquery.min.js" th:src="@{/admin/js/jquery.min.js}"></script>
-<script src="..static/front/raty/jquery.raty.js" th:src="@{/front/raty/jquery.raty.js}"></script>
-<script src="..static/front/window/window.js" th:src="@{/front/window/window.js}"></script>
-<script src="..static/front/swiper/js/swiper.min.js" th:src="@{/front/swiper/js/swiper.min.js}"></script>
+<script th:src="@{/front/layui/layui.js}"></script>
+<script th:src="@{/admin/js/jquery.min.js}"></script>
+<script th:src="@{/front/raty/jquery.raty.js}"></script>
+<script th:src="@{/front/window/window.js}"></script>
+<script th:src="@{/front/swiper/js/swiper.min.js}"></script>
 
 <script th:inline="javascript" type="text/javascript">
     var mySwiper = new Swiper('.swiper-container', {

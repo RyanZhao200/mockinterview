@@ -1,4 +1,4 @@
-package com.debuggor.mockinterview.common.bean;
+package com.debuggor.mockinterview.interview.bean;
 
 import lombok.Data;
 

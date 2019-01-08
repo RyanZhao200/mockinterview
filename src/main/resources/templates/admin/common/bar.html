@@ -40,10 +40,10 @@
             <li class="layui-nav-item">
                 <a class="" href="javascript:;"><i class="layui-icon">&#xe613;</i>&nbsp;面试管理</a>
                 <dl class="layui-nav-child">
-                    <dd><a href="javascript:;">订单列表</a></dd>
-                    <dd><a href="javascript:;">流水管理</a></dd>
-                    <dd><a href="javascript:;">聊天记录</a></dd>
-                    <dd><a href="javascript:;">IT类别</a></dd>
+                    <dd><a href="javascript:;" target="iframe_main">订单列表</a></dd>
+                    <dd><a href="javascript:;" target="iframe_main">流水管理</a></dd>
+                    <dd><a href="javascript:;" target="iframe_main">聊天记录</a></dd>
+                    <dd><a th:href="@{/admin/interview/typeList}" target="iframe_main">IT类别</a></dd>
                 </dl>
             </li>
             <li class="layui-nav-item">
@@ -57,18 +57,18 @@
             <li class="layui-nav-item">
                 <a href="javascript:;"><i class="layui-icon">&#xe612;</i>&nbsp;&nbsp;用户管理</a>
                 <dl class="layui-nav-child">
-                    <dd><a href="javascript:;">面试官列表</a></dd>
-                    <dd><a href="javascript:;">求职者列表</a></dd>
-                    <dd><a href="javascript:;">面试官认证</a></dd>
+                    <dd><a th:href="@{/admin/user/interviewList}" target="iframe_main">面试官列表</a></dd>
+                    <dd><a th:href="@{/admin/user/finderList}" target="iframe_main">求职者列表</a></dd>
+                    <dd><a href="javascript:;" target="iframe_main">面试官认证</a></dd>
 
                 </dl>
             </li>
             <li class="layui-nav-item">
                 <a href="javascript:;"><i class="layui-icon">&#xe716;</i>&nbsp;&nbsp;系统管理</a>
                 <dl class="layui-nav-child">
-                    <dd><a href="javascript:;">数据源</a></dd>
-                    <dd><a href="javascript:;">文章管理</a></dd>
-                    <dd><a href="javascript:;">管理员信息</a></dd>
+                    <dd><a href="javascript:;" target="iframe_main">数据源</a></dd>
+                    <dd><a href="javascript:;" target="iframe_main">文章管理</a></dd>
+                    <dd><a href="javascript:;" target="iframe_main">管理员信息</a></dd>
                 </dl>
             </li>
         </ul>

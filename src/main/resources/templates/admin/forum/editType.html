@@ -2,44 +2,40 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>修改栏目</title>
-    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" th:href="@{/admin/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/front/window/window.css}">
 
 </head>
-<body style="background-color: white;">
+<body style="background-color: white;padding:0 20px;">
 <div class="container">
     <div class="row">
-        <h2>修改栏目</h2>
-        <form id="formId" class="form-horizontal" role="form" th:object="${type}"
+        <h3>修改栏目</h3>
+        <form id="formId" class="form-inline" role="form" th:object="${type}"
               th:action="@{/admin/forum/editType}">
             <input name="tid" type="hidden" th:field="*{tid}"/>
-            <div class="form-group">
-                <label class="col-sm-3 control-label ">栏目名称：</label>
-                <div class="col-sm-6">
-                    <input class="form-control" type="text" name="typeName" th:field="*{typeName}"/>
-                </div>
+            <div class="form-group col-sm-2">
+                <label class=" control-label ">栏目名称：</label>
+                <input class="form-control" type="text" name="typeName" th:field="*{typeName}"/>
             </div>
-            <div class="form-group">
-                <label class="col-sm-3 control-label">优先级：</label>
-                <div class="col-sm-6">
-                    <input class="form-control" type="text" name="orderNo" id="orderNo" th:field="*{orderNo}">
-                </div>
+            <div class="form-group col-sm-2">
+                <label class=" control-label">优先级：</label>
+                <input class="form-control" type="text" name="orderNo" id="orderNo" th:field="*{orderNo}">
             </div>
-            <div class="form-group">
-                <label class="col-sm-3"></label>
-                <div class="col-sm-6">
-                    <input type="submit" class="btn btn-success" onclick="formSubmit()" value="修改">
-                </div>
+            <div class="form-group" style="text-align: center;">
+                <input type="submit" class="btn btn-success" onclick="formSubmit()" value="修改">
             </div>
         </form>
     </div>
 </div>
+<script th:src="@{/admin/js/jquery.min.js}"></script>
+<script th:src="@{/admin/js/bootstrap.min.js}"></script>
+<script th:src="@{/front/window/window.js}"></script>
+
 <script language=javascript>
     function formSubmit() {
         document.getElementById("formId").submit();
-        alert("跟新成功！");
+    //    alert("跟新成功！");
+        win.close();
     }
 </script>
 </body>

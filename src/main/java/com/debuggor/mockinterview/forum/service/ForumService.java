@@ -3,7 +3,9 @@ package com.debuggor.mockinterview.forum.service;
 import com.debuggor.mockinterview.common.constant.PageConstant;
 import com.debuggor.mockinterview.common.enumerate.UserEnum;
 import com.debuggor.mockinterview.forum.bean.Forum;
+import com.debuggor.mockinterview.forum.bean.Type;
 import com.debuggor.mockinterview.forum.dao.ForumDao;
+import com.debuggor.mockinterview.forum.dao.ForumTypeDao;
 import com.debuggor.mockinterview.interview.bean.Finder;
 import com.debuggor.mockinterview.interview.bean.Interviewer;
 import com.debuggor.mockinterview.interview.dao.FinderDao;
@@ -25,6 +27,8 @@ public class ForumService {
     private FinderDao finderDao;
     @Autowired
     private InterviewerDao interviewerDao;
+    @Autowired
+    private ForumTypeDao forumTypeDao;
 
     /**
      * 帖子列表
@@ -76,7 +80,7 @@ public class ForumService {
             return null;
         }
         Forum post = forumDao.getForumById(pid);
-        if (post==null){
+        if (post == null) {
             return null;
         }
         if (post.getUserType().equals(UserEnum.FINDER.key)) {
@@ -94,6 +98,7 @@ public class ForumService {
 
     /**
      * 添加帖子，返回帖子ID
+     * 更新帖子对应栏目的数量
      *
      * @param forum
      * @return
@@ -111,6 +116,12 @@ public class ForumService {
         //最近回复时间
         forum.setReplyTime(date);
         Integer pid = forumDao.insertForum(forum);
+        // 更新栏目帖子数量
+        Type type = forumTypeDao.getTypeById(forum.getTid());
+        if (type != null) {
+            type.setPostNum(type.getPostNum() + 1);
+            forumTypeDao.updateType(type);
+        }
         return pid;
     }
 
@@ -140,7 +151,7 @@ public class ForumService {
      * 近期热帖 15条
      */
     public List<Forum> getRecentHotPosts() {
-       List<Forum> hotPosts= forumDao.getRecentHotPosts();
-       return hotPosts;
+        List<Forum> hotPosts = forumDao.getRecentHotPosts();
+        return hotPosts;
     }
 }
