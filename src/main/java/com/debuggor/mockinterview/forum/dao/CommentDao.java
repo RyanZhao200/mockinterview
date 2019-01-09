@@ -8,6 +8,13 @@ import java.util.List;
 
 @Repository
 public interface CommentDao {
+    /**
+     * 得到评论列表
+     *
+     * @param comment
+     * @return
+     */
+    List<Comment> getCommentsList(Comment comment);
 
     /**
      * 根据帖子ID获得评论

@@ -19,13 +19,19 @@ public class AdminInterviewerController {
     @Autowired
     private InterviewService interviewService;
 
-
+    /**
+     * 后台面试官列表
+     *
+     * @param pn
+     * @param interviewer
+     * @param model
+     * @return
+     */
     @RequestMapping("/interviewList")
     public String toInterviewerList(@RequestParam(required = false, defaultValue = "1", value = "pn") Integer pn,
                                     Interviewer interviewer, Model model) {
         PageInfo pageInfo = interviewService.getInterviewerList(interviewer, pn);
         model.addAttribute("pageInfo", pageInfo);
-        logger.info(String.valueOf(pageInfo.getTotal()));
         return "admin/user/interviewList";
     }
 

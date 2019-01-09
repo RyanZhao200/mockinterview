@@ -29,6 +29,20 @@ public class CommentService {
     private InterviewerDao interviewerDao;
 
     /**
+     * 评论列表
+     *
+     * @param comment
+     * @param pn
+     * @return
+     */
+    public PageInfo getCommentsList(Comment comment, Integer pn) {
+        PageHelper.startPage(pn, PageConstant.Page_Sizes);
+        List<Comment> comments = commentDao.getCommentsList(comment);
+        PageInfo pageInfo = new PageInfo<>(comments, PageConstant.Navigate_Pages);
+        return pageInfo;
+    }
+
+    /**
      * 获取帖子的评论 有分页功能
      *
      * @param pid 帖子ID

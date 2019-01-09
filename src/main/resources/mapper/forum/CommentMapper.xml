@@ -7,6 +7,9 @@
     <resultMap id="commentMap" type="com.debuggor.mockinterview.forum.bean.Comment">
         <id column="cid" property="cid"/>
         <result column="comment" property="comment"/>
+        <result column="uid" property="uid"/>
+        <result column="user_type" property="userType"/>
+        <result column="comment_status" property="commentStatus"/>
         <result column="comment_time" property="commentTime"/>
         <association property="forum" javaType="com.debuggor.mockinterview.forum.bean.Forum">
             <id column="pid" property="pid"/>
@@ -21,6 +24,14 @@
         <if test="endTime != null and endTime !='' ">and f.create_time <![CDATA[ <= ]]> #{endTime}</if>
     </sql>
 
+    <!-- 帖子评论列表-->
+    <select id="getCommentsList" resultMap="commentMap" parameterType="com.debuggor.mockinterview.forum.bean.Comment">
+        SELECT c.cid,c.comment,c.uid,c.user_type,c.comment_status,c.comment_time,f.pid,f.title
+        from f_comment c
+        LEFT JOIN f_forum f on f.pid = c.pid
+        where 1=1
+        ORDER BY c.comment_time desc
+    </select>
     <!-- 获得帖子的评论 -->
     <select id="getCommentListByPid" resultType="com.debuggor.mockinterview.forum.bean.Comment"
             parameterType="java.lang.Integer">
@@ -28,12 +39,12 @@
         from f_comment c  WHERE c.pid = #{pid} and c.comment_status=1 AND parent_id = #{parentId}
         ORDER BY c.comment_time
     </select>
-
+    <!-- 插入一条评论-->
     <insert id="insert" parameterType="com.debuggor.mockinterview.forum.bean.Comment">
         insert into f_comment (comment,pid,uid,user_type,comment_time,parent_id,comment_status)
         values (#{comment},#{pid},#{uid},#{userType},#{commentTime},#{parentId},#{commentStatus});
     </insert>
-
+    <!-- 获得用户发表的评论-->
     <select id="getCommentListByUid" resultMap="commentMap">
         SELECT f.pid,f.title,c.cid,c.comment,c.comment_time
         from f_comment c
@@ -41,7 +52,7 @@
         where c.uid=#{uid} and c.user_type=#{userType} and c.comment_status=1
         ORDER BY c.comment_time DESC
     </select>
-
+    <!--更新评论-->
     <update id="update" parameterType="com.debuggor.mockinterview.forum.bean.Comment">
         update f_comment
         <set>

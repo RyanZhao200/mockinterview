@@ -106,7 +106,7 @@ public class AdminForumTypeController {
         }
         StringBuilder str = new StringBuilder();
         str.append("<script>");
-        str.append(" window.opener.location.href = window.opener.location.href; win.close();");
+        str.append(" window.opener.location.href = window.opener.location.href; window.close();");
         str.append("</script>");
         response.getWriter().write(str.toString());
     }

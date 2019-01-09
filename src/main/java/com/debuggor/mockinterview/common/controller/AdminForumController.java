@@ -1,7 +1,9 @@
 package com.debuggor.mockinterview.common.controller;
 
+import com.debuggor.mockinterview.forum.bean.Comment;
 import com.debuggor.mockinterview.forum.bean.Forum;
 import com.debuggor.mockinterview.forum.bean.Type;
+import com.debuggor.mockinterview.forum.service.CommentService;
 import com.debuggor.mockinterview.forum.service.ForumTypeService;
 import com.debuggor.mockinterview.forum.service.ForumService;
 import com.github.pagehelper.PageInfo;
@@ -27,6 +29,8 @@ public class AdminForumController {
     private ForumService postService;
     @Autowired
     private ForumTypeService forumTypeService;
+    @Autowired
+    private CommentService commentService;
 
     /**
      * 帖子列表
@@ -58,5 +62,20 @@ public class AdminForumController {
         model.addAttribute("startTime", forum.getStartTime());
         model.addAttribute("endTime", forum.getEndTime());
         return "admin/forum/forumList";
+    }
+
+    /**
+     * 得到评论的列表
+     *
+     * @param pn
+     * @param comment
+     * @param model
+     * @return
+     */
+    public String getCommentsList(@RequestParam(required = false, defaultValue = "1", value = "pn") Integer pn,
+                                  Comment comment, Model model) {
+        PageInfo pageInfo = commentService.getCommentsList(comment, pn);
+        model.addAttribute("pageInfo", pageInfo);
+        return "";
     }
 }

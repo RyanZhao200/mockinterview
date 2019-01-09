@@ -2,10 +2,8 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title></title>
-    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css">
-    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" th:href="@{/admin/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/front/window/window.css}">
 
 </head>
 <body>
@@ -33,7 +31,7 @@
                         <td>
                             <a class="btn btn-primary" th:onclick="'javascript:edit('+${type.tid}+');'">编辑</a>
                             <button class="btn btn-danger deleteBtn"
-                                    th:attr="del_url=@{/admin/interview/delete/}+${type.tid}">删除
+                                    th:onclick="'deleteType('+${type.tid}+')'">删除
                             </button>
                         </td>
                     </tr>
@@ -80,6 +78,9 @@
         </div>
     </div>
 </div>
+<script th:src="@{/admin/js/jquery.min.js}"></script>
+<script th:src="@{/admin/js/bootstrap.min.js}"></script>
+<script th:src="@{/front/window/window.js}"></script>
 
 <script>
     function validateForm() {
@@ -87,26 +88,30 @@
         var orderNo = $.trim(document.forms["formType"]["orderNo"].value);
         console.info(name + " " + orderNo);
         if (name == null || name == "") {
-            alert("请填写栏目名称！");
+            win.alertEx("请填写栏目名称！");
             return false;
         }
         if (orderNo == "" || isNaN(orderNo)) {
-            alert("请填写栏目顺序！")
+            win.alertEx("请填写栏目顺序！")
             return false;
         }
     }
 
-    $(".deleteBtn").click(function () {
-        //删除当前员工的
-        if (confirm("确定要删除当前栏目吗？")) {
-            $("#deleteTypeForm").attr("action", $(this).attr("del_url")).submit();
-        }
-        return false;
-    });
+    //删除当前栏目
+    function deleteType(tid) {
+        //删除当前栏目
+        win.confirm('温馨提示', '确定删除当前栏目吗？', function (r) {
+            if (r) {
+                var href = '/admin/interview/delete/';
+                href = href + tid;
+                window.location.href = href;
+            }
+        });
+    }
 
     function edit(tid) {
         var url = "/admin/interview/toEdit/" + tid;
-        window.open(url, "修改栏目", "height=400, width=600, top=200, left=300, toolbar=no, menubar=no, scrollbars=no, resizable=yes,location=no, status=no");
+        window.open(url, "修改栏目", "height=350, width=400, top=200, left=400,toolbar=no, menubar=no, scrollbars=no, resizable=yes,location=no, status=no");
     }
 
 </script>
