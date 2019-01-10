@@ -17,7 +17,7 @@
     <select id="getPostList" resultType="com.debuggor.mockinterview.forum.bean.Forum"
             parameterType="com.debuggor.mockinterview.forum.bean.Forum">
         SELECT f.pid,f.title,f.content,f.scan_count,f.comment_count,f.create_time,f.uid,f.user_type,
-        f.update_time,f.reply_time,t.tid,t.type_name
+        f.update_time,f.reply_time,f.forum_status,t.tid,t.type_name
         from f_forum f
         LEFT JOIN f_type t on f.tid=t.tid
         <where>

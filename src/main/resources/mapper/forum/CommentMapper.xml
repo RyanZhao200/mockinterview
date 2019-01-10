@@ -18,10 +18,10 @@
     </resultMap>
 
     <sql id="query_comment_where">
-        <if test="uid != null and uid !='' ">and f.uid=#{uid}</if>
-        <if test="tid != null and tid !='' ">and f.tid=#{tid}</if>
-        <if test="startTime != null and startTime !='' ">and f.create_time <![CDATA[ >= ]]> #{startTime}</if>
-        <if test="endTime != null and endTime !='' ">and f.create_time <![CDATA[ <= ]]> #{endTime}</if>
+        <if test="uid != null and uid !='' ">and c.uid=#{uid}</if>
+        <if test="pid != null and pid !='' ">and c.pid=#{pid}</if>
+        <if test="startTime != null and startTime !='' ">and c.comment_time <![CDATA[ >= ]]> #{startTime}</if>
+        <if test="endTime != null and endTime !='' ">and c.comment_time <![CDATA[ <= ]]> #{endTime}</if>
     </sql>
 
     <!-- 帖子评论列表-->
@@ -29,7 +29,9 @@
         SELECT c.cid,c.comment,c.uid,c.user_type,c.comment_status,c.comment_time,f.pid,f.title
         from f_comment c
         LEFT JOIN f_forum f on f.pid = c.pid
-        where 1=1
+        <where>
+            <include refid="query_comment_where"></include>
+        </where>
         ORDER BY c.comment_time desc
     </select>
     <!-- 获得帖子的评论 -->

@@ -38,7 +38,14 @@ public class CommentService {
     public PageInfo getCommentsList(Comment comment, Integer pn) {
         PageHelper.startPage(pn, PageConstant.Page_Sizes);
         List<Comment> comments = commentDao.getCommentsList(comment);
-        PageInfo pageInfo = new PageInfo<>(comments, PageConstant.Navigate_Pages);
+        PageInfo<Comment> pageInfo = new PageInfo<>(comments, PageConstant.Navigate_Pages);
+        //  添加评论的其他信息
+        List<Comment> list = new ArrayList<>();
+        for (Comment c : pageInfo.getList()) {
+            Comment commentOtherInfo = getCommentOtherInfo(c);
+            list.add(commentOtherInfo);
+        }
+        pageInfo.setList(list);
         return pageInfo;
     }
 
@@ -55,7 +62,7 @@ public class CommentService {
         }
         PageHelper.startPage(pn, PageConstant.Page_Sizes);
         List<Comment> comments = commentDao.getCommentListByPid(pid, 0);
-        PageInfo pageInfo = new PageInfo<>(comments, PageConstant.Navigate_Pages);
+        PageInfo<Comment> pageInfo = new PageInfo<>(comments, PageConstant.Navigate_Pages);
         return pageInfo;
     }
 

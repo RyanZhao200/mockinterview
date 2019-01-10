@@ -23,7 +23,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin/forum")
 public class AdminForumController {
-    Logger logger = LoggerFactory.getLogger(AdminForumController.class);
+    private Logger logger = LoggerFactory.getLogger(AdminForumController.class);
 
     @Autowired
     private ForumService postService;
@@ -53,29 +53,41 @@ public class AdminForumController {
 
         PageInfo pageInfo = postService.getPostList(forum, pn);
         model.addAttribute("pageInfo", pageInfo);
-        logger.info(String.valueOf(pageInfo.getTotal()));
         List<Type> typeList = forumTypeService.getForumTypeList();
         model.addAttribute("types", typeList);
         // 为分页做辅助
-        model.addAttribute("tid", forum.getTid());
+        model.addAttribute("tid", tid);
         model.addAttribute("username", forum.getUsername());
-        model.addAttribute("startTime", forum.getStartTime());
-        model.addAttribute("endTime", forum.getEndTime());
+        model.addAttribute("startTime", startTime);
+        model.addAttribute("endTime", endTime);
         return "admin/forum/forumList";
     }
 
     /**
      * 得到评论的列表
      *
-     * @param pn
-     * @param comment
+     * @param pn        第几页
+     * @param pid       帖子ID
+     * @param startTime 开始时间
+     * @param endTime   结束时间
      * @param model
      * @return
      */
+    @RequestMapping("/commentList")
     public String getCommentsList(@RequestParam(required = false, defaultValue = "1", value = "pn") Integer pn,
-                                  Comment comment, Model model) {
+                                  @RequestParam(required = false, value = "pid") Integer pid,
+                                  @RequestParam(required = false, value = "startTime") String startTime,
+                                  @RequestParam(required = false, value = "endTime") String endTime,
+                                  Model model) {
+        Comment comment = new Comment();
+        comment.setPid(pid);
+        comment.setStartTime(startTime);
+        comment.setEndTime(endTime);
         PageInfo pageInfo = commentService.getCommentsList(comment, pn);
         model.addAttribute("pageInfo", pageInfo);
-        return "";
+        model.addAttribute("pid", pid);
+        model.addAttribute("startTime", startTime);
+        model.addAttribute("endTime", endTime);
+        return "admin/forum/commentList";
     }
 }

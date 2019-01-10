@@ -2,8 +2,9 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>帖子列表</title>
+    <title>评论列表</title>
     <link rel="stylesheet" th:href="@{/admin/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/admin/bootstrap-switch/bootstrap-switch.css}">
 
 </head>
 <body style="background-color: #F3F3F4;">
@@ -11,24 +12,16 @@
     <div class="row">
         <div class="col-sm-12 search-collapse" style="background-color: #ffffff;padding-bottom: 20px;">
             <div>&nbsp;</div>
-            <form class="form-inline" role="form" th:action="@{/admin/forum/postList}" method="post">
-                <div class="form-group col-sm-3">
-                    <label class="control-label">类别：</label>
-                    <select name="tid" class="form-control" style="width: 50%;">
-                        <option value="0" th:selected="${tid==0}">所有</option>
-                        <option th:each="type:${types}" th:value="${type.tid}" th:selected="${type.tid==tid}"
-                                th:text="${type.typeName}"></option>
-                    </select>
-                </div>
+            <form class="form-inline" role="form" th:action="@{/admin/forum/commentList}" method="post">
                 <div class="form-group col-sm-4 select-time">
-                    <label class="control-label">发表时间：</label>
+                    <label class="control-label">评论时间：</label>
                     <input name="startTime" class="form-control" id="startTime" style="width: 30%;"
                            placeholder="开始时间" th:value="${startTime}">
                     <span>-</span>
                     <input name="endTime" class="form-control" id="endTime" style="width: 30%;"
                            placeholder="结束时间" th:value="${endTime}">
                 </div>
-                <div class="form-group col-sm-2" style="text-align: center;">
+                <div class="form-group col-sm-2">
                     <button type="submit" class="btn btn-info">查询</button>&nbsp;
                 </div>
             </form>
@@ -36,34 +29,44 @@
         <div>&nbsp;</div>
         <div class="col-sm-12 table-responsive" style="background-color: #ffffff;border-radius:15px;">
             <table class="table table-hover table-sm">
-                <caption><h3>帖子列表</h3></caption>
+                <caption><h3>评论列表</h3></caption>
                 <thead>
                 <tr>
-                    <th>标题</th>
-                    <th>创建人</th>
-                    <th>类别</th>
-                    <th>浏览量</th>
-                    <th>评论数量</th>
-                    <th>发表时间</th>
+                    <th>内容</th>
+                    <th>帖子</th>
+                    <th>评论人</th>
+                    <th>评论时间</th>
                     <th>状态</th>
                     <th>操作</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr th:each="post:${pageInfo.list}">
-                    <td>
-                        <a th:href="@{/forum/}+${post.pid}" th:text="${post.title}" target="_blank"></a>
+                <tr th:each="comment:${pageInfo.list}">
+                    <td style="width: 30%;overflow: hidden;">
+                        <div style="height: 20px;line-height: 30px;">
+                            <a th:href="@{/forum/}+${comment.forum.pid}" th:utext="${comment.comment}"></a>
+                        </div>
                     </td>
-                    <td th:text="${post.username}"></td>
-                    <td th:text="${post.typeName}"></td>
-                    <td th:text="${post.scanCount}"></td>
-                    <td>
-                        <a th:href="@{/admin/forum/commentList?pid=}+${post.pid}" th:text="${post.commentCount}"> </a>
+                    <td style="width: 30%;overflow: hidden;">
+                        <div style="height: 20px;line-height: 30px;">
+                            <a th:href="@{/forum/}+${comment.forum.pid}" th:text="${comment.forum.title}"></a>
+                        </div>
                     </td>
-                    <td th:text="${#dates.format(post.createTime, 'yyyy-MM-dd HH:mm')}"></td>
-                    <td th:text="${post.forumStatus}"></td>
+                    <td th:text="${comment.username}"></td>
+                    <td th:text="${#dates.format(comment.commentTime, 'yyyy-MM-dd HH:mm')}"></td>
                     <td>
-                        <button>编辑</button>
+                        <span th:text="${comment.commentStatus}"></span>
+                        <div id="mySwitch" class="switch has-switch">
+                            <div class="switch-on switch-animate" style="">
+                                <input type="checkbox" checked="">
+                                <span class="switch-left">ON</span>
+                                <label>&nbsp;</label>
+                                <span class="switch-right">OFF</span>
+                            </div>
+                        </div>
+                    </td>
+                    <td>
+                        <button>修改</button>
                     </td>
                 </tr>
                 </tbody>
@@ -79,11 +82,11 @@
             <nav aria-label="Page navigation">
                 <ul class="pagination  pagination-lg" style="display:inline-block;list-style:none;">
                     <li>
-                        <a th:href="@{/admin/forum/postList(tid=${tid},startTime=${startTime},endTime=${endTime},pn=1)}">首页</a>
+                        <a th:href="@{/admin/forum/commentList(pid=${pid},startTime=${startTime},endTime=${endTime},pn=1)}">首页</a>
                     </li>
                     <!--上一页-->
                     <li th:if="${pageInfo.hasPreviousPage}">
-                        <a th:href="@{/admin/forum/postList(tid=${tid},startTime=${startTime},endTime=${endTime},pn=${pageInfo.pageNum-1})}"
+                        <a th:href="@{/admin/forum/commentList(pid=${pid},startTime=${startTime},endTime=${endTime},pn=${pageInfo.pageNum-1})}"
                            aria-label="Previous">
                             <span aria-hidden="true">«</span>
                         </a>
@@ -93,17 +96,17 @@
                         <span class="active" th:if="${page_num == pageInfo.pageNum}">
                             <a href="#">[[${page_num}]]</a></span>
                         <span th:if="${page_num != pageInfo.pageNum}">
-                            <a th:href="@{/admin/forum/postList(tid=${tid},startTime=${startTime},endTime=${endTime},pn=${page_num})}">[[${page_num}]]</a></span>
+                            <a th:href="@{/admin/forum/commentList(pid=${pid},startTime=${startTime},endTime=${endTime},pn=${page_num})}">[[${page_num}]]</a></span>
                     </li>
                     <!--下一页-->
                     <li th:if="${pageInfo.hasNextPage}">
-                        <a th:href="@{/admin/forum/postList(tid=${tid},startTime=${startTime},endTime=${endTime},pn=${pageInfo.pageNum+1})}"
+                        <a th:href="@{/admin/forum/commentList(pid=${pid},startTime=${startTime},endTime=${endTime},pn=${pageInfo.pageNum+1})}"
                            aria-label="Next">
                             <span aria-hidden="true">»</span>
                         </a>
                     </li>
                     <li>
-                        <a th:href="@{/admin/forum/postList(tid=${tid},startTime=${startTime},endTime=${endTime},pn=${pageInfo.pages})}">尾页</a>
+                        <a th:href="@{/admin/forum/commentList(pid=${pid},startTime=${startTime},endTime=${endTime},pn=${pageInfo.pages})}">尾页</a>
                     </li>
                 </ul>
             </nav>
@@ -114,8 +117,13 @@
 <script th:src="@{/admin/js/bootstrap.min.js}"></script>
 <script th:src="@{/front/laydate/laydate.js}"></script>
 <script th:src="@{/admin/js/common.js}"></script>
-<script>
+<script th:src="@{/admin/bootstrap-switch/bootstrap-switch.js}"></script>
 
+<script>
+    $('#mySwitch').on('switch-change', function (e, data) {
+        var $el = $(data.el), value = data.value;
+        console.log(e, $el, value);
+    });
 </script>
 </body>
 </html>

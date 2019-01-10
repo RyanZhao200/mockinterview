@@ -56,5 +56,12 @@ public class Comment {
      * 子评论:只支持一级评论
      */
     private List<Comment> sonComments;
-
+    /**
+     * 查询 开始时间
+     */
+    private String startTime;
+    /**
+     * 查询 结束时间
+     */
+    private String endTime;
 }
