@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>流水列表</title>
+    <link rel="stylesheet" th:href="@{/admin/css/bootstrap.min.css}">
+
+</head>
+<body style="background-color: #F3F3F4;">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12 search-collapse" style="background-color: #ffffff;padding-bottom: 20px;">
+            <div>&nbsp;</div>
+            <form class="form-inline" role="form" th:action="@{/admin/flow/flowList}" method="post">
+
+                <div class="form-group col-sm-4 select-time">
+                    <label class="control-label">发表时间：</label>
+                    <input name="startTime" class="form-control" id="startTime" style="width: 30%;"
+                           placeholder="开始时间">
+                    <span>-</span>
+                    <input name="endTime" class="form-control" id="endTime" style="width: 30%;"
+                           placeholder="结束时间">
+                </div>
+                <div class="form-group col-sm-2" style="text-align: center;">
+                    <button type="submit" class="btn btn-info">查询</button>&nbsp;
+                </div>
+            </form>
+        </div>
+        <div>&nbsp;</div>
+        <div class="col-sm-12 table-responsive" style="background-color: #ffffff;border-radius:15px;">
+            <table class="table table-hover table-sm">
+                <caption><h3>流水列表</h3></caption>
+                <thead>
+                <tr>
+                    <th>流水号</th>
+                    <th>订单号</th>
+                    <th>金额</th>
+                    <th>求职者</th>
+                    <th>面试官</th>
+                    <th>创建时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="flow:${pageInfo.list}">
+                    <td th:text="${flow.flowNum}">
+                        <!--<a th:href="@{/forum/}+${post.pid}" th:text="${post.title}" target="_blank"></a>-->
+                    </td>
+                    <td th:text="${flow.orderNum}"></td>
+                    <td th:text="${flow.paidAmount}"></td>
+                    <td th:text="${flow.finderUsername}"></td>
+                    <td th:text="${flow.interviewerUsername}"></td>
+                    <td th:text="${#dates.format(flow.createTime, 'yyyy-MM-dd HH:mm')}"></td>
+                    <td>
+                        <button>编辑</button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <!--文字信息-->
+        <div class="col-sm-4">
+            当前第 [[${pageInfo.pageNum}]] 页.总共 [[${pageInfo.pages}]] 页.一共 [[${pageInfo.total}]] 条记录
+        </div>
+        <!--点击分页-->
+        <div class="col-sm-6">
+            <nav aria-label="Page navigation">
+                <ul class="pagination  pagination-lg" style="display:inline-block;list-style:none;">
+                    <li>
+                        <a th:href="@{/admin/forum/postList(tid=${tid},startTime=${startTime},endTime=${endTime},pn=1)}">首页</a>
+                    </li>
+                    <!--上一页-->
+                    <li th:if="${pageInfo.hasPreviousPage}">
+                        <a th:href="@{/admin/forum/postList(tid=${tid},startTime=${startTime},endTime=${endTime},pn=${pageInfo.pageNum-1})}"
+                           aria-label="Previous">
+                            <span aria-hidden="true">«</span>
+                        </a>
+                    </li>
+                    <!--循环遍历连续显示的页面，若是当前页就高亮显示，并且没有链接-->
+                    <li th:each="page_num:${pageInfo.navigatepageNums}">
+                        <span class="active" th:if="${page_num == pageInfo.pageNum}">
+                            <a href="#">[[${page_num}]]</a></span>
+                        <span th:if="${page_num != pageInfo.pageNum}">
+                            <a th:href="@{/admin/forum/postList(tid=${tid},startTime=${startTime},endTime=${endTime},pn=${page_num})}">[[${page_num}]]</a></span>
+                    </li>
+                    <!--下一页-->
+                    <li th:if="${pageInfo.hasNextPage}">
+                        <a th:href="@{/admin/forum/postList(tid=${tid},startTime=${startTime},endTime=${endTime},pn=${pageInfo.pageNum+1})}"
+                           aria-label="Next">
+                            <span aria-hidden="true">»</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a th:href="@{/admin/forum/postList(tid=${tid},startTime=${startTime},endTime=${endTime},pn=${pageInfo.pages})}">尾页</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+<script th:src="@{/admin/js/jquery.min.js}"></script>
+<script th:src="@{/admin/js/bootstrap.min.js}"></script>
+<script th:src="@{/front/laydate/laydate.js}"></script>
+<script th:src="@{/admin/js/common.js}"></script>
+<script>
+
+</script>
+</body>
+</html>

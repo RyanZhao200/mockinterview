@@ -5,13 +5,39 @@
 
 <mapper namespace="com.debuggor.mockinterview.interview.dao.FlowDao">
 
+    <resultMap id="flowMap" type="com.debuggor.mockinterview.interview.bean.Flow">
+        <id column="fid" property="fid"/>
+        <result column="flow_num" property="flowNum"/>
+        <result column="order_num" property="orderNum"/>
+        <result column="paid_amount" property="paidAmount"/>
+        <result column="create_time" property="createTime"/>
+        <result column="interviewer_id" property="interviewerId"/>
+        <result column="iusername" property="interviewerUsername"/>
+        <result column="finder_id" property="finderId"/>
+        <result column="fusername" property="finderUsername"/>
+    </resultMap>
+
+    <!-- 插入一条流水-->
     <insert id="insert" parameterType="com.debuggor.mockinterview.interview.bean.Flow">
         INSERT into j_flow(flow_num,order_num,paid_amount,finder_id,interviewer_id,create_time)
         VALUES(#{flowNum},#{orderNum},#{paidAmount},#{finderId},#{interviewerId},#{createTime})
     </insert>
 
+    <!-- 得到面试官已经面试过的人数 -->
     <select id="getFlowNumByIid" resultType="java.lang.Integer" parameterType="java.lang.Integer">
         SELECT count(1) from j_flow WHERE interviewer_id = #{iid}
     </select>
 
+    <sql id="with_Flow_Column_List">
+        f.fid,f.flow_num,f.order_num,f.paid_amount,f.create_time,
+        i.iid interviewer_id,i.username iusername,fi.fid finder_id,fi.username fusername
+    </sql>
+    <!-- 所有的流水记录，付款，退款，结单-->
+    <select id="getFlowList" parameterType="com.debuggor.mockinterview.interview.bean.Flow" resultMap="flowMap">
+        SELECT
+        <include refid="with_Flow_Column_List"></include>
+        FROM j_flow f
+        LEFT JOIN j_interviewer i on f.interviewer_id=i.iid
+        LEFT JOIN j_finder fi on fi.fid = f.finder_id
+    </select>
 </mapper>

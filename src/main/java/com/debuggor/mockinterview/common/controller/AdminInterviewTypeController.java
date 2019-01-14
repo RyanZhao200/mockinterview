@@ -24,7 +24,7 @@ import java.util.List;
 @Controller
 @RequestMapping("/admin/interview")
 public class AdminInterviewTypeController {
-    Logger logger = LoggerFactory.getLogger(AdminInterviewTypeController.class);
+    private Logger logger = LoggerFactory.getLogger(AdminInterviewTypeController.class);
     /**
      * 公共的方法
      */

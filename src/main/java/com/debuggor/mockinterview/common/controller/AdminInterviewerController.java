@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 @Controller
 @RequestMapping("/admin/user")
 public class AdminInterviewerController {
-    Logger logger = LoggerFactory.getLogger(AdminInterviewerController.class);
+    private Logger logger = LoggerFactory.getLogger(AdminInterviewerController.class);
 
     @Autowired
     private InterviewService interviewService;

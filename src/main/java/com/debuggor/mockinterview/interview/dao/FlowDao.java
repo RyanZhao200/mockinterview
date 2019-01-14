@@ -3,6 +3,8 @@ package com.debuggor.mockinterview.interview.dao;
 import com.debuggor.mockinterview.interview.bean.Flow;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * 流水Dao
  */
@@ -22,4 +24,12 @@ public interface FlowDao {
      * @return
      */
     Integer getFlowNumByIid(Integer iid);
+
+    /**
+     * 得到所有的流水；求职者已经付款的订单
+     *
+     * @param flow
+     * @return
+     */
+    List<Flow> getFlowList(Flow flow);
 }

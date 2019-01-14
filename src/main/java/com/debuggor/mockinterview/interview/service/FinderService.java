@@ -39,7 +39,7 @@ public class FinderService {
     private FollowerDao followerDao;
 
     /**
-     * 查询所有求职者
+     * 查询所有求职者;分页
      *
      * @param finder
      * @param pn
@@ -50,6 +50,17 @@ public class FinderService {
         List<Finder> finderList = finderDao.getFinderList(finder);
         PageInfo pageInfo = new PageInfo<>(finderList, PageConstant.Navigate_Pages);
         return pageInfo;
+    }
+
+    /**
+     * 所有的求职者；不分页；供后台流水订单查询使用
+     *
+     * @param finder
+     * @return
+     */
+    public List<Finder> getFinderList(Finder finder) {
+        List<Finder> finders = finderDao.getFinderList(finder);
+        return finders;
     }
 
     /**

@@ -61,6 +61,16 @@ public class InterviewService {
     }
 
     /**
+     * 得到所有的面试官信息；供后台查询订单使用
+     * @param interviewer
+     * @return
+     */
+    public List<Interviewer> getInterviewerList(Interviewer interviewer) {
+        List<Interviewer> interviewers = interviewDao.getInterviewerList(interviewer);
+        return interviewers;
+    }
+
+    /**
      * 首页展示；获取每个类别的几位面试官信息
      *
      * @return

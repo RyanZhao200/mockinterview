@@ -3,6 +3,7 @@ package com.debuggor.mockinterview.common.controller;
 import com.debuggor.mockinterview.common.bean.Admin;
 import com.debuggor.mockinterview.common.constant.MockConstant;
 import com.debuggor.mockinterview.common.service.AdminService;
+import com.debuggor.mockinterview.common.util.TimeUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,7 +21,7 @@ import java.util.Date;
 @RequestMapping("/admin")
 @Controller
 public class AdminLoginController {
-    Logger logger = LoggerFactory.getLogger(AdminLoginController.class);
+    private Logger logger = LoggerFactory.getLogger(AdminLoginController.class);
 
     @Autowired
     private AdminService adminService;
@@ -57,7 +58,7 @@ public class AdminLoginController {
         }
         admin = adminService.getAdminByUserName(username);
         session.setAttribute("admin", admin);
-        logger.info(username + "与" + new Date() + "登录后台");
+        logger.info(username + "于" + TimeUtil.format(new Date()) + "登录后台");
         return "redirect:/admin";
     }
 
@@ -83,7 +84,8 @@ public class AdminLoginController {
      */
     @RequestMapping("/logout")
     public String logout(HttpSession session) {
-        logger.info("退出登录。。。。。。");
+        Admin admin = (Admin) session.getAttribute("admin");
+        logger.info(admin.getUsername() + "于" + TimeUtil.format(new Date()) + "登出后台");
         session.invalidate();
         return "admin/login";
     }

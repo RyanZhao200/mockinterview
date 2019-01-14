@@ -1,9 +1,12 @@
 package com.debuggor.mockinterview.interview.service;
 
+import com.debuggor.mockinterview.common.constant.PageConstant;
 import com.debuggor.mockinterview.interview.bean.Interviewer;
 import com.debuggor.mockinterview.interview.bean.Order;
 import com.debuggor.mockinterview.interview.dao.InterviewerDao;
 import com.debuggor.mockinterview.interview.dao.OrdersDao;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -80,5 +83,19 @@ public class OrdersService {
             }
         }
         return orders;
+    }
+
+    /**
+     * 所有的订单信息
+     *
+     * @param order
+     * @param pn
+     * @return
+     */
+    public PageInfo getOrderList(Order order, Integer pn) {
+        PageHelper.startPage(pn, PageConstant.Page_Sizes);
+        List<Order> orders = ordersDao.getOrderList(order);
+        PageInfo pageInfo = new PageInfo<>(orders, PageConstant.Navigate_Pages);
+        return pageInfo;
     }
 }

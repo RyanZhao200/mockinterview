@@ -30,9 +30,17 @@ public class Flow {
      */
     private Integer finderId;
     /**
+     * 求职者姓名
+     */
+    private String finderUsername;
+    /**
      * 面试官ID（准收款人ID）
      */
     private Integer interviewerId;
+    /**
+     * 面试官姓名
+     */
+    private String interviewerUsername;
     /**
      * 创建时间
      */

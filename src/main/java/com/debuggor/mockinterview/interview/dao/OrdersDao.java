@@ -48,4 +48,12 @@ public interface OrdersDao {
      */
     List<Order> getOrderByFinderId(Integer fid);
 
+    /**
+     * 得到所有订单信息
+     *
+     * @param order
+     * @return
+     */
+    List<Order> getOrderList(Order order);
+
 }

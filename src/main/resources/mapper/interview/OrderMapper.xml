@@ -5,6 +5,27 @@
 
 <mapper namespace="com.debuggor.mockinterview.interview.dao.OrdersDao">
 
+    <resultMap id="orderMap" type="com.debuggor.mockinterview.interview.bean.Order">
+        <id column="oid" property="oid"/>
+        <result column="order_num" property="orderNum"/>
+        <result column="order_status" property="orderStatus"/>
+        <result column="order_amount" property="orderAmount"/>
+        <result column="paid_amount" property="paidAmount"/>
+        <result column="introduction" property="introduction"/>
+        <result column="resume_url" property="resumeUrl"/>
+        <result column="is_interviewed" property="isInterviewed"/>
+        <result column="is_ordered" property="isOrdered"/>
+        <result column="is_evaluation" property="isEvaluation"/>
+        <result column="evaluation_id" property="evaluationId"/>
+        <result column="create_time" property="createTime"/>
+        <result column="paid_time" property="paidTime"/>
+        <result column="ordered_time" property="orderedTime"/>
+        <result column="interviewer_id" property="interviewerId"/>
+        <result column="interviewer_username" property="interviewerName"/>
+        <result column="finder_id" property="finderId"/>
+        <result column="finder_username" property="finderName"/>
+    </resultMap>
+
     <insert id="insert" parameterType="com.debuggor.mockinterview.interview.bean.Order">
         INSERT into j_order(order_num,order_status,order_amount,introduction,resume_url,finder_id,interviewer_id,create_time)
         VALUES(#{orderNum},#{orderStatus},#{orderAmount},#{introduction},#{resumeUrl},#{finderId},#{interviewerId},#{createTime})
@@ -41,4 +62,22 @@
         WHERE finder_id=#{fid}
         ORDER BY create_time DESC
     </select>
+
+    <sql id="with_Order_Column_List">
+        o.oid,o.order_num,o.order_status,o.order_amount,
+        o.paid_amount,o.introduction,o.resume_url,
+        o.is_interviewed,o.is_ordered,o.is_evaluation,
+        o.evaluation_id,o.create_time,o.paid_time,o.ordered_time,
+        i.iid interviewer_id,i.username interviewer_username,
+        f.fid finder_id,f.username finder_username
+    </sql>
+    <!--  所有的订单信息-->
+    <select id="getOrderList" parameterType="com.debuggor.mockinterview.interview.bean.Order" resultMap="orderMap">
+        SELECT
+        <include refid="with_Order_Column_List"></include>
+        from j_order o
+        LEFT JOIN j_interviewer i on i.iid=o.interviewer_id
+        LEFT JOIN j_finder f on f.fid=o.finder_id
+    </select>
+
 </mapper>
