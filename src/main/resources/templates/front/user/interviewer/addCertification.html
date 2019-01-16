@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/admin/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/front/window/window.css}">
+    <link rel="stylesheet" th:href="@{/front/css/wangEditor.css}">
+
+</head>
+<body style="background-color: white;padding:0 20px;">
+<div class="container">
+    <div class="row">
+        <h3>认证信息</h3>
+        <form id="formId" role="form" th:action="@{/interviewer/addCertification}" method="post">
+            <span>提示：需提交正反身份证扫描照片，案例</span>
+            <div class="form-group col-sm-12">
+                <textarea id="L_content" name="information" style="height: 200px;"></textarea>
+            </div>
+            <div class="form-group" style="text-align: center;">
+                <input type="submit" class="btn btn-success" onclick="formSubmit()" value="提交">
+            </div>
+        </form>
+    </div>
+</div>
+<script th:src="@{/admin/js/jquery.min.js}"></script>
+<script th:src="@{/admin/js/bootstrap.min.js}"></script>
+<script th:src="@{/front/js/wangEditor.js}"></script>
+
+<script type="text/javascript">
+    var editor = new wangEditor('L_content');
+
+    //配置处理图片上传的路径，最好用相对路径
+    editor.config.uploadImgUrl = '/util/uploadImage';
+    //配置图片上传到后台的参数名称
+    editor.config.uploadImgFileName = 'myFileName';
+    editor.create();
+
+    function formSubmit() {
+        var info = document.getElementById("L_content").val();
+        if (info.length() < 20) {
+            alert("提交信息太短，请重新填写！");
+            return false;
+        }
+        document.getElementById("formId").submit();
+        alert("提交成功！");
+    }
+</script>
+</body>
+</html>

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.debuggor.mockinterview.interview.dao.CertificationDao">
+
+    <!-- 根据面试官ID过去面试官最近的一次认证信息-->
+    <select id="getLastCertificationByiid" parameterType="java.lang.Integer"
+            resultType="com.debuggor.mockinterview.interview.bean.Certification">
+          SELECT * from j_certification WHERE iid = #{iid}
+          ORDER BY create_time LIMIT 0,1
+    </select>
+
+    <insert id="insert" parameterType="com.debuggor.mockinterview.interview.bean.Certification">
+     INSERT into j_certification(information,iid,certification_status,create_time)
+        VALUES(#{information},#{iid},#{certificationStatus},#{createTime})
+    </insert>
+
+    <update id="update" parameterType="com.debuggor.mockinterview.interview.bean.Certification">
+        UPDATE j_certification
+        <set>
+            <if test="certificationStatus != null">certification_status=#{certificationStatus},</if>
+            <if test="reviewTime != null">review_time=#{reviewTime},</if>
+        </set>
+        WHERE cid = #{cid}
+    </update>
+</mapper>

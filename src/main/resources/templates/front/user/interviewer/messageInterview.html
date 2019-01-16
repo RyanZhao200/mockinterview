@@ -14,34 +14,8 @@
 <div th:replace="front/common/bar::topbar"></div>
 
 <div class="layui-container fly-marginTop fly-user-main">
-    <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="user">
-        <li class="layui-nav-item">
-            <a href="#">
-                <i class="layui-icon">&#xe609;</i> 我的主页
-            </a>
-        </li>
-        <li class="layui-nav-item">
-            <a href="#">
-                <i class="layui-icon">&#xe667;</i> 我的消息
-            </a>
-        </li>
-        <li class="layui-nav-item">
-            <a th:href="@{/interviewer/posts}">
-                <i class="layui-icon">&#xe60e;</i> 我的帖子
-            </a>
-        </li>
-        <li class="layui-nav-item layui-this">
-            <a href="" th:href="@{/interviewer/messageInterview}">
-                <i class="layui-icon">&#xe66c;</i> 邀约面试
-            </a>
-        </li>
-        <li class="layui-nav-item">
-            <a href="" th:href="@{/interviewer/toUpdate}">
-                <i class="layui-icon">&#xe620;</i> 基本设置
-            </a>
-        </li>
-    </ul>
-
+    <!-- 公共左侧 -->
+    <div th:replace="front/user/interviewer/bar::leftbar"></div>
 
     <div class="fly-panel fly-panel-user" pad20>
         <div class="layui-tab layui-tab-brief" id="LAY_msg" style="margin-top: 15px;">

@@ -1,11 +1,14 @@
 package com.debuggor.mockinterview.interview.controller;
 
+import com.debuggor.mockinterview.common.enumerate.CertificationEnum;
+import com.debuggor.mockinterview.interview.bean.Certification;
 import com.debuggor.mockinterview.interview.bean.Message;
 import com.debuggor.mockinterview.common.constant.MockConstant;
 import com.debuggor.mockinterview.common.constant.QiniuConstant;
 import com.debuggor.mockinterview.common.enumerate.MessageStatusEnum;
 import com.debuggor.mockinterview.common.enumerate.StatusEnum;
 import com.debuggor.mockinterview.common.enumerate.UserEnum;
+import com.debuggor.mockinterview.interview.service.CertificationService;
 import com.debuggor.mockinterview.interview.service.MessageService;
 import com.debuggor.mockinterview.interview.service.QiniuService;
 import com.debuggor.mockinterview.common.util.Md5Util;
@@ -25,6 +28,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.Arrays;
@@ -51,6 +55,8 @@ public class InterviewerController {
     private CommentService commentService;
     @Autowired
     private ForumService forumService;
+    @Autowired
+    private CertificationService certificationService;
 
     @RequestMapping("/login")
     public String tologin() {
@@ -287,5 +293,55 @@ public class InterviewerController {
         forum.setForumStatus(StatusEnum.DELETE.key);
         forumService.update(forum);
         return "redirect:/interviewer/posts";
+    }
+
+    /**
+     * 面试官认证页面
+     *
+     * @param model
+     * @param session
+     * @return
+     */
+    @RequestMapping("/certification")
+    public String certification(Model model, HttpSession session) {
+        Interviewer interviewer = (Interviewer) session.getAttribute("interviewer");
+        Certification certification = certificationService.getLastCertificationByiid(interviewer.getIid());
+        model.addAttribute("certification", certification);
+        model.addAttribute("interviewer", interviewer);
+        return "front/user/interviewer/certification";
+    }
+
+    /**
+     * 转到面试官添加认证信息页面
+     *
+     * @return
+     */
+    @RequestMapping("/toAddCertification")
+    public String toAddCertificationPage() {
+        return "front/user/interviewer/addCertification";
+    }
+
+    /**
+     * 提交认证信息，同时更新面试官cid字段为最近提交的信息
+     *
+     * @param certification
+     * @param session
+     */
+    @RequestMapping("/addCertification")
+    public void addCertification(Certification certification, HttpSession session, HttpServletResponse response) throws IOException {
+        Interviewer interviewer = (Interviewer) session.getAttribute("interviewer");
+        certification.setIid(interviewer.getIid());
+        certification.setCertificationStatus(CertificationEnum.WAIT_REVIEW.key);
+        certificationService.insert(certification);
+        certification = certificationService.getLastCertificationByiid(interviewer.getIid());
+        if (certification != null) {
+            interviewer.setCid(certification.getCid());
+        }
+        interviewerService.update(interviewer);
+        StringBuilder str = new StringBuilder();
+        str.append("<script>");
+        str.append(" window.opener.location.href = window.opener.location.href; window.close();");
+        str.append("</script>");
+        response.getWriter().write(str.toString());
     }
 }

@@ -39,6 +39,8 @@
             <if test="cost != null">cost=#{cost},</if>
             <if test="grade != null">grade=#{grade},</if>
             <if test="workYear != null">work_year=#{workYear},</if>
+            <if test="isCertification != null">is_certification=#{isCertification},</if>
+            <if test="cid != null">cid=#{cid},</if>
         </set>
         WHERE iid = #{iid}
     </update>

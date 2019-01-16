@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+</head>
+<body>
+
+<!-- 面试官公共左侧 -->
+<ul class="layui-nav layui-nav-tree layui-inline" lay-filter="user" th:fragment="leftbar">
+    <li class="layui-nav-item">
+        <a href="#">
+            <i class="layui-icon">&#xe609;</i> 我的主页
+        </a>
+    </li>
+    <li class="layui-nav-item">
+        <a href="#">
+            <i class="layui-icon">&#xe667;</i> 我的消息
+        </a>
+    </li>
+    <li class="layui-nav-item">
+        <a th:href="@{/interviewer/posts}">
+            <i class="layui-icon">&#xe60e;</i> 我的帖子
+        </a>
+    </li>
+    <li class="layui-nav-item ">
+        <a href="" th:href="@{/interviewer/messageInterview}">
+            <i class="layui-icon">&#xe66c;</i> 邀约面试
+        </a>
+    </li>
+    <li class="layui-nav-item ">
+        <a href="" th:href="@{/interviewer/toUpdate}">
+            <i class="layui-icon">&#xe620;</i> 基本设置
+        </a>
+    </li>
+    <li class="layui-nav-item ">
+        <a href="" th:href="@{/interviewer/certification}">
+            <i class="layui-icon">&#xe735;</i> 认证信息
+        </a>
+    </li>
+</ul>
+
+</body>
+</html>
