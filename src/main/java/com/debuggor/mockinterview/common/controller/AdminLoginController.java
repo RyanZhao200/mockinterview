@@ -85,9 +85,11 @@ public class AdminLoginController {
     @RequestMapping("/logout")
     public String logout(HttpSession session) {
         Admin admin = (Admin) session.getAttribute("admin");
-        logger.info(admin.getUsername() + "于" + TimeUtil.format(new Date()) + "登出后台");
+        if (admin != null) {
+            logger.info(admin.getUsername() + "于" + TimeUtil.format(new Date()) + "登出后台");
+        }
         session.invalidate();
-        return "admin/login";
+        return "redirect:/admin/login";
     }
 
     /**

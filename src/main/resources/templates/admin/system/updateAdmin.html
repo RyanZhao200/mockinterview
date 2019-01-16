@@ -10,7 +10,6 @@
 </head>
 <body>
 
-
 <div class="container-fluid">
     <div class="row">
 
@@ -18,9 +17,10 @@
             <div class="">
                 <h2>修改资料</h2>
                 <h4 style="color: red" th:text="${info}==''?'':${info}"></h4>
-                <form th:action="@{/admin/system/admin/updateAdmin}" class="form-horizontal" role="form" method="POST"
+                <form th:action="@{/admin/admin/updateAdmin}" class="form-horizontal" role="form" method="POST"
                       enctype="multipart/form-data" th:object="${admin}">
                     <input name="aid" type="hidden" th:field="*{aid}"/>
+                    <input name="username" type="hidden" th:field="*{username}"/>
                     <div class="form-group">
                         <label for="username" class="col-sm-2 control-label">用户名：</label>
                         <div class="col-sm-3">
@@ -34,12 +34,14 @@
                             <input type="email" class="form-control" id="email" name="email" th:field="*{email}">
                         </div>
                     </div>
+                    <!--
                     <div class="form-group">
                         <label for="headUrl" class="col-sm-2 control-label">头像:</label>
                         <div class="col-sm-3">
                             <input type="file" class="form-control" id="headUrl" name="headFile">
                         </div>
                     </div>
+                    -->
                     <div class="form-group">
                         <div class="col-sm-offset-2 col-sm-10">
                             <button type="submit" class="btn btn-default">确认修改</button>
@@ -52,10 +54,9 @@
     </div>
 </div>
 
-<div>
-    <script type="text/javascript" th:src="@{/admin/js/jquery.min.js}"></script>
-    <script type="text/javascript" th:src="@{/admin/js/bootstrap.min.js}"></script>
 
-</div>
+<script type="text/javascript" th:src="@{/admin/js/jquery.min.js}"></script>
+<script type="text/javascript" th:src="@{/admin/js/bootstrap.min.js}"></script>
+
 </body>
 </html>

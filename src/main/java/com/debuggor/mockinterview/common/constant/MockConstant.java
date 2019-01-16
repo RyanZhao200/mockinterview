@@ -10,5 +10,5 @@ public class MockConstant {
     public static String PASSWORD_NOT_EQU = "两次输入密码不相等！";
     public static String PASSWORD_ERROR = "密码错误！";
     public static String PASSWORD_EQU = "新密码与原密码相同，请重新修改！";
-    public static String PASSWORD_UPDATE_SUCCESS = "success";
+    public static String PASSWORD_UPDATE_SUCCESS = "密码已经正确修改，请重新登录！";
 }

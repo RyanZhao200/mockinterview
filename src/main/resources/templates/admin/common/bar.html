@@ -20,8 +20,8 @@
                 [[${session.admin.username}]]
             </a>
             <dl class="layui-nav-child">
-                <dd><a href="">基本资料</a></dd>
-                <dd><a href="">安全设置</a></dd>
+                <dd><a th:href="@{/admin/admin/toUpdate}" target="iframe_main">基本资料</a></dd>
+                <dd><a th:href="@{/admin/admin/resetPwd}" target="iframe_main">修改密码</a></dd>
                 <hr style="margin: 5px 0;">
                 <dd><a th:href="@{/admin/logout}">退出</a></dd>
             </dl>
@@ -42,7 +42,7 @@
                 <dl class="layui-nav-child">
                     <dd><a th:href="@{/admin/order/orderList}" target="iframe_main">订单列表</a></dd>
                     <dd><a th:href="@{/admin/flow/flowList}" target="iframe_main">流水管理</a></dd>
-                    <dd><a href="javascript:;" target="iframe_main">聊天记录</a></dd>
+                    <dd><a href="javascript:;" target="iframe_main">退款申请</a></dd>
                     <dd><a th:href="@{/admin/interview/typeList}" target="iframe_main">IT类别</a></dd>
                 </dl>
             </li>
