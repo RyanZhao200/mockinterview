@@ -46,19 +46,30 @@
                 </thead>
                 <tbody>
                 <tr th:each="order:${pageInfo.list}">
-                    <td th:text="${order.orderNum}">
-                        <!--<a th:href="@{/forum/}+${post.pid}" th:text="${post.title}" target="_blank"></a>-->
-                    </td>
+                    <td th:text="${order.orderNum}"></td>
                     <td th:text="${order.orderAmount}"></td>
                     <td th:text="${order.finderName}"></td>
                     <td th:text="${order.interviewerName}"></td>
-                    <td th:text="${order.orderStatus}"></td>
-                    <td th:text="${order.isInterviewed}"></td>
-                    <td th:text="${order.isOrdered}"></td>
-                    <td th:text="${order.isEvaluation}"></td>
+                    <td>
+                        <span th:if="${order.orderStatus}==1">待付款</span>
+                        <span th:if="${order.orderStatus}==2">已付款</span>
+                    </td>
+                    <td>
+                        <span th:if="${order.isInterviewed}==1">是</span>
+                        <span th:if="${order.isInterviewed}==2">否</span>
+                    </td>
+                    <td>
+                        <span th:if="${order.isOrdered}==1">是</span>
+                        <span th:if="${order.isOrdered}==2">否</span>
+                    </td>
+                    <td>
+                        <span th:if="${order.isEvaluation}==1">是</span>
+                        <span th:if="${order.isEvaluation}==2">否</span>
+                    </td>
                     <td th:text="${#dates.format(order.createTime, 'yyyy-MM-dd HH:mm')}"></td>
                     <td>
-                        <button>编辑</button>
+                        <button class="btn btn-info btn-sm" th:onclick="'lookOrderInfo('+${order.oid}+')'">查看
+                        </button>
                     </td>
                 </tr>
                 </tbody>
@@ -110,7 +121,12 @@
 <script th:src="@{/front/laydate/laydate.js}"></script>
 <script th:src="@{/admin/js/common.js}"></script>
 <script>
-
+    <!-- 查看订单的详细信息 -->
+    function lookOrderInfo(oid) {
+        var url = "/admin/order/detail/";
+        url = url + oid;
+        window.open(url, "订单详情", "height=500, width=800, top=100, left=300, toolbar=no, menubar=no, scrollbars=no, resizable=yes,location=no, status=no");
+    }
 </script>
 </body>
 </html>

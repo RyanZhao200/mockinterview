@@ -32,13 +32,23 @@
     </insert>
 
     <select id="getOrderByOrderNum" parameterType="java.lang.String"
-            resultType="com.debuggor.mockinterview.interview.bean.Order">
-        SELECT * from j_order WHERE order_num = #{orderNum}
+            resultMap="orderMap">
+        SELECT
+        <include refid="with_Order_Column_List"></include>
+        from j_order o
+        LEFT JOIN j_interviewer i on i.iid=o.interviewer_id
+        LEFT JOIN j_finder f on f.fid=o.finder_id
+        WHERE o.order_num = #{orderNum}
     </select>
 
     <select id="getOrderById" parameterType="java.lang.Integer"
-            resultType="com.debuggor.mockinterview.interview.bean.Order">
-        SELECT * from j_order WHERE oid=#{oid}
+            resultMap="orderMap">
+        SELECT
+        <include refid="with_Order_Column_List"></include>
+        from j_order o
+        LEFT JOIN j_interviewer i on i.iid=o.interviewer_id
+        LEFT JOIN j_finder f on f.fid=o.finder_id
+        WHERE o.oid=#{oid}
     </select>
 
     <update id="update" parameterType="com.debuggor.mockinterview.interview.bean.Order">
@@ -78,6 +88,7 @@
         from j_order o
         LEFT JOIN j_interviewer i on i.iid=o.interviewer_id
         LEFT JOIN j_finder f on f.fid=o.finder_id
+        ORDER BY o.create_time DESC
     </select>
 
 </mapper>

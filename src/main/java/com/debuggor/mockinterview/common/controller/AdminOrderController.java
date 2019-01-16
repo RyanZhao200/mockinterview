@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -31,5 +32,19 @@ public class AdminOrderController {
         PageInfo pageInfo = ordersService.getOrderList(order, pn);
         model.addAttribute("pageInfo", pageInfo);
         return "admin/interview/orderList";
+    }
+
+    /**
+     * 订单详情页面
+     *
+     * @param oid
+     * @param model
+     * @return
+     */
+    @RequestMapping("/detail/{oid}")
+    public String orderDetail(@PathVariable("oid") Integer oid, Model model) {
+        Order order = ordersService.getOrderById(oid);
+        model.addAttribute("order", order);
+        return "admin/interview/orderDetail";
     }
 }

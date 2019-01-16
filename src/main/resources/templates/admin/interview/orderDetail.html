@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/admin/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/front/window/window.css}">
+    <style>
+        .col-sm-6 {
+            padding: 5px;
+        }
+
+        .col-sm-12 {
+            padding: 8px;
+        }
+    </style>
+</head>
+<body style="background-color: white;padding:0 20px;">
+<div class="container">
+    <div class="row">
+        <h3>订单详情</h3>
+        <div style="padding: 5px;">
+            <div class="col-sm-6">
+                <span>订单号：</span>
+                <span>[[${order.orderNum}]]</span>
+            </div>
+            <div class="col-sm-6">
+                <span>订单状态：</span>
+                <span th:if="${order.orderStatus}==2">已付款</span>
+                <span th:if="${order.orderStatus}==1">待付款</span>
+            </div>
+            <div class="col-sm-6">
+                <span>订单金额：</span>
+                <span th:text="${order.orderAmount}"></span>
+            </div>
+            <div class="col-sm-6">
+                <span>实际支付金额：</span>
+                <span th:text="${order.paidAmount}"></span>
+            </div>
+            <div class="col-sm-6">
+                <span>求职者：</span>
+                <span th:text="${order.finderName}"></span>
+            </div>
+            <div class="col-sm-6">
+                <span>面试官：</span>
+                <span th:text="${order.interviewerName}"></span>
+            </div>
+            <div class="col-sm-6">
+                <span>创建时间：</span>
+                <span th:text="${#dates.format(order.createTime, 'yyyy-MM-dd HH:mm')}"></span>
+            </div>
+            <div class="col-sm-6">
+                <span>是否面试：</span>
+                <span th:if="${order.isInterviewed}==1">是</span>
+                <span th:if="${order.isInterviewed}==2">否</span>
+            </div>
+            <div class="col-sm-6">
+                <span>是否结单：</span>
+                <span th:if="${order.isOrdered}==1">是</span>
+                <span th:if="${order.isOrdered}==2">否</span>
+            </div>
+            <div class="col-sm-6">
+                <span>是否已经评价：</span>
+                <span th:if="${order.isEvaluation}==1">是</span>
+                <span th:if="${order.isEvaluation}==2">否</span>
+            </div>
+            <div class="col-sm-12">
+                <span>求职者介绍：</span>
+                <span th:text="${order.introduction}"></span>
+            </div>
+            <div class="col-sm-12">
+                <span>简历链接：</span>
+                <span>
+                    <a th:href="${order.resumeUrl}" target="_blank">[[${order.resumeUrl}]]</a>
+                </span>
+            </div>
+        </div>
+    </div>
+</div>
+<script th:src="@{/admin/js/jquery.min.js}"></script>
+<script th:src="@{/admin/js/bootstrap.min.js}"></script>
+<script th:src="@{/front/window/window.js}"></script>
+
+<script language=javascript>
+    function formSubmit() {
+        document.getElementById("formId").submit();
+        alert("跟新成功！");
+    }
+</script>
+</body>
+</html>
