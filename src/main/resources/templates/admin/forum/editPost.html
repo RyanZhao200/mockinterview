@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/admin/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/front/window/window.css}">
+    <link rel="stylesheet" th:href="@{/front/css/wangEditor.css}">
+
+</head>
+<body style="background-color: white;padding:0 20px;">
+<div class="container">
+    <div class="row">
+        <h3>修改帖子</h3>
+        <form id="formId" role="form" th:action="@{/admin/forum/editPostAction}" method="post">
+            <input name="pid" type="hidden" th:field="${post.pid}"/>
+            <div class="form-group col-sm-12">
+                <label class=" control-label ">帖子标题：</label>
+                <input class="form-control" type="text" name="title" th:field="${post.title}"/>
+            </div>
+            <div class="form-group col-sm-12">
+                <label class=" control-label">帖子内容：</label>
+                <textarea id="L_content" name="content" th:field="${post.content}" style="height: 200px;"></textarea>
+            </div>
+            <div class="form-group col-sm-12">
+                <label class=" control-label">状态：</label>
+                <input type="radio" name="forumStatus" value="1" th:checked="${post.forumStatus}==1"/>正常&nbsp;&nbsp;
+                <input type="radio" name="forumStatus" value="2" th:checked="${post.forumStatus}==2"/>屏蔽
+            </div>
+            <div class="form-group" style="text-align: center;">
+                <input type="submit" class="btn btn-success" onclick="formSubmit()" value="更新">
+            </div>
+        </form>
+    </div>
+</div>
+<script th:src="@{/admin/js/jquery.min.js}"></script>
+<script th:src="@{/admin/js/bootstrap.min.js}"></script>
+<script th:src="@{/front/js/wangEditor.js}"></script>
+
+<script type="text/javascript">
+    var editor = new wangEditor('L_content');
+
+    //配置处理图片上传的路径，最好用相对路径
+    editor.config.uploadImgUrl = '/util/uploadImage';
+    //配置图片上传到后台的参数名称
+    editor.config.uploadImgFileName = 'myFileName';
+    editor.create();
+
+    function formSubmit() {
+        document.getElementById("formId").submit();
+        alert("跟新成功！");
+    }
+</script>
+</body>
+</html>

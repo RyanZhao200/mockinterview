@@ -4,7 +4,6 @@
     <meta charset="UTF-8">
     <title>评论列表</title>
     <link rel="stylesheet" th:href="@{/admin/css/bootstrap.min.css}">
-    <link rel="stylesheet" th:href="@{/admin/bootstrap-switch/bootstrap-switch.css}">
 
 </head>
 <body style="background-color: #F3F3F4;">
@@ -44,29 +43,26 @@
                 <tr th:each="comment:${pageInfo.list}">
                     <td style="width: 30%;overflow: hidden;">
                         <div style="height: 20px;line-height: 30px;">
-                            <a th:href="@{/forum/}+${comment.forum.pid}" th:utext="${comment.comment}"></a>
+                            <a th:href="@{/forum/}+${comment.forum.pid}" th:utext="${comment.comment}"
+                               target="_blank"></a>
                         </div>
                     </td>
                     <td style="width: 30%;overflow: hidden;">
                         <div style="height: 20px;line-height: 30px;">
-                            <a th:href="@{/forum/}+${comment.forum.pid}" th:text="${comment.forum.title}"></a>
+                            <a th:href="@{/forum/}+${comment.forum.pid}" th:text="${comment.forum.title}"
+                               target="_blank"></a>
                         </div>
                     </td>
                     <td th:text="${comment.username}"></td>
                     <td th:text="${#dates.format(comment.commentTime, 'yyyy-MM-dd HH:mm')}"></td>
                     <td>
-                        <span th:text="${comment.commentStatus}"></span>
-                        <div id="mySwitch" class="switch has-switch">
-                            <div class="switch-on switch-animate" style="">
-                                <input type="checkbox" checked="">
-                                <span class="switch-left">ON</span>
-                                <label>&nbsp;</label>
-                                <span class="switch-right">OFF</span>
-                            </div>
-                        </div>
+                        <span th:if="${comment.commentStatus}==1">正常</span>
+                        <span th:if="${comment.commentStatus}==2">屏蔽</span>
                     </td>
                     <td>
-                        <button>修改</button>
+                        <button class="btn btn-info btn-sm" th:onclick="'editComment('+${comment.cid}+')'">
+                            修改
+                        </button>
                     </td>
                 </tr>
                 </tbody>
@@ -117,13 +113,14 @@
 <script th:src="@{/admin/js/bootstrap.min.js}"></script>
 <script th:src="@{/front/laydate/laydate.js}"></script>
 <script th:src="@{/admin/js/common.js}"></script>
-<script th:src="@{/admin/bootstrap-switch/bootstrap-switch.js}"></script>
 
 <script>
-    $('#mySwitch').on('switch-change', function (e, data) {
-        var $el = $(data.el), value = data.value;
-        console.log(e, $el, value);
-    });
+    <!-- 管理员修改评论-->
+    function editComment(cid) {
+        var url = "/admin/forum/editComment/";
+        url = url + cid;
+        window.open(url, "修改评论", "height=400, width=600, top=200, left=400, toolbar=no, menubar=no, scrollbars=no, resizable=yes,location=no, status=no");
+    }
 </script>
 </body>
 </html>

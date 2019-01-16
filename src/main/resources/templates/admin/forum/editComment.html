@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" th:href="@{/admin/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/front/window/window.css}">
+
+</head>
+<body style="background-color: white;padding:0 20px;">
+<div class="container">
+    <div class="row">
+        <h3>修改评论</h3>
+        <form id="formId" class="form-inline" role="form" th:action="@{/admin/forum/editCommentAction}">
+            <input name="cid" type="hidden" th:field="${comment.cid}"/>
+            <div style="font-size: 16px;margin: 10px 0 0 10px;">帖子标题：</div>
+            <div th:text="${comment.forum.title}" style="padding: 5px;margin-bottom: 10px;"></div>
+            <div class="form-group col-sm-2">
+                <label class=" control-label">评论内容：</label>
+                <textarea class="form-control" type="text" name="comment" id="comment"
+                          th:field="${comment.comment}"></textarea>
+            </div>
+            <div class="form-group col-sm-2">
+                <label class=" control-label">状态：</label>
+                <input type="radio" name="commentStatus" value="1" th:checked="${comment.commentStatus}==1"/>正常&nbsp;&nbsp;
+                <input type="radio" name="commentStatus" value="2" th:checked="${comment.commentStatus}==2"/>屏蔽
+            </div>
+            <div class="form-group" style="text-align: center;">
+                <input type="submit" class="btn btn-success" onclick="formSubmit()" value="修改">
+            </div>
+        </form>
+    </div>
+</div>
+<script th:src="@{/admin/js/jquery.min.js}"></script>
+<script th:src="@{/admin/js/bootstrap.min.js}"></script>
+<script th:src="@{/front/window/window.js}"></script>
+
+<script language=javascript>
+    function formSubmit() {
+        document.getElementById("formId").submit();
+        alert("跟新成功！");
+    }
+</script>
+</body>
+</html>

@@ -63,4 +63,11 @@
         </set>
         where cid=#{cid};
     </update>
+
+    <select id="getCommentById" resultMap="commentMap" parameterType="java.lang.Integer">
+        SELECT c.cid,c.comment,c.uid,c.user_type,c.comment_status,c.comment_time,f.pid,f.title
+        from f_comment c
+        LEFT JOIN f_forum f on f.pid = c.pid
+        WHERE c.cid = #{cid}
+    </select>
 </mapper>

@@ -5,9 +5,9 @@
     <title>发表问题</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
 
-    <link rel="stylesheet" href="..static/front/layui/css/layui.css" th:href="@{/front/layui/css/layui.css}">
-    <link rel="stylesheet" href="..static/front/css/global.css" th:href="@{/front/css/global.css}">
-    <link rel="stylesheet" href="..static/front/css/wangEditor.css" th:href="@{/front/css/wangEditor.css}">
+    <link rel="stylesheet" th:href="@{/front/layui/css/layui.css}">
+    <link rel="stylesheet" th:href="@{/front/css/global.css}">
+    <link rel="stylesheet" th:href="@{/front/css/wangEditor.css}">
 
 </head>
 <body>
@@ -75,10 +75,10 @@
 <!--公共底部-->
 <div th:replace="front/common/bar::footerbar"></div>
 
-<script src="..static/front/layui/layui.js" th:src="@{/front/layui/layui.js}"></script>
-<script src="..static/front/js/verification.js" th:src="@{/front/js/verification.js}"></script>
-<script src="..static/admin/js/jquery.min.js" th:src="@{/admin/js/jquery.min.js}"></script>
-<script src="..static/front/js/wangEditor.js" th:src="@{/front/js/wangEditor.js}"></script>
+<script th:src="@{/front/layui/layui.js}"></script>
+<script th:src="@{/front/js/verification.js}"></script>
+<script th:src="@{/admin/js/jquery.min.js}"></script>
+<script th:src="@{/front/js/wangEditor.js}"></script>
 
 <script type="text/javascript">
     var editor = new wangEditor('L_content');

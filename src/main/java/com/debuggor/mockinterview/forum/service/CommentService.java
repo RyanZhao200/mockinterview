@@ -148,4 +148,15 @@ public class CommentService {
             commentDao.update(comment);
         }
     }
+
+    /**
+     * 通过评论ID获得评论信息
+     *
+     * @return
+     */
+    public Comment getCommentById(Integer cid) {
+        Comment comment = commentDao.getCommentById(cid);
+        comment = getCommentOtherInfo(comment);
+        return comment;
+    }
 }

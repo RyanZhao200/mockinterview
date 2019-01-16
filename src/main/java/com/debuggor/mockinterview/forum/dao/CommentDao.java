@@ -49,4 +49,11 @@ public interface CommentDao {
      * @param comment
      */
     void update(Comment comment);
+
+    /**
+     * 根据评论ID，获得评论
+     * @param cid
+     * @return
+     */
+    Comment getCommentById(Integer cid);
 }

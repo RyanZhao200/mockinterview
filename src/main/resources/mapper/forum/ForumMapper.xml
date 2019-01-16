@@ -38,7 +38,7 @@
     <select id="getForumById" resultType="com.debuggor.mockinterview.forum.bean.Forum"
             parameterType="java.lang.Integer">
         SELECT f.pid,f.title,f.content,f.scan_count,f.comment_count,f.uid,f.user_type,
-        f.create_time,f.update_time,f.reply_time,t.tid,t.type_name
+        f.create_time,f.update_time,f.reply_time,t.tid,t.type_name,f.forum_status
         from f_forum f
         LEFT JOIN f_type t on f.tid=t.tid
         WHERE f.pid=#{pid}

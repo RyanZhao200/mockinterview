@@ -61,9 +61,14 @@
                         <a th:href="@{/admin/forum/commentList?pid=}+${post.pid}" th:text="${post.commentCount}"> </a>
                     </td>
                     <td th:text="${#dates.format(post.createTime, 'yyyy-MM-dd HH:mm')}"></td>
-                    <td th:text="${post.forumStatus}"></td>
                     <td>
-                        <button>编辑</button>
+                        <span th:if="${post.forumStatus}==1">正常</span>
+                        <span th:if="${post.forumStatus}==2">屏蔽</span>
+                    </td>
+                    <td>
+                        <button class="btn btn-info btn-sm" th:onclick="'editPost('+${post.pid}+')'">
+                            编辑
+                        </button>
                     </td>
                 </tr>
                 </tbody>
@@ -115,7 +120,11 @@
 <script th:src="@{/front/laydate/laydate.js}"></script>
 <script th:src="@{/admin/js/common.js}"></script>
 <script>
-
+    function editPost(pid) {
+        var url = "/admin/forum/editPost/";
+        url = url + pid;
+        window.open(url, "修改帖子", "height=500, width=800, top=100, left=300, toolbar=no, menubar=no, scrollbars=no, resizable=yes,location=no, status=no");
+    }
 </script>
 </body>
 </html>

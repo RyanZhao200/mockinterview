@@ -1,5 +1,7 @@
 package com.debuggor.mockinterview.common.controller;
 
+import com.debuggor.mockinterview.common.bean.Admin;
+import com.debuggor.mockinterview.common.util.TimeUtil;
 import com.debuggor.mockinterview.forum.bean.Comment;
 import com.debuggor.mockinterview.forum.bean.Forum;
 import com.debuggor.mockinterview.forum.bean.Type;
@@ -12,9 +14,13 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -24,6 +30,7 @@ import java.util.List;
 @RequestMapping("/admin/forum")
 public class AdminForumController {
     private Logger logger = LoggerFactory.getLogger(AdminForumController.class);
+    private UtilController utilController = new UtilController();
 
     @Autowired
     private ForumService postService;
@@ -89,5 +96,74 @@ public class AdminForumController {
         model.addAttribute("startTime", startTime);
         model.addAttribute("endTime", endTime);
         return "admin/forum/commentList";
+    }
+
+    /**
+     * 转到跟新帖子的页面
+     *
+     * @param pid
+     * @param model
+     * @return
+     */
+    @RequestMapping("/editPost/{pid}")
+    public String editPost(@PathVariable("pid") Integer pid, Model model) {
+        Forum post = postService.getForumById(pid);
+        model.addAttribute("post", post);
+        return "admin/forum/editPost";
+    }
+
+    /**
+     * 执行更新帖子
+     *
+     * @param forum
+     * @param request
+     * @param response
+     * @throws IOException
+     */
+    @RequestMapping("/editPostAction")
+    public void editPostAction(Forum forum, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Admin admin = utilController.getAdminFromSession(request);
+        logger.info(admin.getUsername() + "于" + TimeUtil.format(new Date()) + "修改帖子:" + forum.getTitle() + ";状态：" + forum.getForumStatus());
+        if (forum != null) {
+            postService.update(forum);
+        }
+        StringBuilder str = new StringBuilder();
+        str.append("<script>");
+        str.append(" window.opener.location.href = window.opener.location.href; window.close();");
+        str.append("</script>");
+        response.getWriter().write(str.toString());
+    }
+
+    /**
+     * 转到编辑评论页面
+     *
+     * @param cid
+     * @param model
+     * @return
+     */
+    @RequestMapping("/editComment/{cid}")
+    public String editComment(@PathVariable("cid") Integer cid, Model model) {
+        Comment comment = commentService.getCommentById(cid);
+        model.addAttribute("comment", comment);
+        return "admin/forum/editComment";
+    }
+
+    /**
+     * 提交修改评论
+     *
+     * @return
+     */
+    @RequestMapping("/editCommentAction")
+    public void editCommentAction(Comment comment, HttpServletRequest request, HttpServletResponse response) throws IOException {
+        Admin admin = utilController.getAdminFromSession(request);
+        logger.info(admin.getUsername() + "于" + TimeUtil.format(new Date()) + "修改评论" + comment.toString());
+        if (comment != null) {
+            commentService.updateComment(comment);
+        }
+        StringBuilder str = new StringBuilder();
+        str.append("<script>");
+        str.append(" window.opener.location.href = window.opener.location.href; window.close();");
+        str.append("</script>");
+        response.getWriter().write(str.toString());
     }
 }
