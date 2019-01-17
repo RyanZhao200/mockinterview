@@ -3,6 +3,8 @@ package com.debuggor.mockinterview.interview.dao;
 import com.debuggor.mockinterview.interview.bean.Certification;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface CertificationDao {
     /**
@@ -26,4 +28,21 @@ public interface CertificationDao {
      * @param certification
      */
     void update(Certification certification);
+
+    /**
+     * 获得面试官认证信息列表
+     *
+     * @param certification
+     * @return
+     */
+    List<Certification> getCertificationList(Certification certification);
+
+    /**
+     * 根据用户ID，得到面试官所有记录的认证信息
+     *
+     * @param iid
+     * @return
+     */
+    Certification getCertificationsByiid(Integer iid);
+
 }

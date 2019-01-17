@@ -25,4 +25,18 @@
         </set>
         WHERE cid = #{cid}
     </update>
+    <!-- 查询所有的认证信息 -->
+    <select id="getCertificationList" parameterType="com.debuggor.mockinterview.interview.bean.Certification"
+            resultType="com.debuggor.mockinterview.interview.bean.Certification">
+        SELECT * from j_certification c
+        WHERE c.certification_status=#{certificationStatus}
+        ORDER BY c.create_time
+    </select>
+    <!--查询面试官A所有的认证记录-->
+    <select id="getCertificationsByiid" resultType="com.debuggor.mockinterview.interview.bean.Certification"
+            parameterType="java.lang.Integer">
+        SELECT * from j_certification c
+        WHERE c.iid=#{iid}
+        ORDER BY c.create_time DESC
+    </select>
 </mapper>

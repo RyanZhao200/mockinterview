@@ -22,6 +22,10 @@ public class Certification {
      */
     private Integer iid;
     /**
+     * 面试官信息
+     */
+    private Interviewer interviewer;
+    /**
      * 状态（1、认证成功，2、认证失败，3、待审核）
      */
     private String certificationStatus;

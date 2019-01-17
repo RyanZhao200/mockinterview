@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>流水列表</title>
+    <link rel="stylesheet" th:href="@{/admin/css/bootstrap.min.css}">
+
+</head>
+<body style="background-color: #F3F3F4;">
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-12 search-collapse" style="background-color: #ffffff;padding-bottom: 20px;">
+            <div>&nbsp;</div>
+            <form class="form-inline" role="form" th:action="@{/admin/order/orderList}" method="post">
+
+                <div class="form-group col-sm-4 select-time">
+                    <label class="control-label">发表时间：</label>
+                    <input name="startTime" class="form-control" id="startTime" style="width: 30%;"
+                           placeholder="开始时间">
+                    <span>-</span>
+                    <input name="endTime" class="form-control" id="endTime" style="width: 30%;"
+                           placeholder="结束时间">
+                </div>
+                <div class="form-group col-sm-2" style="text-align: center;">
+                    <button type="submit" class="btn btn-info">查询</button>&nbsp;
+                </div>
+            </form>
+        </div>
+        <div>&nbsp;</div>
+        <div class="col-sm-12 table-responsive" style="background-color: #ffffff;border-radius:15px;">
+            <table class="table table-hover table-sm">
+                <caption><h3>待认证列表</h3></caption>
+                <thead>
+                <tr>
+                    <th>面试官</th>
+                    <th>状态</th>
+                    <th>创建时间</th>
+                    <th>操作</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="certification:${pageInfo.list}">
+                    <td th:text="${certification.interviewer.username}"></td>
+                    <td>
+                        <span th:if="${certification.certificationStatus}==1">认证成功</span>
+                        <span th:if="${certification.certificationStatus}==2">认证失败</span>
+                        <span th:if="${certification.certificationStatus}==3">待审核</span>
+                    </td>
+                    <td th:text="${#dates.format(certification.createTime, 'yyyy-MM-dd HH:mm')}"></td>
+
+                    <td>
+                        <button class="btn btn-info btn-sm" th:onclick="'lookOrderInfo('+${certification.iid}+')'">
+                            查看详情
+                        </button>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+        </div>
+        <!--文字信息-->
+        <div class="col-sm-4">
+            当前第 [[${pageInfo.pageNum}]] 页.总共 [[${pageInfo.pages}]] 页.一共 [[${pageInfo.total}]] 条记录
+        </div>
+        <!--点击分页-->
+        <div class="col-sm-6">
+            <nav aria-label="Page navigation">
+                <ul class="pagination  pagination-lg" style="display:inline-block;list-style:none;">
+                    <li>
+                        <a th:href="@{/admin/forum/postList(tid=${tid},startTime=${startTime},endTime=${endTime},pn=1)}">首页</a>
+                    </li>
+                    <!--上一页-->
+                    <li th:if="${pageInfo.hasPreviousPage}">
+                        <a th:href="@{/admin/forum/postList(tid=${tid},startTime=${startTime},endTime=${endTime},pn=${pageInfo.pageNum-1})}"
+                           aria-label="Previous">
+                            <span aria-hidden="true">«</span>
+                        </a>
+                    </li>
+                    <!--循环遍历连续显示的页面，若是当前页就高亮显示，并且没有链接-->
+                    <li th:each="page_num:${pageInfo.navigatepageNums}">
+                        <span class="active" th:if="${page_num == pageInfo.pageNum}">
+                            <a href="#">[[${page_num}]]</a></span>
+                        <span th:if="${page_num != pageInfo.pageNum}">
+                            <a th:href="@{/admin/forum/postList(tid=${tid},startTime=${startTime},endTime=${endTime},pn=${page_num})}">[[${page_num}]]</a></span>
+                    </li>
+                    <!--下一页-->
+                    <li th:if="${pageInfo.hasNextPage}">
+                        <a th:href="@{/admin/forum/postList(tid=${tid},startTime=${startTime},endTime=${endTime},pn=${pageInfo.pageNum+1})}"
+                           aria-label="Next">
+                            <span aria-hidden="true">»</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a th:href="@{/admin/forum/postList(tid=${tid},startTime=${startTime},endTime=${endTime},pn=${pageInfo.pages})}">尾页</a>
+                    </li>
+                </ul>
+            </nav>
+        </div>
+    </div>
+</div>
+<script th:src="@{/admin/js/jquery.min.js}"></script>
+<script th:src="@{/admin/js/bootstrap.min.js}"></script>
+<script th:src="@{/front/laydate/laydate.js}"></script>
+<script th:src="@{/admin/js/common.js}"></script>
+<script>
+    <!-- 查看订单的详细信息 -->
+    function lookOrderInfo(oid) {
+        var url = "/admin/order/detail/";
+        url = url + oid;
+        window.open(url, "订单详情", "height=500, width=800, top=100, left=300, toolbar=no, menubar=no, scrollbars=no, resizable=yes,location=no, status=no");
+    }
+</script>
+</body>
+</html>
