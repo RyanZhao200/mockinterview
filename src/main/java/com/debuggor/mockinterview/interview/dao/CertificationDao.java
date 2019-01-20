@@ -43,6 +43,6 @@ public interface CertificationDao {
      * @param iid
      * @return
      */
-    Certification getCertificationsByiid(Integer iid);
+    List<Certification> getCertificationsByiid(Integer iid);
 
 }

@@ -40,16 +40,18 @@
                 </thead>
                 <tbody>
                 <tr th:each="certification:${pageInfo.list}">
-                    <td th:text="${certification.interviewer.username}"></td>
+                    <td>
+                        <a th:href="@{/interviewer/}+${certification.interviewer.iid}" target="_blank">[[${certification.interviewer.username}]]</a>
+                    </td>
                     <td>
                         <span th:if="${certification.certificationStatus}==1">认证成功</span>
                         <span th:if="${certification.certificationStatus}==2">认证失败</span>
-                        <span th:if="${certification.certificationStatus}==3">待审核</span>
+                        <span th:if="${certification.certificationStatus}==3" class="btn btn-warning btn-xs">待审核</span>
                     </td>
                     <td th:text="${#dates.format(certification.createTime, 'yyyy-MM-dd HH:mm')}"></td>
-
                     <td>
-                        <button class="btn btn-info btn-sm" th:onclick="'lookOrderInfo('+${certification.iid}+')'">
+                        <button class="btn btn-info btn-sm"
+                                th:onclick="'lookCertificationInfo('+${certification.iid}+')'">
                             查看详情
                         </button>
                     </td>
@@ -104,10 +106,10 @@
 <script th:src="@{/admin/js/common.js}"></script>
 <script>
     <!-- 查看订单的详细信息 -->
-    function lookOrderInfo(oid) {
-        var url = "/admin/order/detail/";
-        url = url + oid;
-        window.open(url, "订单详情", "height=500, width=800, top=100, left=300, toolbar=no, menubar=no, scrollbars=no, resizable=yes,location=no, status=no");
+    function lookCertificationInfo(iid) {
+        var url = "/admin/certification/certifications/";
+        url = url + iid;
+        window.open(url, "认证详情", "height=500, width=800, top=100, left=300, toolbar=no, menubar=no, scrollbars=no, resizable=yes,location=no, status=no");
     }
 </script>
 </body>

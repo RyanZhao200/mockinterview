@@ -30,6 +30,10 @@ public class Certification {
      */
     private String certificationStatus;
     /**
+     * 反馈，管理员对认证的信息进行评价。不通过的原因等
+     */
+    private String feedback;
+    /**
      * 创建时间
      */
     private Date createTime;

@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>认证详情</title>
+    <link rel="stylesheet" th:href="@{/admin/css/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/front/window/window.css}">
+
+</head>
+<body style="background-color: #f3f3f4;padding:0 20px;">
+<div class="container">
+    <!-- 面试官的基本信息-->
+    <div class="row clearfix " style="margin-top: 10px;">
+        <h3>基本信息</h3>
+        <div class="panel panel-body">
+            <div class="col-sm-4">
+                <span>用户名:[[${interviewer.username}]]</span>
+            </div>
+            <div class="col-sm-4">
+                <span>邮箱:[[${interviewer.email}]]</span>
+            </div>
+            <div class="col-sm-4">
+                <span>电话:[[${interviewer.phone}]]</span>
+            </div>
+            <div class="col-sm-4">
+                <span>工作年限:[[${interviewer.workYear}]]</span>
+            </div>
+            <div class="col-sm-4">
+                <span>收费:[[${interviewer.cost}]]</span>
+            </div>
+            <div class="col-sm-4">
+                <span>个人介绍:<a th:href="@{/interviewer/}+${interviewer.iid}" target="_blank">查看</a></span>
+            </div>
+        </div>
+    </div>
+    <!-- 面试官的认证信息列表-->
+    <div class="row clearfix" style="margin-top: 30px;">
+        <h3>认证信息</h3>
+        <div class="col-md-12 column" th:if="${not #lists.isEmpty(certifications)}"
+             th:each="certification:${certifications}">
+            <!-- 待认证-->
+            <div class="panel panel-default" th:if="${certification.certificationStatus}==3">
+                <div class="panel-body">
+                    <div>
+                        <span th:utext="${certification.information}"></span>
+                    </div>
+                    <div style="padding-bottom: 10px;">
+                        <span style="float: left">
+                            <span>创建时间：</span>
+                            <span th:text="${#dates.format(certification.createTime, 'yyyy-MM-dd HH:mm')}"></span>
+                        </span>
+                        <span style="float: right;">
+                            <span>状态:</span>
+                            <span class="btn btn-warning btn-xs disabled">待审核</span>
+                        </span>
+                    </div>
+                    <div style="margin-top: 20px;">
+                        <form th:action="@{/admin/certification/dealCertification}" id="formId" class="form-inline"
+                              role="form" method="post">
+                            <input name="cid" type="hidden" th:value="${certification.cid}"/>
+                            <input name="iid" type="hidden" th:value="${certification.iid}"/>
+                            <div class="form-group col-sm-12  checkbox">
+                                <label class=" control-label">审核结果：</label>
+                                <input type="radio" name="certificationStatus" value="1">认证成功&nbsp;&nbsp;
+                                <input type="radio" name="certificationStatus" value="2">认证失败
+                            </div>
+                            <div class="form-group col-sm-12" style="margin-top: 10px;">
+                                <label class=" control-label ">反馈信息：</label>
+                                <textarea class="form-control" type="text" name="feedback"
+                                          style="width: 500px;"></textarea>
+                            </div>
+                            <div class="form-group" style="margin-left: 50px;margin-top: 20px;">
+                                <input type="submit" class="btn btn-success" onclick="formSubmit()" value="提交">
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- 认证成功，认证失败 -->
+            <div class="panel panel-default" th:if="${certification.certificationStatus} ne 3">
+                <div class="panel-body">
+                    <div>
+                        <span th:utext="${certification.information}"></span>
+                    </div>
+                    <div style="padding-bottom: 10px;">
+                        <span style="float: left">
+                            <span>创建时间：</span>
+                            <span th:text="${#dates.format(certification.createTime, 'yyyy-MM-dd HH:mm')}"></span>
+                        </span>
+                        <span style="float: right;">
+                            <span>状态:</span>
+                            <span th:if="${certification.certificationStatus}==1"
+                                  class="btn btn-success  btn-xs disabled">认证成功</span>
+                            <span th:if="${certification.certificationStatus}==2"
+                                  class="btn btn-danger btn-xs disabled">认证失败</span>
+                        </span>
+                    </div>
+                    <div style="padding-top: 10px;">
+                        <span style="float: left">
+                            <span>反馈:</span>
+                            <span th:utext="${certification.feedback}"></span>
+                        </span>
+                        <span style="float: right;">
+                            <span>审核时间：</span>
+                            <span th:text="${#dates.format(certification.reviewTime, 'yyyy-MM-dd HH:mm')}"></span>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:if="${ #lists.isEmpty(certifications)}" style="text-align: center">
+            <span class="btn btn-warning btn-xs disabled">面试官待提交认证信息</span>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/admin/js/jquery.min.js}"></script>
+<script th:src="@{/admin/js/bootstrap.min.js}"></script>
+
+<script type="text/javascript">
+    function formSubmit() {
+        document.getElementById("formId").submit();
+        alert("提交成功！");
+    }
+
+</script>
+</body>
+</html>

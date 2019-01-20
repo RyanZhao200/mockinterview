@@ -42,9 +42,10 @@
                     </div>
                     <div class="form-group col-sm-6 select-time">
                         <label class="control-label">创建时间：</label>
-                        <input name="startTime" id="startTime" class="form-control" style="width: 30%;"    placeholder="开始时间" >
+                        <input name="startTime" id="startTime" class="form-control" style="width: 30%;"
+                               placeholder="开始时间">
                         <span>-</span>
-                        <input name="endTime" id="endTime" class="form-control" style="width: 30%;"  placeholder="结束时间">
+                        <input name="endTime" id="endTime" class="form-control" style="width: 30%;" placeholder="结束时间">
                     </div>
                 </div>
                 <br>
@@ -64,7 +65,7 @@
                     <th>性别</th>
                     <th>邮箱</th>
                     <th>电话</th>
-                    <th>等级</th>
+                    <th>评分等级</th>
                     <th>工作年限</th>
                     <th>激活</th>
                     <th>认证</th>
@@ -80,7 +81,12 @@
                     <td th:text="${view.grade}"></td>
                     <td th:text="${view.workYear}"></td>
                     <td th:text="${view.isActivate}==1?'是':'否'"></td>
-                    <td th:text="${view.isCertification}==1?'是':'否'"></td>
+                    <td>
+                        <a th:onclick="'lookCertificationInfo('+${view.iid}+')'">
+                            <span th:if="${view.isCertification}==1" class="btn btn-success btn-xs">是</span>
+                            <span th:if="${view.isCertification}==0" class="btn btn-warning btn-xs">否</span>
+                        </a>
+                    </td>
                     <td th:text="${#dates.format(view.createTime, 'yyyy-MM-dd HH:mm')}"></td>
                 </tr>
                 </tbody>
@@ -127,6 +133,13 @@
 <script th:src="@{/admin/js/bootstrap.min.js}"></script>
 <script th:src="@{/front/laydate/laydate.js}"></script>
 <script th:src="@{/admin/js/common.js}"></script>
-
+<script>
+    <!-- 查看订单的详细信息 -->
+    function lookCertificationInfo(iid) {
+        var url = "/admin/certification/certifications/";
+        url = url + iid;
+        window.open(url, "认证详情", "height=500, width=800, top=100, left=300, toolbar=no, menubar=no, scrollbars=no, resizable=yes,location=no, status=no");
+    }
+</script>
 </body>
 </html>

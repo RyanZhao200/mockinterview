@@ -21,6 +21,7 @@
         UPDATE j_certification
         <set>
             <if test="certificationStatus != null">certification_status=#{certificationStatus},</if>
+            <if test="feedback != null">feedback=#{feedback},</if>
             <if test="reviewTime != null">review_time=#{reviewTime},</if>
         </set>
         WHERE cid = #{cid}

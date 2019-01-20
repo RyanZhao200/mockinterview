@@ -16,6 +16,7 @@ import java.util.List;
 
 @Service
 public class CertificationService {
+
     @Autowired
     private CertificationDao certificationDao;
     @Autowired
@@ -69,4 +70,16 @@ public class CertificationService {
         pageInfo.setList(list);
         return pageInfo;
     }
+
+    /**
+     * 面试官A认证的记录信息
+     *
+     * @param iid
+     * @return
+     */
+    public List<Certification> getCertificationsByiid(Integer iid) {
+        List<Certification> certifications = certificationDao.getCertificationsByiid(iid);
+        return certifications;
+    }
+
 }
