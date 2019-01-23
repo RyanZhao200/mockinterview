@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.debuggor.mockinterview.finance.dao.RechargeRecordingDao">
+    <!--插入用户的充值记录-->
+    <insert id="insert" parameterType="com.debuggor.mockinterview.finance.bean.RechargeRecording">
+        insert into m_recharge_recording (amount,finder_id,create_time)
+        values (#{amount},#{finderId},#{createTime})
+    </insert>
+    <!--根据求职者ID得到求职者的充值记录-->
+    <select id="getRechargeRecordingsByUid" resultType="com.debuggor.mockinterview.finance.bean.RechargeRecording"
+            parameterType="java.lang.Integer">
+        SELECT * FROM m_recharge_recording WHERE finder_id=#{finderId}
+    </select>
+    <!--根据充值记录ID得到充值记录信息-->
+    <select id="getRechargeRecordingByid" resultType="com.debuggor.mockinterview.finance.bean.RechargeRecording"
+            parameterType="java.lang.Integer">
+        SELECT * FROM m_recharge_recording WHERE rrid=#{rrid}
+    </select>
+
+</mapper>

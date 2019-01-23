@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.debuggor.mockinterview.finance.dao.ExtractRecordingDao">
+
+    <!--插入用户的充值记录-->
+    <insert id="insert" parameterType="com.debuggor.mockinterview.finance.bean.ExtractRecording">
+        insert into m_extract_recording (amount,interviewer_id,create_time)
+        values (#{amount},#{interviewerId},#{createTime})
+    </insert>
+    <!--根据求职者ID得到求职者的充值记录-->
+    <select id="getExtractRecordingsByUid" resultType="com.debuggor.mockinterview.finance.bean.ExtractRecording"
+            parameterType="java.lang.Integer">
+        SELECT * FROM m_extract_recording WHERE interviewer_id=#{interviewerId}
+    </select>
+    <!--根据充值记录ID得到充值记录信息-->
+    <select id="getExtractRecordingByid" resultType="com.debuggor.mockinterview.finance.bean.ExtractRecording"
+            parameterType="java.lang.Integer">
+        SELECT * FROM m_extract_recording WHERE erid=#{erid}
+    </select>
+
+</mapper>

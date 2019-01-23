@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.debuggor.mockinterview.finance.dao.AmountDao">
+    <!--插入一位用户的金额；初始为0-->
+    <insert id="insert" parameterType="com.debuggor.mockinterview.finance.bean.Amount">
+        insert into m_amount (amount,user_id,user_type)
+         values (#{amount},#{userId},#{userType})
+    </insert>
+
+    <!--跟新用户的本地金额，求职者充值，面试官提现-->
+    <update id="update" parameterType="com.debuggor.mockinterview.finance.bean.Amount">
+        UPDATE m_amount
+        <set>
+            <if test="amount != nul">amount = #{amount},</if>
+        </set>
+        WHERE user_id=#{userId} and user_type=#{userType}
+    </update>
+
+    <!--根据用户ID，查询用户本地的金额-->
+    <select id="getAmountByUid" parameterType="com.debuggor.mockinterview.finance.bean.Amount">
+        SELECT * from m_amount WHERE user_id=#{userId} and user_type=#{userType}
+    </select>
+
+    <!--获得用户本地的所有金额-->
+    <select id="getUserAmountSum" parameterType="com.debuggor.mockinterview.finance.bean.Amount"
+            resultType="java.math.BigDecimal">
+        SELECT SUM(amount) from m_amount
+        <where>
+            <if test="userId != null">and user_id=#{userId},</if>
+            <if test="userType != null">and user_type=#{userType},</if>
+        </where>
+    </select>
+
+</mapper>

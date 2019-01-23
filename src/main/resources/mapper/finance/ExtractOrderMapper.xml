@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.debuggor.mockinterview.finance.dao.ExtractOrderDao">
+    <!--插入一条提现申请订单-->
+    <insert id="insert" parameterType="com.debuggor.mockinterview.finance.bean.ExtractOrder">
+        insert into m_extract_order (amount,interviewer_id,order_status,create_time)
+        values (#{amount},#{interviewerId},#{orderStatus},#{createTime});
+    </insert>
+    <!--更新订单，管理员审批-->
+    <update id="update" parameterType="java.lang.Integer">
+        update m_extract_order
+        <set>
+            <if test="orderStatus != null">order_status=#{orderStatus},</if>
+            <if test="reviewInfo != null">review_info=#{reviewInfo},</if>
+            <if test="reviewTime != null">review_time=#{reviewTime},</if>
+        </set>
+        WHERE eoid = #{eoid}
+    </update>
+    <!--根据订单ID，获取订单的信息-->
+    <select id="getExtractOrderById" parameterType="java.lang.Integer">
+        select * from m_extract_order WHERE eoid = #{eoid}
+    </select>
+</mapper>
