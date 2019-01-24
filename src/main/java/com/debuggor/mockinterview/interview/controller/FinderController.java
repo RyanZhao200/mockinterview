@@ -1,5 +1,7 @@
 package com.debuggor.mockinterview.interview.controller;
 
+import com.debuggor.mockinterview.finance.bean.Amount;
+import com.debuggor.mockinterview.finance.service.AmountService;
 import com.debuggor.mockinterview.interview.bean.Message;
 import com.debuggor.mockinterview.common.constant.MockConstant;
 import com.debuggor.mockinterview.common.constant.QiniuConstant;
@@ -58,6 +60,8 @@ public class FinderController {
     private CommentService commentService;
     @Autowired
     private FollowerService followerService;
+    @Autowired
+    private AmountService amountService;
 
     /**
      * 求职者登录页面
@@ -438,5 +442,51 @@ public class FinderController {
         }
         Boolean followed = followerService.isFollowed(follower);
         return followed;
+    }
+
+    /**
+     * 求职者账户余额页面
+     *
+     * @param session
+     * @param model
+     * @return
+     */
+    @RequestMapping("/amountPage")
+    public String amountPage(HttpSession session, Model model) {
+        Finder finder = (Finder) session.getAttribute("finder");
+        Amount amount = getUserAmount(finder.getFid());
+        model.addAttribute("amount", amount);
+        model.addAttribute("finder", finder);
+        return "front/user/finder/amount";
+    }
+
+    /**
+     * 转到用户要充值的页面
+     *
+     * @param session
+     * @param model
+     * @return
+     */
+    @RequestMapping("/toRecharge")
+    public String toRechargePage(HttpSession session, Model model) {
+        Finder finder = (Finder) session.getAttribute("finder");
+        Amount amount = getUserAmount(finder.getFid());
+        model.addAttribute("amount", amount);
+        model.addAttribute("finder", finder);
+        return "front/user/finder/toRecharge";
+    }
+
+    /**
+     * 根据求职者的ID获得求职者的本地金额
+     *
+     * @param fid
+     * @return
+     */
+    private Amount getUserAmount(Integer fid) {
+        Amount amount = new Amount();
+        amount.setUserId(fid);
+        amount.setUserType(UserEnum.FINDER.key);
+        amount = amountService.getUserAmount(amount);
+        return amount;
     }
 }

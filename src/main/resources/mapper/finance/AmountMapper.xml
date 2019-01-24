@@ -19,7 +19,8 @@
     </update>
 
     <!--根据用户ID，查询用户本地的金额-->
-    <select id="getAmountByUid" parameterType="com.debuggor.mockinterview.finance.bean.Amount">
+    <select id="getAmountByUid" parameterType="com.debuggor.mockinterview.finance.bean.Amount"
+            resultType="com.debuggor.mockinterview.finance.bean.Amount">
         SELECT * from m_amount WHERE user_id=#{userId} and user_type=#{userType}
     </select>
 
