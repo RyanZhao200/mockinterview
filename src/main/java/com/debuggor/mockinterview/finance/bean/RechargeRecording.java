@@ -14,6 +14,14 @@ public class RechargeRecording {
      */
     private Integer rrid;
     /**
+     * 充值订单号
+     */
+    private String rechargeNum;
+    /**
+     * 支付宝订单号
+     */
+    private String tradeNum;
+    /**
      * 充值金额
      */
     private Float amount;

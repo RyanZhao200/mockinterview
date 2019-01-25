@@ -17,10 +17,26 @@ public class AlipayConfig {
      * 教程查看获取方式（必须配置）
      */
     public static String alipay_public_key = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA02ndSHdbllVUMKBDeF7NVU+wEICCb9H3GaFOAsZ6DbtGnNXop1mHST0GcBmKICmW7Of5lFfNJDSgMVtrA5f0qo0xVGnr/8nmJVghJpAu4xrjlo6zAHQcI9WtPmAUUYkEYuWl9cVDX1aZECLCawXe7ae+alfjo0DejmZrAzGtaUHJ+XLJ2LkilXki8HUMng1xZeY7nCa6Mjr3bSsArT0PJAlgjw0/hm3rZcEsaMAbKjjMz/sxxVzuueTWDhmFBfAbwu9yg/UPNEim+at7TNwKoe3KtAsotBmWmjNT11PfOcVDlssELVwk8F3ZTCco4g+NADIpPTvPaynMoBcsSFZkKQIDAQAB";
-
-    public static String notify_url = "http://localhost:8080/pay/alipayNotifyNotice";
-
-    public static String return_url = "http://localhost:8080/pay/alipayReturnNotice";
+    /**
+     * 求职者在发起订单时支付
+     * 支付宝异步通知页面
+     */
+    public static String notify_url_order = "http://localhost:8080/pay/alipayNotifyNotice";
+    /**
+     * 求职者在充值时支付
+     * 支付宝异步通知页面
+     */
+    public static String notify_url_recharge = "http://localhost:8080/amount/alipayNotifyNotice";
+    /**
+     * 求职者在发起订单时支付
+     * 支付宝同步通知页面
+     */
+    public static String return_url_order = "http://localhost:8080/pay/alipayReturnNotice";
+    /**
+     * 求职者在充值时支付
+     * 支付宝同步通知页面
+     */
+    public static String return_url_recharge = "http://localhost:8080/amount/alipayReturnNotice";
 
     public static String sign_type = "RSA2";
 

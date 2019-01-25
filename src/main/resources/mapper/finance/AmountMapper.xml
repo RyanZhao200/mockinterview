@@ -13,7 +13,7 @@
     <update id="update" parameterType="com.debuggor.mockinterview.finance.bean.Amount">
         UPDATE m_amount
         <set>
-            <if test="amount != nul">amount = #{amount},</if>
+            <if test="amount != null">amount = #{amount},</if>
         </set>
         WHERE user_id=#{userId} and user_type=#{userType}
     </update>

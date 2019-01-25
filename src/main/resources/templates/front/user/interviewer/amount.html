@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>账户余额</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" th:href="@{/front/layui/css/layui.css}">
+    <link rel="stylesheet" th:href="@{/front/css/global.css}">
+    <link rel="stylesheet" th:href="@{/front/window/window.css}">
+
+</head>
+<body>
+<!--前台公共头部-->
+<div th:replace="front/common/bar::topbar"></div>
+
+<div class="layui-container fly-marginTop fly-user-main">
+    <!-- 公共左侧 -->
+    <div th:replace="front/user/interviewer/bar::leftbar"></div>
+
+
+    <div class="fly-panel fly-panel-user" pad20>
+        <div class="layui-tab layui-tab-brief" id="LAY_msg" style="margin-top: 15px;">
+            <div class="layui-card-header" style="font-size: 20px;color: #009688">账户余额</div>
+            <div class="layui-card-body">
+                <div style="margin-top: 10px;font-size: 16px;">
+                    <span>账户余额：[[${amount.amount}]] 元 </span>
+                    <span><a th:href="@{/interviewer/toExtract}" style="color:#1b7ff0;margin-left: 15px;">立即提现</a></span>
+                </div>
+                <div style="margin-top: 20px;margin-left: 30px;">
+                    <span>
+                        <a href="#" style="color: #6aacf0;">查看提现明细</a>
+                    </span>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<!--公共底部-->
+<div th:replace="front/common/bar::footerbar"></div>
+
+<script th:src="@{/front/layui/layui.js}"></script>
+<script th:src="@{/admin/js/jquery.min.js}"></script>
+<script th:src="@{/front/window/window.js}"></script>
+<script>
+    layui.use('element', function () {
+        var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+        element.init();
+    });
+
+    function addCertificationInfo() {
+        var url = "/interviewer/toAddCertification";
+        window.open(url, "认证信息", "height=400, width=800, top=200, left=350, toolbar=no, menubar=no, scrollbars=no, resizable=yes,location=no, status=no");
+    }
+
+</script>
+
+</body>
+</html>

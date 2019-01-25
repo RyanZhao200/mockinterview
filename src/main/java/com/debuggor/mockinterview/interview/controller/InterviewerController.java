@@ -1,7 +1,10 @@
 package com.debuggor.mockinterview.interview.controller;
 
 import com.debuggor.mockinterview.common.enumerate.CertificationEnum;
+import com.debuggor.mockinterview.finance.bean.Amount;
+import com.debuggor.mockinterview.finance.service.AmountService;
 import com.debuggor.mockinterview.interview.bean.Certification;
+import com.debuggor.mockinterview.interview.bean.Finder;
 import com.debuggor.mockinterview.interview.bean.Message;
 import com.debuggor.mockinterview.common.constant.MockConstant;
 import com.debuggor.mockinterview.common.constant.QiniuConstant;
@@ -57,6 +60,8 @@ public class InterviewerController {
     private ForumService forumService;
     @Autowired
     private CertificationService certificationService;
+    @Autowired
+    private AmountService amountService;
 
     @RequestMapping("/login")
     public String tologin() {
@@ -343,5 +348,29 @@ public class InterviewerController {
         str.append(" window.opener.location.href = window.opener.location.href; window.close();");
         str.append("</script>");
         response.getWriter().write(str.toString());
+    }
+
+    /**
+     * 面试官的账户余额页面
+     *
+     * @param session
+     * @param model
+     * @return
+     */
+    @RequestMapping("/amountPage")
+    public String amountPage(HttpSession session, Model model) {
+        Interviewer interviewer = (Interviewer) session.getAttribute("interviewer");
+        Amount amount = getUserAmount(interviewer.getIid());
+        model.addAttribute("amount", amount);
+        model.addAttribute("interviewer", interviewer);
+        return "front/user/interviewer/amount";
+    }
+
+    private Amount getUserAmount(Integer iid) {
+        Amount amount = new Amount();
+        amount.setUserId(iid);
+        amount.setUserType(UserEnum.INTERVIEWER.key);
+        amount = amountService.getUserAmount(amount);
+        return amount;
     }
 }
