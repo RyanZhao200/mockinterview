@@ -5,8 +5,8 @@
 <mapper namespace="com.debuggor.mockinterview.finance.dao.ExtractOrderDao">
     <!--插入一条提现申请订单-->
     <insert id="insert" parameterType="com.debuggor.mockinterview.finance.bean.ExtractOrder">
-        insert into m_extract_order (amount,interviewer_id,order_status,create_time)
-        values (#{amount},#{interviewerId},#{orderStatus},#{createTime});
+        insert into m_extract_order (amount,ali_account,interviewer_id,order_status,create_time)
+        values (#{amount},#{aliAccount},#{interviewerId},#{orderStatus},#{createTime});
     </insert>
     <!--更新订单，管理员审批-->
     <update id="update" parameterType="com.debuggor.mockinterview.finance.bean.ExtractOrder">
@@ -22,5 +22,28 @@
     <select id="getExtractOrderById" parameterType="java.lang.Integer"
             resultType="com.debuggor.mockinterview.finance.bean.ExtractOrder">
         select * from m_extract_order WHERE eoid = #{eoid}
+    </select>
+    <!-- 根据面试官ID，获得最近一次提交的提现申请，待审核-->
+    <select id="getLastExtractOrderByUid" parameterType="java.lang.Integer"
+            resultType="com.debuggor.mockinterview.finance.bean.ExtractOrder">
+        SELECT * from m_extract_order
+        WHERE interviewer_id = #{iid}
+        and order_status = 1
+        ORDER BY create_time DESC
+        LIMIT 0,1
+    </select>
+    <!-- 面试官提现申请订单 -->
+    <select id="getExtractOrders" resultType="com.debuggor.mockinterview.finance.bean.ExtractOrder"
+            parameterType="com.debuggor.mockinterview.finance.bean.ExtractOrder">
+        SELECT
+        e.eoid,e.amount,e.ali_account,e.interviewer_id,i.username,
+        e.order_status,e.review_info,e.create_time,e.review_time
+        from m_extract_order e
+        LEFT JOIN j_interviewer i ON e.interviewer_id=i.iid
+        <where>
+            <if test="interviewerId != null">and e.interviewer_id = #{interviewerId}</if>
+            <if test="orderStatus != null">and e.order_status = #{orderStatus}</if>
+        </where>
+        ORDER BY create_time DESC
     </select>
 </mapper>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>提现订单详情</title>
+    <link rel="stylesheet" th:href="@{/admin/css/bootstrap.min.css}">
+
+</head>
+<body style="background-color: #f3f3f4;padding:0 20px;">
+<div class="container">
+    <!-- 面试官的基本信息-->
+    <div class="row clearfix " style="margin-top: 10px;">
+        <h4>基本信息</h4>
+        <div class="panel panel-body">
+            <div class="col-sm-4">
+                <span>用户名:[[${interviewer.username}]]</span>
+            </div>
+            <div class="col-sm-4">
+                <span>邮箱:[[${interviewer.email}]]</span>
+            </div>
+            <div class="col-sm-4">
+                <span>电话:[[${interviewer.phone}]]</span>
+            </div>
+            <div class="col-sm-4">
+                <span>工作年限:[[${interviewer.workYear}]]</span>
+            </div>
+            <div class="col-sm-4">
+                <span>收费:[[${interviewer.cost}]]</span>
+            </div>
+            <div class="col-sm-4">
+                <span>个人主页:<a th:href="@{/interviewer/}+${interviewer.iid}" target="_blank">查看</a></span>
+            </div>
+        </div>
+    </div>
+    <!-- 面试官的认证信息列表-->
+    <div class="row clearfix" style="margin-top: 30px;">
+        <h4>提现订单详情</h4>
+        <div class="col-md-12 column">
+            <!-- 待认证-->
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div>
+                        <span th:text="${extractOrder.amount}"></span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script th:src="@{/admin/js/jquery.min.js}"></script>
+<script th:src="@{/admin/js/bootstrap.min.js}"></script>
+
+<script type="text/javascript">
+    function formSubmit() {
+        document.getElementById("formId").submit();
+        alert("提交成功！");
+    }
+
+</script>
+</body>
+</html>

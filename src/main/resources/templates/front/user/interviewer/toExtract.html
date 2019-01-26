@@ -2,7 +2,7 @@
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="utf-8">
-    <title>账户充值</title>
+    <title>账户提现</title>
     <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
     <link rel="stylesheet" th:href="@{/front/layui/css/layui.css}">
     <link rel="stylesheet" th:href="@{/front/css/global.css}">
@@ -14,47 +14,18 @@
 <div th:replace="front/common/bar::topbar"></div>
 
 <div class="layui-container fly-marginTop fly-user-main">
-    <ul class="layui-nav layui-nav-tree layui-inline" lay-filter="user">
-        <li class="layui-nav-item">
-            <a href="#" th:href="@{/finder/home/}+${finder.fid}">
-                <i class="layui-icon">&#xe609;</i> 我的主页
-            </a>
-        </li>
-        <li class="layui-nav-item">
-            <a href="#">
-                <i class="layui-icon">&#xe667;</i> 我的消息
-            </a>
-        </li>
-        <li class="layui-nav-item">
-            <a href="#" th:href="@{/finder/posts}">
-                <i class="layui-icon">&#xe60e;</i> 我的帖子
-            </a>
-        </li>
-        <li class="layui-nav-item">
-            <a href="" th:href="@{/finder/messageInterview}">
-                <i class="layui-icon">&#xe66c;</i> 面试记录
-            </a>
-        </li>
-        <li class="layui-nav-item layui-this">
-            <a href="" th:href="@{/finder/amountPage}">
-                <i class="layui-icon">&#xe65e;</i> 帐户余额
-            </a>
-        </li>
-        <li class="layui-nav-item">
-            <a href="" th:href="@{/finder/toUpdate}">
-                <i class="layui-icon">&#xe620;</i> 基本设置
-            </a>
-        </li>
-    </ul>
+    <!-- 公共左侧 -->
+    <div th:replace="front/user/interviewer/bar::leftbar"></div>
 
     <div class="fly-panel fly-panel-user" pad20>
         <div class="layui-tab layui-tab-brief" id="LAY_msg" style="margin-top: 15px;">
-            <div class="layui-card-header" style="font-size: 20px;color: #009688">账户充值</div>
+            <div class="layui-card-header" style="font-size: 20px;color: #009688">账户提现</div>
             <div class="layui-card-body">
                 <div style="margin-top: 10px;font-size: 16px;">
-                    <form class="layui-form" th:action="@{/amount/goRechargePay}" method="post">
+                    <span style="font-size: 12px;color: #985f0d;">*提现默认转到支付宝账户,支付宝账号为注册邮箱或电话号码，提现申请成功更高</span>
+                    <form class="layui-form" style="margin-top: 20px;" th:action="@{/extractOrder/submitOrder}" method="post">
                         <div class="layui-form-item">
-                            <label class="layui-form-label">充值金额：</label>
+                            <label class="layui-form-label">提现金额：</label>
                             <div class="layui-input-inline">
                                 <input type="text" name="amount" required lay-verify="required"
                                        autocomplete="off" class="layui-input">
@@ -64,16 +35,15 @@
                             </div>
                         </div>
                         <div class="layui-form-item">
-                            <label class="layui-form-label">支付方式:</label>
-                            <div class="layui-input-block">
-                                <input type="radio" name="payWay" value="1" title=" " checked>
-                                <img style="position: absolute;left: 20px;width: 80px;height: 40px;"
-                                     th:src="@{/front/images/pay/alipay.gif}">
+                            <label class="layui-form-label">支付宝：</label>
+                            <div class="layui-input-inline">
+                                <input type="text" name="account" required lay-verify="required"
+                                       autocomplete="off" class="layui-input">
                             </div>
                         </div>
                         <div class="layui-form-item">
                             <div class="layui-input-block">
-                                <button class="layui-btn" lay-submit lay-filter="formDemo">继续下一步</button>
+                                <button class="layui-btn" lay-submit lay-filter="formDemo">提交申请</button>
                             </div>
                         </div>
                     </form>
@@ -99,6 +69,7 @@
         var form = layui.form;
         form.render();
     });
+
 
 </script>
 

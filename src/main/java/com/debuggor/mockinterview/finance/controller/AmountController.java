@@ -11,6 +11,7 @@ import com.debuggor.mockinterview.common.enumerate.PayWayEnum;
 import com.debuggor.mockinterview.common.enumerate.UserEnum;
 import com.debuggor.mockinterview.common.util.AlipayUtil;
 import com.debuggor.mockinterview.common.util.OrdersNumberUtil;
+import com.debuggor.mockinterview.common.util.TimeUtil;
 import com.debuggor.mockinterview.finance.bean.Amount;
 import com.debuggor.mockinterview.finance.bean.RechargeRecording;
 import com.debuggor.mockinterview.finance.service.AmountService;
@@ -28,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -142,7 +144,6 @@ public class AmountController {
             amount.setUserType(UserEnum.FINDER.key);
             amount.setAmount(new BigDecimal(total_amount));
             String result = amountService.update(amount, PayOperateEnum.RECHARGE.key);
-            logger.info("充值结果: {}", result);
             // 插入一条充值记录
             RechargeRecording recharge = new RechargeRecording();
             recharge.setAmount(new BigDecimal(total_amount).floatValue());
@@ -151,6 +152,7 @@ public class AmountController {
             recharge.setTradeNum(trade_no);
             rechargeService.insert(recharge);
 
+            logger.info(finder.getUsername() + "于" + TimeUtil.format(new Date()) + "充值，详情如下：");
             logger.info("********************** 支付成功(支付宝同步通知) **********************");
             logger.info("* 订单号: {}", out_trade_no);
             logger.info("* 支付宝交易号: {}", trade_no);

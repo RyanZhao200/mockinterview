@@ -2,7 +2,9 @@ package com.debuggor.mockinterview.interview.controller;
 
 import com.debuggor.mockinterview.common.enumerate.CertificationEnum;
 import com.debuggor.mockinterview.finance.bean.Amount;
+import com.debuggor.mockinterview.finance.bean.ExtractOrder;
 import com.debuggor.mockinterview.finance.service.AmountService;
+import com.debuggor.mockinterview.finance.service.ExtractOrderService;
 import com.debuggor.mockinterview.interview.bean.Certification;
 import com.debuggor.mockinterview.interview.bean.Finder;
 import com.debuggor.mockinterview.interview.bean.Message;
@@ -62,6 +64,9 @@ public class InterviewerController {
     private CertificationService certificationService;
     @Autowired
     private AmountService amountService;
+    @Autowired
+    private ExtractOrderService extractOrderService;
+
 
     @RequestMapping("/login")
     public String tologin() {
@@ -361,8 +366,10 @@ public class InterviewerController {
     public String amountPage(HttpSession session, Model model) {
         Interviewer interviewer = (Interviewer) session.getAttribute("interviewer");
         Amount amount = getUserAmount(interviewer.getIid());
+        ExtractOrder extractOrder = extractOrderService.getLastExtractOrderByUid(interviewer.getIid());
         model.addAttribute("amount", amount);
         model.addAttribute("interviewer", interviewer);
+        model.addAttribute("extractOrder", extractOrder);
         return "front/user/interviewer/amount";
     }
 
@@ -372,5 +379,21 @@ public class InterviewerController {
         amount.setUserType(UserEnum.INTERVIEWER.key);
         amount = amountService.getUserAmount(amount);
         return amount;
+    }
+
+    /**
+     * 转到面试官提现的页面
+     *
+     * @param session
+     * @param model
+     * @return
+     */
+    @RequestMapping("/toExtract")
+    public String toExtractPage(HttpSession session, Model model) {
+        Interviewer interviewer = (Interviewer) session.getAttribute("interviewer");
+        model.addAttribute("interviewer", interviewer);
+        Amount amount = getUserAmount(interviewer.getIid());
+        model.addAttribute("amount", amount);
+        return "front/user/interviewer/toExtract";
     }
 }

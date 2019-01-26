@@ -3,6 +3,8 @@ package com.debuggor.mockinterview.finance.dao;
 import com.debuggor.mockinterview.finance.bean.ExtractOrder;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 @Repository
 public interface ExtractOrderDao {
     /**
@@ -26,4 +28,20 @@ public interface ExtractOrderDao {
      * @return
      */
     ExtractOrder getExtractOrderById(Integer eoid);
+
+    /**
+     * 根据面试官ID，获取最近的一次提交申请
+     * 待审核
+     *
+     * @param iid
+     * @return
+     */
+    ExtractOrder getLastExtractOrderByUid(Integer iid);
+
+    /**
+     * 获取面试官提现订单申请列表
+     *
+     * @param extractOrder
+     */
+    List<ExtractOrder> getExtractOrders(ExtractOrder extractOrder);
 }

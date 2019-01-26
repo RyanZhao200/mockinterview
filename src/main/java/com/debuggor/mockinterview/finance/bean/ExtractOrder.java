@@ -1,5 +1,6 @@
 package com.debuggor.mockinterview.finance.bean;
 
+import com.debuggor.mockinterview.interview.bean.Interviewer;
 import lombok.Data;
 
 import java.util.Date;
@@ -18,9 +19,17 @@ public class ExtractOrder {
      */
     private Float amount;
     /**
+     * 支付宝账户
+     */
+    private String aliAccount;
+    /**
      * 面试官ID
      */
     private Integer interviewerId;
+    /**
+     * 面试官姓名
+     */
+    private String username;
     /**
      * 订单状态（1、待审核，2、审核通过，3、不通过）
      */
