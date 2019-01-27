@@ -21,4 +21,12 @@
         SELECT * FROM m_recharge_recording WHERE rrid=#{rrid}
     </select>
 
+    <select id="getRechargeRecordings" resultType="com.debuggor.mockinterview.finance.bean.RechargeRecording">
+        SELECT
+        r.rrid,r.recharge_num,r.trade_num,r.amount,
+        r.finder_id,f.username,r.create_time
+        from m_recharge_recording r
+        LEFT JOIN j_finder f ON r.finder_id=f.fid
+        ORDER BY r.create_time DESC
+    </select>
 </mapper>

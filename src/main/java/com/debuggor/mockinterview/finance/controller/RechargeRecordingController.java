@@ -39,4 +39,18 @@ public class RechargeRecordingController {
         model.addAttribute("pageInfo", pageInfo);
         return "front/user/finder/recharges";
     }
+
+    /**
+     * 后台：充值记录列表
+     *
+     * @param pn
+     * @param model
+     * @return
+     */
+    @RequestMapping("/rechargeRecordings")
+    public String getRechargeRecordings(@RequestParam(required = false, defaultValue = "1", value = "pn") Integer pn, Model model) {
+        PageInfo<RechargeRecording> pageInfo = recordingService.getRechargeRecordings(pn);
+        model.addAttribute("pageInfo", pageInfo);
+        return "admin/finance/rechargeRecording";
+    }
 }

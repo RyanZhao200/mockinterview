@@ -40,4 +40,17 @@ public class RechargeRecordingService {
         PageInfo<RechargeRecording> pageInfo = new PageInfo<>(recordings, PageConstant.Navigate_Pages);
         return pageInfo;
     }
+
+    /**
+     * 充值记录列表
+     *
+     * @param pn
+     * @return
+     */
+    public PageInfo<RechargeRecording> getRechargeRecordings(Integer pn) {
+        PageHelper.startPage(pn, PageConstant.Page_Sizes);
+        List<RechargeRecording> recordings = rechargeRecordingDao.getRechargeRecordings();
+        PageInfo<RechargeRecording> pageInfo = new PageInfo<>(recordings, PageConstant.Navigate_Pages);
+        return pageInfo;
+    }
 }

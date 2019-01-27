@@ -30,6 +30,10 @@ public class RechargeRecording {
      */
     private Integer finderId;
     /**
+     * 求职者姓名
+     */
+    private String username;
+    /**
      * 创建时间
      */
     private Date createTime;

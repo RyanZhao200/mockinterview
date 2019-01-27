@@ -32,4 +32,12 @@ public interface RechargeRecordingDao {
      * @return
      */
     RechargeRecording getRechargeRecordingByid(Integer rrid);
+
+    /**
+     * 充值记录列表
+     *
+     * @return
+     */
+    List<RechargeRecording> getRechargeRecordings();
+
 }
