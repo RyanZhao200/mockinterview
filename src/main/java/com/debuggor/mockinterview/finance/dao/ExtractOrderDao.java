@@ -17,9 +17,9 @@ public interface ExtractOrderDao {
     /**
      * 管理员更新订单
      *
-     * @param eoid
+     * @param extractOrder
      */
-    void update(Integer eoid);
+    void update(ExtractOrder extractOrder);
 
     /**
      * 根据订单ID得到订单的信息

@@ -1,4 +1,4 @@
-package com.debuggor.mockinterview.interview.controller;
+package com.debuggor.mockinterview.finance.controller;
 
 import com.alipay.api.AlipayApiException;
 import com.alipay.api.AlipayClient;

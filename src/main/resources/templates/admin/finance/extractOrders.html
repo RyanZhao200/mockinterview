@@ -121,7 +121,6 @@
     </div>
 </div>
 
-
 <script th:src="@{/front/layui/layui.js}"></script>
 <script th:src="@{/admin/js/jquery.min.js}"></script>
 <script>
@@ -131,7 +130,7 @@
     });
 
     function orderDetail(eoid) {
-        var url = "/extractOrder/orderDetail/";
+        var url = "/extractOrder/extractOrderDetail/";
         url = url + eoid;
         window.open(url, "", "height=400, width=800, top=200, left=350, toolbar=no, menubar=no, scrollbars=no, resizable=yes,location=no, status=no");
     }

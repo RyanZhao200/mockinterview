@@ -68,7 +68,7 @@
                                           style="width: 500px;"></textarea>
                             </div>
                             <div class="form-group" style="margin-left: 50px;margin-top: 20px;">
-                                <input type="submit" class="btn btn-success" onclick="formSubmit()" value="提交">
+                                <input type="submit" class="btn btn-success" value="提交">
                             </div>
                         </form>
                     </div>
@@ -82,10 +82,6 @@
 <script th:src="@{/admin/js/bootstrap.min.js}"></script>
 
 <script type="text/javascript">
-    function formSubmit() {
-        document.getElementById("formId").submit();
-        alert("提交成功！");
-    }
 
 </script>
 </body>

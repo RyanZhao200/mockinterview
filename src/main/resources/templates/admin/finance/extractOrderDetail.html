@@ -3,89 +3,71 @@
 <head>
     <meta charset="UTF-8">
     <title>提现订单详情</title>
-    <link rel="stylesheet" th:href="@{/admin/css/bootstrap.min.css}">
-
+    <link rel="stylesheet" th:href="@{/front/layui/css/layui.css}">
+    <link rel="stylesheet" th:href="@{/front/css/global.css}">
+    <style>
+        html body {
+            margin-top: 10px;
+        }
+    </style>
 </head>
 <body style="background-color: #f3f3f4;padding:0 20px;">
-<div class="container">
+<div class="layui-container">
     <!-- 面试官的基本信息-->
-    <div class="row clearfix " style="margin-top: 10px;">
-        <h4>基本信息</h4>
-        <div class="panel panel-body">
-            <div class="col-sm-4">
-                <span>用户名:[[${interviewer.username}]]</span>
-            </div>
-            <div class="col-sm-4">
-                <span>邮箱:[[${interviewer.email}]]</span>
-            </div>
-            <div class="col-sm-4">
-                <span>电话:[[${interviewer.phone}]]</span>
-            </div>
-            <div class="col-sm-4">
-                <span>工作年限:[[${interviewer.workYear}]]</span>
-            </div>
-            <div class="col-sm-4">
-                <span>收费:[[${interviewer.cost}]]</span>
-            </div>
-            <div class="col-sm-4">
-                <span>个人主页:<a th:href="@{/interviewer/}+${interviewer.iid}" target="_blank">查看</a></span>
-            </div>
+    <div class="layui-row">
+        <div style="font-size: 16px;color: #009688">基本信息</div>
+        <div class="layui-col-sm4">
+            <span>用户名:[[${interviewer.username}]]</span>
+        </div>
+        <div class="layui-col-sm4">
+            <span>邮箱:[[${interviewer.email}]]</span>
+        </div>
+        <div class="layui-col-sm4">
+            <span>电话:[[${interviewer.phone}]]</span>
+        </div>
+        <div class="layui-col-sm4">
+            <span>工作年限:[[${interviewer.workYear}]]</span>
+        </div>
+        <div class="layui-col-sm4">
+            <span>收费:[[${interviewer.cost}]]</span>
+        </div>
+        <div class="layui-col-sm4">
+            <span>个人主页:<a th:href="@{/interviewer/}+${interviewer.iid}" target="_blank"
+                          style="color: #1e9fff;">查看</a></span>
         </div>
     </div>
     <!-- 面试官的认证信息列表-->
-    <div class="row clearfix" style="margin-top: 10px;">
-        <h4>提现订单详情</h4>
-        <div class="col-md-12 column">
-            <!-- 待认证-->
-            <div class="panel panel-default">
-                <div class="panel-body">
-                    <div>
-                        <div class="col-sm-4">
-                            <span>提现金额:[[${extractOrder.amount}]]元</span>
-                        </div>
-                        <div class="col-sm-4">
-                            <span>账户余额:[[${amount.amount}]]元</span>
-                        </div>
-                        <div class="col-sm-4">
-                            <span>申请时间:[[${#dates.format(extractOrder.createTime, 'yyyy-MM-dd HH:mm')}]]</span>
-                        </div>
-                        <div class="col-sm-12">
-                            <span>支护宝账户:[[${extractOrder.aliAccount}]]</span>
-                        </div>
-                    </div>
-                    <div style="margin-top: 20px;">
-                        <form th:action="@{/admin/certification/dealCertification}" id="formId" class="form-inline"
-                              role="form" method="post">
-                            <input type="hidden" name="eoid" th:value="${extractOrder.eoid}">
-                            <div class="form-group col-sm-12  checkbox">
-                                <label class=" control-label">审核结果：</label>
-                                <input type="radio" name="orderStatus" value="2">审核通过&nbsp;&nbsp;
-                                <input type="radio" name="orderStatus" value="3" checked>审核不通过
-                            </div>
-                            <div class="form-group col-sm-12" style="margin-top: 10px;">
-                                <label class=" control-label ">反馈信息：</label>
-                                <textarea class="form-control" type="text" name="reviewInfo"
-                                          style="width: 500px;"></textarea>
-                            </div>
-                            <div class="form-group" style="margin-left: 50px;margin-top: 20px;">
-                                <input type="submit" class="btn btn-success" onclick="formSubmit()" value="提交">
-                            </div>
-                        </form>
-                    </div>
-                </div>
-            </div>
+    <div class="layui-row" style="margin-top: 20px;">
+        <div style="font-size: 16px;color: #009688">提现订单详情</div>
+        <!-- 待认证-->
+        <div class="layui-col-sm4">
+            <span>提现金额:[[${extractOrder.amount}]]元</span>
+        </div>
+        <div class="layui-col-sm4">
+            <span>申请时间:[[${#dates.format(extractOrder.createTime, 'yyyy-MM-dd HH:mm')}]]</span>
+        </div>
+        <div class="layui-col-sm4">
+            状态：
+            <span th:if="${extractOrder.orderStatus}==1" style="color: #f0ad4e;">待审核</span>
+            <span th:if="${extractOrder.orderStatus}==2" style="color: #f0ad4e;">审核通过</span>
+            <span th:if="${extractOrder.orderStatus}==3" style="color: #f0ad4e;">审核不通过</span>
+        </div>
+        <div class="layui-col-sm4">
+            <span>审核时间:[[${#dates.format(extractOrder.reviewTime, 'yyyy-MM-dd HH:mm')}]]</span>
+        </div>
+        <div class="layui-col-sm4">
+            <span>支护宝账户:[[${extractOrder.aliAccount}]]</span>
+        </div>
+        <div class="layui-col-sm12">
+            <span>备注信息:[[${extractOrder.reviewInfo}]]</span>
         </div>
     </div>
 </div>
 
+<script th:src="@{/front/layui/layui.js}"></script>
 <script th:src="@{/admin/js/jquery.min.js}"></script>
-<script th:src="@{/admin/js/bootstrap.min.js}"></script>
 
 <script type="text/javascript">
-    function formSubmit() {
-        document.getElementById("formId").submit();
-        alert("提交成功！");
-    }
 
 </script>
 </body>

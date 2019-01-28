@@ -19,8 +19,6 @@ public class ExtractOrderService {
 
     @Autowired
     private ExtractOrderDao extractOrderDao;
-    @Autowired
-    private InterviewerDao interviewerDao;
 
     /**
      * 面试官发起提现申请，插入一条数据到数据库中
@@ -68,5 +66,13 @@ public class ExtractOrderService {
         List<ExtractOrder> extractOrders = extractOrderDao.getExtractOrders(extractOrder);
         PageInfo<ExtractOrder> pageInfo = new PageInfo<>(extractOrders, PageConstant.Navigate_Pages);
         return pageInfo;
+    }
+
+    /**
+     * 更新订单状态
+     */
+    public void update(ExtractOrder extractOrder) {
+        extractOrder.setReviewTime(new Date());
+        extractOrderDao.update(extractOrder);
     }
 }
