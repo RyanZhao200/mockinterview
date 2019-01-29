@@ -6,15 +6,21 @@ import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.request.AlipayFundTransToaccountTransferRequest;
 import com.alipay.api.response.AlipayFundTransToaccountTransferResponse;
 import com.debuggor.mockinterview.common.enumerate.ExtractOrderEnum;
+import com.debuggor.mockinterview.common.enumerate.PayOperateEnum;
 import com.debuggor.mockinterview.common.enumerate.UserEnum;
+import com.debuggor.mockinterview.common.util.OrdersNumberUtil;
 import com.debuggor.mockinterview.common.util.TimeUtil;
 import com.debuggor.mockinterview.finance.bean.Amount;
 import com.debuggor.mockinterview.finance.bean.ExtractOrder;
+import com.debuggor.mockinterview.finance.bean.ExtractRecording;
 import com.debuggor.mockinterview.finance.service.AmountService;
 import com.debuggor.mockinterview.finance.service.ExtractOrderService;
+import com.debuggor.mockinterview.finance.service.ExtractRecordingService;
+import com.debuggor.mockinterview.finance.service.RechargeRecordingService;
 import com.debuggor.mockinterview.interview.bean.Interviewer;
 import com.debuggor.mockinterview.interview.service.InterviewerService;
 import com.github.pagehelper.PageInfo;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +31,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpSession;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -42,6 +49,8 @@ public class ExtractOrderController {
     private InterviewerService interviewerService;
     @Autowired
     private AmountService amountService;
+    @Autowired
+    private ExtractRecordingService extractRecordingService;
 
     /**
      * 面试官提现订单申请
@@ -116,7 +125,7 @@ public class ExtractOrderController {
      * @return
      */
     @RequestMapping("/submitExtractOrder")
-    public String extractOrderSubmit(ExtractOrder extractOrder) {
+    public String extractOrderSubmit(ExtractOrder extractOrder) throws AlipayApiException {
         if (extractOrder == null || extractOrder.getOrderStatus() == null || extractOrder.getEoid() == null) {
             return "redirect:/admin";
         }
@@ -126,9 +135,32 @@ public class ExtractOrderController {
             logger.info("审核不通过！");
             extractOrderService.update(extractOrder);
         } else if (ExtractOrderEnum.REVIEW_PASS.key.equals(extractOrder.getOrderStatus())) {
-            // 审核通过，转账到面试官的账户
+            // 审核通过，验证提现金额是否大于本地账户余额；转账到面试官的账户
             logger.info("审核通过！");
-            extractOrderService.update(extractOrder);
+            ExtractOrder orderById = extractOrderService.getExtractOrderById(extractOrder.getEoid());
+            Amount amount = new Amount();
+            amount.setUserId(orderById.getInterviewerId());
+            amount.setUserType(UserEnum.INTERVIEWER.key);
+            amount.setAmount(new BigDecimal(orderById.getAmount()));
+            Boolean canExtract = amountService.canExtract(amount);
+            if (canExtract) {
+                // 可以提现
+                Boolean result = alipayFundTransToaccountTransfer(extractOrder);
+                if (result) {
+                    // 支付宝调用成功
+                    extractOrderService.update(extractOrder);
+                } else {
+                    //支付宝调用错误，不可以提现，
+                    extractOrder.setOrderStatus(ExtractOrderEnum.REVIEW_NO_PASS.key);
+                    extractOrder.setReviewInfo("支付宝调用错误，请稍后再试或者联系商家");
+                    extractOrderService.update(extractOrder);
+                }
+            } else {
+                // 不可以提现，
+                extractOrder.setOrderStatus(ExtractOrderEnum.REVIEW_NO_PASS.key);
+                extractOrder.setReviewInfo("账户余额不足");
+                extractOrderService.update(extractOrder);
+            }
         }
         return "redirect:/extractOrder/extractOrderDetail/" + extractOrder.getEoid();
     }
@@ -140,27 +172,55 @@ public class ExtractOrderController {
      * @return
      * @throws AlipayApiException
      */
-    public String alipayFundTransToaccountTransfer(ExtractOrder extractOrder) throws AlipayApiException {
-        ExtractOrder extractOrder1 = extractOrderService.getExtractOrderById(extractOrder.getEoid());
+    public Boolean alipayFundTransToaccountTransfer(ExtractOrder extractOrder) throws AlipayApiException {
+        extractOrder = extractOrderService.getExtractOrderById(extractOrder.getEoid());
         AlipayClient alipayClient = new DefaultAlipayClient("https://openapi.alipay.com/gateway.do", "app_id", "your private_key", "json", "GBK", "alipay_public_key", "RSA2");
         AlipayFundTransToaccountTransferRequest request = new AlipayFundTransToaccountTransferRequest();
 
+        Float amount = extractOrder.getAmount();
+        String aliAccount = extractOrder.getAliAccount();
+        // 订单号 30位 单一无二
+        String orderNum = OrdersNumberUtil.createOrdersNumber();
+        //ALIPAY_LOGONID：支付宝登录号，支持邮箱和手机号格式。
+        String payeeType = "ALIPAY_LOGONID";
+        String payerShowName = "IT模拟面试退款";
+        String remark = "退款提示，有任何问题请联系平台";
+
         request.setBizContent("{" +
-                "\"out_biz_no\":\"3142321423432\"," +
-                "\"payee_type\":\"ALIPAY_LOGONID\"," +
-                "\"payee_account\":\"abc@sina.com\"," +
-                "\"amount\":\"12.23\"," +
-                "\"payer_show_name\":\"上海交通卡退款\"," +
-                "\"payee_real_name\":\"张三\"," +
-                "\"remark\":\"转账备注\"" +
+                "\"out_biz_no\":\"" + orderNum + "\"," +
+                "\"payee_type\":\"" + payeeType + "\"," +
+                "\"payee_account\":\"" + aliAccount + "\"," +
+                "\"amount\":\"" + amount + "\"," +
+                "\"payer_show_name\":\"" + payerShowName + "\"," +
+                "\"remark\":\"" + remark + "\"" +
                 "  }");
+
         AlipayFundTransToaccountTransferResponse response = alipayClient.execute(request);
         if (response.isSuccess()) {
-            System.out.println("调用成功");
+            // 调用成功，修改面试官本地金额
+            Amount a = new Amount();
+            a.setUserId(extractOrder.getInterviewerId());
+            a.setUserType(UserEnum.INTERVIEWER.key);
+            String result = amountService.update(a, PayOperateEnum.EXTRACT.key);
+            logger.info("*****支付宝调用成功******");
+            //插入一条提现记录
+            // 商户转账唯一订单号：发起转账来源方定义的转账单据号。请求时对应的参数，原样返回。
+            String outBizNo = response.getOutBizNo();
+            // 支付宝转账单据号，成功一定返回，失败可能不返回也可能返回。
+            String orderId = response.getOrderId();
+            ExtractRecording extractRecording = new ExtractRecording();
+            extractRecording.setAmount(amount);
+            extractRecording.setTradeNum(orderId);
+            extractRecording.setExtractNum(outBizNo);
+            extractRecording.setInterviewerId(extractOrder.getInterviewerId());
+            extractRecordingService.insert(extractRecording);
+
+            return true;
         } else {
-            System.out.println("调用失败");
+            // 失败，暂不处理
+            logger.info("******支付宝调用失败*****");
+            return false;
         }
-        return "";
     }
 
     /**

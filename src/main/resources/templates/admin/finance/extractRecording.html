@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <title>充值记录</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <link rel="stylesheet" th:href="@{/front/layui/css/layui.css}">
+    <link rel="stylesheet" th:href="@{/front/css/global.css}">
+    <style>
+        html body {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="layui-fluid">
+    <div class="layui-row">
+        <div class="layui-col-lg12">
+            <span style="font-size: 20px;color: #009688;">充值记录</span>
+        </div>
+        <div class="layui-col-lg12">
+            <table class="layui-table">
+                <colgroup>
+                    <col width="200">
+                    <col width="200">
+                    <col width="200">
+                    <col width="200">
+                    <col>
+                </colgroup>
+                <thead>
+                <tr>
+                    <th>姓名</th>
+                    <th>提现订单号</th>
+                    <th>支付宝交易号</th>
+                    <th>提现金额</th>
+                    <th>提现时间</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr th:each="extract:${pageInfo.list}">
+                    <td th:text="${extract.username}"></td>
+                    <td th:text="${extract.extractNum}"></td>
+                    <td th:text="${extract.tradeNum}"></td>
+                    <td th:text="${extract.amount}"></td>
+                    <td th:text="${#dates.format(extract.createTime, 'yyyy-MM-dd HH:mm')}"></td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div class="layui-col-lg12">
+            <!--文字信息-->
+            <div>
+                当前第 [[${pageInfo.pageNum}]] 页.总共 [[${pageInfo.pages}]] 页.一共 [[${pageInfo.total}]] 条充值  记录
+            </div>
+            <!--点击分页-->
+            <div style="text-align: center">
+                <nav>
+                    <ul class="pagination">
+                        <li>
+                            <span style="font-size: 12px;">
+                                <a th:href="@{/extractRecording/extractRecordings(pn=1)}">首页</a>
+                            </span>
+                        </li>
+                        <!--上一页-->
+                        <li th:if="${pageInfo.hasPreviousPage}">
+                            <span>
+                                <a th:href="@{/extractRecording/extractRecordings(pn=${pageInfo.pageNum-1})}"
+                                   aria-label="Previous">
+                                    <span aria-hidden="true">«</span>
+                                </a>
+                            </span>
+                        </li>
+                        <!--循环遍历连续显示的页面，若是当前页就高亮显示，并且没有链接-->
+                        <li th:each="page_num:${pageInfo.navigatepageNums}">
+                            <span th:if="${page_num == pageInfo.pageNum}">
+                                <a href="#" class="active">[[${page_num}]]</a>
+                            </span>
+                            <span th:if="${page_num != pageInfo.pageNum}">
+                                <a th:href="@{/extractRecording/extractRecordings(pn=${page_num})}">[[${page_num}]]</a>
+                            </span>
+                        </li>
+                        <!--下一页-->
+                        <li th:if="${pageInfo.hasNextPage}">
+                            <span>
+                                <a th:href="@{/extractRecording/extractRecordings(pn=${pageInfo.pageNum+1})}"
+                                   aria-label="Next">
+                                    <span aria-hidden="true">»</span>
+                                </a>
+                            </span>
+                        </li>
+                        <li>
+                            <span style="font-size: 12px;">
+                                <a th:href="@{/extractRecording/extractRecordings(pn=${pageInfo.pages})}">尾页</a>
+                            </span>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script th:src="@{/front/layui/layui.js}"></script>
+<script th:src="@{/admin/js/jquery.min.js}"></script>
+<script>
+    layui.use('element', function () {
+        var element = layui.element; //导航的hover效果、二级菜单等功能，需要依赖element模块
+        element.init();
+    });
+
+
+</script>
+
+</body>
+</html>

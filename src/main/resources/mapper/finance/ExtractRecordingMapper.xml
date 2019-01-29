@@ -6,8 +6,8 @@
 
     <!--插入用户的充值记录-->
     <insert id="insert" parameterType="com.debuggor.mockinterview.finance.bean.ExtractRecording">
-        insert into m_extract_recording (amount,interviewer_id,create_time)
-        values (#{amount},#{interviewerId},#{createTime})
+        insert into m_extract_recording (amount,extract_num,trade_num,interviewer_id,create_time)
+        values (#{amount},#{extractNum},#{tradeNum},#{interviewerId},#{createTime})
     </insert>
     <!--根据求职者ID得到求职者的充值记录-->
     <select id="getExtractRecordingsByUid" resultType="com.debuggor.mockinterview.finance.bean.ExtractRecording"
@@ -18,6 +18,15 @@
     <select id="getExtractRecordingByid" resultType="com.debuggor.mockinterview.finance.bean.ExtractRecording"
             parameterType="java.lang.Integer">
         SELECT * FROM m_extract_recording WHERE erid=#{erid}
+    </select>
+    <!-- 后台提现列表 -->
+    <select id="getExtractRecordings" resultType="com.debuggor.mockinterview.finance.bean.ExtractRecording">
+        SELECT
+        e.erid,e.extract_num,e.trade_num,e.amount,
+        e.interviewer_id,e.create_time,i.username
+        from m_extract_recording  e
+        LEFT JOIN j_interviewer i on e.interviewer_id = i.iid
+        ORDER BY create_time DESC
     </select>
 
 </mapper>

@@ -1,6 +1,7 @@
 package com.debuggor.mockinterview.finance.dao;
 
 import com.debuggor.mockinterview.finance.bean.ExtractRecording;
+import com.debuggor.mockinterview.finance.bean.RechargeRecording;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -29,4 +30,11 @@ public interface ExtractRecordingDao {
      * @return
      */
     ExtractRecording getExtractRecordingByid(Integer erid);
+
+    /**
+     * 得到面试官的提现记录列表
+     *
+     * @return
+     */
+    List<ExtractRecording> getExtractRecordings();
 }

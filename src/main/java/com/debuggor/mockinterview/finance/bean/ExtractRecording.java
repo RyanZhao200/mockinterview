@@ -31,6 +31,10 @@ public class ExtractRecording {
      */
     private Integer interviewerId;
     /**
+     * 面试官姓名
+     */
+    private String username;
+    /**
      * 创建时间
      */
     private Date createTime;

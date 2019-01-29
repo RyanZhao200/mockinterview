@@ -58,4 +58,23 @@ public class AmountService {
         // 更新用户的账户金额
         return result;
     }
+
+    /**
+     * 验证面试官是否可以提现
+     *
+     * @return
+     */
+    public Boolean canExtract(Amount amount) {
+        Amount beforeAmount = amountDao.getAmountByUid(amount);
+        // 提现；需要验证原账户还有多少余额
+        BigDecimal subtract = beforeAmount.getAmount().subtract(amount.getAmount());
+        if (subtract.doubleValue() >= 0) {
+            // 账户余额大于等于要提现的金额
+            return true;
+        } else {
+            // 账户余额不够，不能提现，返回error
+            return false;
+        }
+    }
+
 }
