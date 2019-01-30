@@ -1,7 +1,6 @@
 package com.debuggor.mockinterview.finance.controller;
 
 import com.debuggor.mockinterview.finance.bean.ExtractRecording;
-import com.debuggor.mockinterview.finance.bean.RechargeRecording;
 import com.debuggor.mockinterview.finance.service.ExtractRecordingService;
 import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;

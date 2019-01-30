@@ -16,11 +16,9 @@ import com.debuggor.mockinterview.finance.bean.ExtractRecording;
 import com.debuggor.mockinterview.finance.service.AmountService;
 import com.debuggor.mockinterview.finance.service.ExtractOrderService;
 import com.debuggor.mockinterview.finance.service.ExtractRecordingService;
-import com.debuggor.mockinterview.finance.service.RechargeRecordingService;
 import com.debuggor.mockinterview.interview.bean.Interviewer;
 import com.debuggor.mockinterview.interview.service.InterviewerService;
 import com.github.pagehelper.PageInfo;
-import com.sun.org.apache.xpath.internal.operations.Bool;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -201,6 +199,7 @@ public class ExtractOrderController {
             Amount a = new Amount();
             a.setUserId(extractOrder.getInterviewerId());
             a.setUserType(UserEnum.INTERVIEWER.key);
+            a.setAmount(new BigDecimal(amount));
             String result = amountService.update(a, PayOperateEnum.EXTRACT.key);
             logger.info("*****支付宝调用成功******");
             //插入一条提现记录
