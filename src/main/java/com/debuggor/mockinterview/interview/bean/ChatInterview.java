@@ -10,7 +10,7 @@ import java.util.Date;
  */
 
 @Data
-public class Chat {
+public class ChatInterview {
     /**
      * 消息ID
      */
@@ -44,10 +44,10 @@ public class Chat {
      */
     private Date sendTime;
 
-    public Chat() {
+    public ChatInterview() {
     }
 
-    public Chat(String message, Integer sendUid, String sendType, Integer acceptUid, String acceptType, Date sendTime) {
+    public ChatInterview(String message, Integer sendUid, String sendType, Integer acceptUid, String acceptType, Date sendTime) {
         this.message = message;
         this.sendUid = sendUid;
         this.sendType = sendType;
@@ -56,7 +56,7 @@ public class Chat {
         this.sendTime = sendTime;
     }
 
-    public Chat(Integer sendUid, String sendType, Integer acceptUid, String acceptType) {
+    public ChatInterview(Integer sendUid, String sendType, Integer acceptUid, String acceptType) {
         this.sendUid = sendUid;
         this.sendType = sendType;
         this.acceptUid = acceptUid;
@@ -64,6 +64,6 @@ public class Chat {
     }
 
     public static String jsonStr(String message, Integer sendUid, String sendType, Integer acceptUid, String acceptType, Date sendTime) {
-        return JSON.toJSONString(new Chat(message, sendUid, sendType, acceptUid, acceptType, sendTime));
+        return JSON.toJSONString(new ChatInterview(message, sendUid, sendType, acceptUid, acceptType, sendTime));
     }
 }

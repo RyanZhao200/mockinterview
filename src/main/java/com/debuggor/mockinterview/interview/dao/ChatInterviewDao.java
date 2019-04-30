@@ -1,6 +1,6 @@
 package com.debuggor.mockinterview.interview.dao;
 
-import com.debuggor.mockinterview.interview.bean.Chat;
+import com.debuggor.mockinterview.interview.bean.ChatInterview;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -9,13 +9,13 @@ import java.util.List;
  * 聊天dao
  */
 @Repository
-public interface ChatDao {
+public interface ChatInterviewDao {
     /**
      * 插入一条聊天记录
      *
      * @param chat
      */
-    void insert(Chat chat);
+    void insert(ChatInterview chat);
 
     /**
      * 得到求职者A和面试官B的聊天记录
@@ -23,5 +23,5 @@ public interface ChatDao {
      * @param chat
      * @return
      */
-    List<Chat> getChatListForDouble(Chat chat);
+    List<ChatInterview> getChatListForDouble(ChatInterview chat);
 }

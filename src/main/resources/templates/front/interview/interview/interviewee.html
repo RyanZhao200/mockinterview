@@ -55,13 +55,13 @@
             </div>
             <div style="height: 78%;background-color: #3d444d">
                 <ul style="overflow:auto;height: 100%;" id="message-container">
-                    <li class="li-content" th:each="chat:${chats}">
+                    <li class="li-content" th:each="chatInterview:${chatInterviews}">
                         <span class="li-message-style">
-                            [[${#dates.format(chat.sendTime, 'HH:mm:ss')}]]
+                            [[${#dates.format(chatInterview.sendTime, 'HH:mm:ss')}]]
                         </span>
-                        <span th:if="${chat.sendType}=='1'" class="li-finder-style">应聘者:</span>
-                        <span th:if="${chat.sendType}=='2'" class="li-interviewer-style">面试官:</span>
-                        <span class="li-message-style">[[${chat.message}]]</span>
+                        <span th:if="${chatInterview.sendType}=='1'" class="li-finder-style">应聘者:</span>
+                        <span th:if="${chatInterview.sendType}=='2'" class="li-interviewer-style">面试官:</span>
+                        <span class="li-message-style">[[${chatInterview.message}]]</span>
                     </li>
                 </ul>
             </div>
@@ -162,17 +162,17 @@
         webSocket.onmessage = function (event) {
             console.log('WebSocket收到消息：%c' + event.data, 'color:green');
             //获取服务端消息
-            var chat = JSON.parse(event.data) || {};
+            var chatInterview = JSON.parse(event.data) || {};
             var $messageContainer = $('#message-container');
             //发送消息
             var msg = '';
-            msg += '<li class="li-content">' + '<span class="li-message-style">' + format(chat.sendTime) + '</span>&nbsp;';
-            if (chat.sendType === '1') {
+            msg += '<li class="li-content">' + '<span class="li-message-style">' + format(chatInterview.sendTime) + '</span>&nbsp;';
+            if (chatInterview.sendType === '1') {
                 msg += '<span class="li-finder-style">应聘者:</span>';
             } else {
                 msg += '<span class="li-interviewer-style">面试官:</span>';
             }
-            msg += '<span class="li-message-style">' + chat.message + '</span>' + '</li>';
+            msg += '<span class="li-message-style">' + chatInterview.message + '</span>' + '</li>';
             $messageContainer.append(msg);
             scrollToButton();
         };

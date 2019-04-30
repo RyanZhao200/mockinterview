@@ -1,10 +1,10 @@
 package com.debuggor.mockinterview.interview.controller;
 
 import com.debuggor.mockinterview.common.enumerate.UserEnum;
-import com.debuggor.mockinterview.interview.bean.Chat;
+import com.debuggor.mockinterview.interview.bean.ChatInterview;
 import com.debuggor.mockinterview.interview.bean.Finder;
 import com.debuggor.mockinterview.interview.bean.Interviewer;
-import com.debuggor.mockinterview.interview.service.ChatService;
+import com.debuggor.mockinterview.interview.service.ChatInterviewService;
 import com.debuggor.mockinterview.interview.service.FinderService;
 import com.debuggor.mockinterview.interview.service.InterviewerService;
 import org.slf4j.Logger;
@@ -26,14 +26,14 @@ import java.util.regex.Pattern;
 
 @Controller
 @RequestMapping("/interview")
-public class ChatController {
-    private Logger logger = LoggerFactory.getLogger(ChatController.class);
+public class ChatInterviewController {
+    private Logger logger = LoggerFactory.getLogger(ChatInterviewController.class);
     @Autowired
     private FinderService finderService;
     @Autowired
     private InterviewerService interviewerService;
     @Autowired
-    private ChatService chatService;
+    private ChatInterviewService chatInterviewService;
 
     /**
      * 登陆界面
@@ -58,12 +58,12 @@ public class ChatController {
             return "redirect:/";
         }
         logger.info(new Date() + "求职者" + finder.getUsername() + "进入与面试官" + interviewer.getUsername() + "面试的页面");
-        Chat chat = new Chat(fid, UserEnum.FINDER.key, iid, UserEnum.INTERVIEWER.key);
-        List<Chat> chats = chatService.getChatListForDouble(chat);
-        model.addAttribute("chats", chats);
+        ChatInterview chatInterview = new ChatInterview(fid, UserEnum.FINDER.key, iid, UserEnum.INTERVIEWER.key);
+        List<ChatInterview> chatInterviews = chatInterviewService.getChatListForDouble(chatInterview);
+        model.addAttribute("chatInterviews", chatInterviews);
         model.addAttribute("finder", finder);
         model.addAttribute("interviewer", interviewer);
-        model.addAttribute("webSocketUrl", "ws://" + InetAddress.getLocalHost().getHostAddress() + ":" + request.getServerPort() + request.getContextPath() + "/chat/" + fid + "/" + UserEnum.FINDER.key + "/" + iid);
+        model.addAttribute("webSocketUrl", "ws://" + InetAddress.getLocalHost().getHostAddress() + ":" + request.getServerPort() + request.getContextPath() + "/chatInterview/" + fid + "/" + UserEnum.FINDER.key + "/" + iid);
         return "front/interview/interview/interviewee";
     }
 
@@ -82,22 +82,22 @@ public class ChatController {
             return "redirect:/";
         }
         logger.info(new Date() + "面试官" + interviewer.getUsername() + "进入与求职者" + finder.getUsername() + "面试的页面");
-        Chat chat = new Chat(iid, UserEnum.INTERVIEWER.key, fid, UserEnum.FINDER.key);
-        List<Chat> chats = chatService.getChatListForDouble(chat);
-        model.addAttribute("chats", chats);
+        ChatInterview chatInterview = new ChatInterview(iid, UserEnum.INTERVIEWER.key, fid, UserEnum.FINDER.key);
+        List<ChatInterview> chatInterviews = chatInterviewService.getChatListForDouble(chatInterview);
+        model.addAttribute("chatInterviews", chatInterviews);
         model.addAttribute("finder", finder);
         model.addAttribute("interviewer", interviewer);
-        model.addAttribute("webSocketUrl", "ws://" + InetAddress.getLocalHost().getHostAddress() + ":" + request.getServerPort() + request.getContextPath() + "/chat/" + fid + "/" + UserEnum.INTERVIEWER.key + "/" + iid);
+        model.addAttribute("webSocketUrl", "ws://" + InetAddress.getLocalHost().getHostAddress() + ":" + request.getServerPort() + request.getContextPath() + "/chatInterview/" + fid + "/" + UserEnum.INTERVIEWER.key + "/" + iid);
         return "front/interview/interview/interviewer";
     }
 
     @RequestMapping("/insert")
     public @ResponseBody
-    String insert(Chat chat) {
-        if (chat == null) {
+    String insert(ChatInterview chatInterview) {
+        if (chatInterview == null) {
             return "error";
         }
-        chatService.insert(chat);
+        chatInterviewService.insert(chatInterview);
         return "success";
     }
 

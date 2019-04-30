@@ -2,7 +2,7 @@ package com.debuggor.mockinterview.interview.websocket;
 
 import com.alibaba.fastjson.JSON;
 import com.debuggor.mockinterview.common.enumerate.UserEnum;
-import com.debuggor.mockinterview.interview.bean.Chat;
+import com.debuggor.mockinterview.interview.bean.ChatInterview;
 import org.springframework.stereotype.Component;
 
 import javax.websocket.*;
@@ -53,14 +53,14 @@ public class WebSocketChatServer {
             String sendKey = sendUid + "" + sendType;
             onlineSessions.put(sendKey, this);
             String acceptKey = acceptUid + "" + UserEnum.FINDER.key;
-            sendMessageTo(sendKey, acceptKey, Chat.jsonStr("已上线！", iid, UserEnum.INTERVIEWER.key, fid, UserEnum.FINDER.key, new Date()));
+            sendMessageTo(sendKey, acceptKey, ChatInterview.jsonStr("已上线！", iid, UserEnum.INTERVIEWER.key, fid, UserEnum.FINDER.key, new Date()));
         } else {
             this.sendUid = fid;
             this.acceptUid = iid;
             String sendKey = sendUid + "" + sendType;
             onlineSessions.put(sendKey, this);
             String acceptKey = acceptUid + "" + UserEnum.INTERVIEWER.key;
-            sendMessageTo(sendKey, acceptKey, Chat.jsonStr("已上线！", fid, UserEnum.FINDER.key, iid, UserEnum.INTERVIEWER.key, new Date()));
+            sendMessageTo(sendKey, acceptKey, ChatInterview.jsonStr("已上线！", fid, UserEnum.FINDER.key, iid, UserEnum.INTERVIEWER.key, new Date()));
         }
     }
 
@@ -71,17 +71,17 @@ public class WebSocketChatServer {
      */
     @OnMessage
     public void onMessage(Session session, String jsonStr) {
-        Chat chat = JSON.parseObject(jsonStr, Chat.class);
+        ChatInterview chatInterview = JSON.parseObject(jsonStr, ChatInterview.class);
         String sendKey = null;
         String acceptKey = null;
-        if (UserEnum.INTERVIEWER.key.equals(chat.getSendType())) {
+        if (UserEnum.INTERVIEWER.key.equals(chatInterview.getSendType())) {
             sendKey = sendUid + "" + UserEnum.INTERVIEWER.key;
             acceptKey = acceptUid + "" + UserEnum.FINDER.key;
         } else {
             sendKey = sendUid + "" + UserEnum.FINDER.key;
             acceptKey = acceptUid + "" + UserEnum.INTERVIEWER.key;
         }
-        sendMessageTo(sendKey, acceptKey, Chat.jsonStr(chat.getMessage(), chat.getSendUid(), chat.getSendType(), chat.getAcceptUid(), chat.getAcceptType(), new Date()));
+        sendMessageTo(sendKey, acceptKey, ChatInterview.jsonStr(chatInterview.getMessage(), chatInterview.getSendUid(), chatInterview.getSendType(), chatInterview.getAcceptUid(), chatInterview.getAcceptType(), new Date()));
     }
 
     /**
@@ -96,11 +96,11 @@ public class WebSocketChatServer {
         if (UserEnum.INTERVIEWER.key.equals(sendType)) {
             sendKey = sendUid + "" + sendType;
             acceptKey = acceptUid + "" + UserEnum.FINDER.key;
-            sendMessageTo(sendKey, acceptKey, Chat.jsonStr("已下线！", sendUid, UserEnum.INTERVIEWER.key, acceptUid, UserEnum.FINDER.key, new Date()));
+            sendMessageTo(sendKey, acceptKey, ChatInterview.jsonStr("已下线！", sendUid, UserEnum.INTERVIEWER.key, acceptUid, UserEnum.FINDER.key, new Date()));
         } else {
             sendKey = sendUid + "" + sendType;
             acceptKey = acceptUid + "" + UserEnum.INTERVIEWER.key;
-            sendMessageTo(sendKey, acceptKey, Chat.jsonStr("已下线！", sendUid, UserEnum.FINDER.key, acceptUid, UserEnum.INTERVIEWER.key, new Date()));
+            sendMessageTo(sendKey, acceptKey, ChatInterview.jsonStr("已下线！", sendUid, UserEnum.FINDER.key, acceptUid, UserEnum.INTERVIEWER.key, new Date()));
         }
 */
     }

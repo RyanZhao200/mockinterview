@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.debuggor.mockinterview.interview.dao.ChatSessionDao">
+    <!-- 插入一条聊天信息-->
+    <insert id="insert" parameterType="com.debuggor.mockinterview.interview.bean.ChatSession">
+        INSERT into j_chat_session(message,send_user_id,send_user_type,send_status,send_time,accept_user_id,accept_user_type,accept_status,accept_time)
+        VALUES(#{message},#{sendUserId},#{sendUserType},#{sendStatus},#{sendTime},#{acceptUserId},#{acceptUserType},#{acceptStatus},#{acceptTime})
+    </insert>
+
+    <sql id="query_chat_session_where">
+        <if test="sendUserId != null ">and send_user_id = #{sendUserId}</if>
+        <if test="sendUserType != null ">and send_user_type = #{sendUserType}</if>
+        <if test="sendStatus != null ">and send_status = #{sendStatus}</if>
+        <if test="acceptUserId != null ">and accept_user_id = #{acceptUserId}</if>
+        <if test="acceptUserType != null ">and accept_user_type = #{acceptUserType}</if>
+        <if test="acceptStatus != null ">and accept_status = #{acceptStatus}</if>
+    </sql>
+    <!-- 根据用户双发的信息得到聊天内容 -->
+    <select id="getChatSessionsByDoubleUid" resultType="com.debuggor.mockinterview.interview.bean.ChatSession"
+            parameterType="com.debuggor.mockinterview.interview.bean.ChatSession">
+        select * from j_chat_session
+        <where>
+            <include refid="query_chat_session_where"></include>
+        </where>
+        ORDER BY send_time
+    </select>
+
+</mapper>

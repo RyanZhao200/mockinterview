@@ -1,8 +1,8 @@
 package com.debuggor.mockinterview.interview.service;
 
 import com.debuggor.mockinterview.common.enumerate.StatusEnum;
-import com.debuggor.mockinterview.interview.bean.Chat;
-import com.debuggor.mockinterview.interview.dao.ChatDao;
+import com.debuggor.mockinterview.interview.bean.ChatInterview;
+import com.debuggor.mockinterview.interview.dao.ChatInterviewDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -10,21 +10,21 @@ import java.util.Date;
 import java.util.List;
 
 @Service
-public class ChatService {
+public class ChatInterviewService {
 
     @Autowired
-    private ChatDao chatDao;
+    private ChatInterviewDao chatInterviewDao;
 
     /**
      * 插入一条记录
      *
      * @param chat
      */
-    public void insert(Chat chat) {
+    public void insert(ChatInterview chat) {
         if (chat != null) {
             chat.setSendTime(new Date());
             chat.setMessageStatus(StatusEnum.NORMAL.key);
-            chatDao.insert(chat);
+            chatInterviewDao.insert(chat);
         }
     }
 
@@ -34,8 +34,8 @@ public class ChatService {
      * @param chat
      * @return
      */
-    public List<Chat> getChatListForDouble(Chat chat) {
-        List<Chat> chats = chatDao.getChatListForDouble(chat);
+    public List<ChatInterview> getChatListForDouble(ChatInterview chat) {
+        List<ChatInterview> chats = chatInterviewDao.getChatListForDouble(chat);
         return chats;
     }
 }
